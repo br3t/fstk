@@ -14,26 +14,23 @@
 		'transform:scaleY(-1);',
 		'transform:scale(0.8,1.2);',
 		'transform:scale(0.8,1.2);transform-origin: 0 0;',
+		'transform:skewX(15deg);',
+		'transform:skewX(15deg);transform-origin: 0 0;',
+		'transform:skew(15deg,15deg);',
+		'transform:skew(15deg,15deg);transform-origin: 0 0;',
 		'transform:rotate(15deg);',
 		'transform:rotate(-345deg);',
 		'transform:rotate(-15deg);transform-origin: 100% 100%;',
 		'transform:rotateX(45deg);',
 		'transform:rotateY(45deg);',
-		'transform:skewX(15deg);',
-		'transform:skewX(15deg);transform-origin: 0 0;',
-		'transform:skew(15deg,15deg);',
-		'transform:skew(15deg,15deg);transform-origin: 0 0;'
+		'transform:rotateZ(45deg);'
 	];
 	$(function() {
 		transformations.forEach(function(tran) {
 			var tr = $('<div class="row"></div>');
 			var cell1 = $('<div class="result"><div class="shadow"></div></div>');
 			var transformed = $('<img class="transformed" src="image.jpg" />');
-			var parts = tran.split(';');
-			parts.forEach(function(part) {
-				var prts = part.split(':');
-				transformed.css(prts[0], prts[1]);
-			});
+			transformed.attr('style', tran);
 			cell1.find('.shadow').after(transformed);
 			tr.append(cell1);
 			var code = $('<code></code>');
@@ -74,6 +71,16 @@
 			padding: 100px 0 0;
 			font-size: 20px;
 		}
+		.additional-features {
+			position: relative;
+			width: 200px;
+			height: 200px;
+			background: #000;
+			top: 50px;
+			left: 50px;
+			padding: 50px;
+			box-sizing: border-box;
+		}
 	</style>
 </head>
 <body>
@@ -82,21 +89,19 @@
 	</div>
 	<div class="row">
 		<div class="result">
-			<div style="
-			    position: relative;
-			    width: 200px;
-			    height: 200px;
-			    background: #000;
-			    top: 50px;
-			    left: 50px;
-			    transform-style: preserve-3d;
-			    padding: 50px;
-			    box-sizing: border-box;
-			">
+			<div class="additional-features" style="transform-style: preserve-3d;">
 				<img class="transformed" src="image.jpg" style="transform: rotateY(45deg);top: -40px;left: 0;">
 			</div>
 		</div>
 		<code>div {transform-style: preserve-3d;}<br>img {transform:rotateY(15deg);}</code>
+	</div>
+	<div class="row">
+		<div class="result">
+			<div class="additional-features" style="-webkit-perspective: 180px;perspective: 180px;">
+				<img class="transformed" src="image.jpg" style="transform: rotateX(45deg);top: -40px;left: 0;">
+			</div>
+		</div>
+		<code>div {perspective: 180px;}<br>img {transform:rotateX(45deg);}</code>
 	</div>
 </body>
 </html>
