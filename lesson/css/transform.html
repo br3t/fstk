@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Трансформации CSS @ Курс Frontend-разработки</title>
+	<script src="../../js/jquery.js"></script>
+	<script type="text/javascript">
+	var transformations = [
+		'transform:translateX(30px);',
+		'transform:translateY(-30px);',
+		'transform:translate(10px,20px);',
+		'transform:scaleX(0.8);',
+		'transform:scaleY(0.8);',
+		'transform:scaleY(-1);',
+		'transform:scale(0.8,1.2);',
+		'transform:scale(0.8,1.2);transform-origin: 0 0;',
+		'transform:rotate(15deg);',
+		'transform:rotate(-345deg);',
+		'transform:rotate(-15deg);transform-origin: 100% 100%;',
+		'transform:rotateX(45deg);',
+		'transform:rotateY(45deg);',
+		'transform:skewX(15deg);',
+		'transform:skewX(15deg);transform-origin: 0 0;',
+		'transform:skew(15deg,15deg);',
+		'transform:skew(15deg,15deg);transform-origin: 0 0;'
+	];
+	$(function() {
+		transformations.forEach(function(tran) {
+			var tr = $('<div class="row"></div>');
+			var cell1 = $('<div class="result"><div class="shadow"></div></div>');
+			var transformed = $('<img class="transformed" src="image.jpg" />');
+			var parts = tran.split(';');
+			parts.forEach(function(part) {
+				var prts = part.split(':');
+				transformed.css(prts[0], prts[1]);
+			});
+			cell1.find('.shadow').after(transformed);
+			tr.append(cell1);
+			var code = $('<code></code>');
+			code.html(tran.replace(/;/g, ';<br />'));
+			tr.append(code);
+			$('.content').append(tr);
+		});
+	});
+	</script>
+	<style type="text/css">
+		.row {
+			overflow: hidden;
+			border-top: 1px solid #000;
+			height: 300px;
+		}
+		.result {
+			position: relative;
+			width: 300px;
+			float: left;
+			height: 300px;
+		}
+		.transformed, .shadow {
+			width: 200px;
+			height: 200px;
+			overflow: hidden;
+			position: absolute;
+			top: 50px;
+			left: 50px;
+		}
+		.shadow {
+			border: 3px dashed #000;
+			box-sizing: border-box;
+		}
+		code {
+			height: 300px;
+			display: block;
+			float: left;
+			padding: 100px 0 0;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Трансформации CSS</h1>
+	<div class="content">	
+	</div>
+	<div class="row">
+		<div class="result">
+			<div style="
+			    position: relative;
+			    width: 200px;
+			    height: 200px;
+			    background: #000;
+			    top: 50px;
+			    left: 50px;
+			    transform-style: preserve-3d;
+			    padding: 50px;
+			    box-sizing: border-box;
+			">
+				<img class="transformed" src="image.jpg" style="transform: rotateY(45deg);top: -40px;left: 0;">
+			</div>
+		</div>
+		<code>div {transform-style: preserve-3d;}<br>img {transform:rotateY(15deg);}</code>
+	</div>
+</body>
+</html>
