@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Переходы CSS @ Курс Frontend-разработки</title>
+	<script src="../../js/jquery.js"></script>
+	<style type="text/css">
+		.row {
+			overflow: hidden;
+			border-top: 1px solid #000;
+			width: 600px;
+		}
+		.square {
+			width: 100px;
+			height: 100px;
+			background: #F00;
+			margin: 30px 0 0;
+			font-size: 20px;
+		}
+		.row:hover .square {
+			transition: all 1000ms ease;
+			margin: 30px 0  0 300px;
+			background-color: #0F0;
+			border-radius: 50%; 
+		}
+		.teaser {
+			position: relative;
+			width: 300px;
+			float: left;
+			height: 300px;
+		}
+		.original {
+			width: 200px;
+			height: 200px;
+			margin: 20px;
+			overflow: hidden;
+		}
+		code {
+			display: block;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Переходы CSS</h1>
+	<div class="content">
+		<div class="row">
+			<h2>transition-property</h2>	
+			<div class="square" style="transition-property: margin;">margin</div>
+			<div class="square" style="transition-property: background-color;">background-color</div>
+			<div class="square" style="transition-property: border-radius;">border-radius</div>
+			<div class="square" style="">all</div>
+		</div>
+		<div class="row">
+			<h2>transition-duration</h2>	
+			<div class="square" style="transition-duration: 100ms;">100ms</div>
+			<div class="square" style="transition-duration: 500ms;">500ms</div>
+			<div class="square" style="transition-duration: 1s;">1s</div>
+		</div>
+		<div class="row">
+			<h2>transition-timing-function</h2>	
+			<div class="square" style="transition-timing-function: ease;">ease</div>
+			<div class="square" style="transition-timing-function: linear;">linear</div>
+			<div class="square" style="transition-timing-function: ease-in;">ease-in</div>
+			<div class="square" style="transition-timing-function: ease-out;">ease-out</div>
+			<div class="square" style="transition-timing-function: ease-in-out;">ease-in-out</div>
+			<div class="square" style="transition-timing-function: steps(4,start);">steps(4,start)</div>
+			<div class="square" style="transition-timing-function: steps(4,end);">steps(4,end)</div>
+			<div class="square" style="transition-timing-function: cubic-bezier(1,0,1,0);">cubic-bezier(1,0,1,0);</div>
+			<div class="square" style="transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);">cubic-bezier(0.6, -0.28, 0.735, 0.045)</div>
+			<div class="square" style="transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);">cubic-bezier(0.175, 0.885, 0.32, 1.275)</div>
+			<a href="http://easings.net">http://easings.net</a>
+		</div>	
+		<div class="row">
+			<h2>transition-delay</h2>	
+			<div class="square" style="transition-delay: 100ms;">100ms</div>
+			<div class="square" style="transition-delay: 200ms;">200ms</div>
+			<div class="square" style="transition-delay: 1s;">1s</div>
+		</div>
+		<div class="row">
+			<h2>transition</h2>	
+			<h3>transition: all linear 2s;
+			<div class="square" style="transition: all linear 2s;"></div>
+			<h3>transition: margin steps(6,end) 1000ms;
+			<div class="square" style="transition: margin steps(6,end) 1000ms;"></div>
+			<h3>transition: all ease-in-out 0.5s 0.5s;
+			<div class="square" style="transition: all ease-in-out 0.5s 0.5s;"></div>
+		</div>
+	</div>
+</body>
+</html>
