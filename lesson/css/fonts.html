@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Подключение шрифтов CSS @ Курс Frontend-разработки</title>
+	<script src="../../js/jquery.js"></script>
+	<link href="../../fonts/OpenSans/style.css" rel="stylesheet" />
+	<link href="../../fonts/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+	<style type="text/css">
+		body {
+			font-size: 20px;
+			font-family: Verdana;
+		}
+		h2 {
+			    margin-top: 50px;
+    border-bottom: 1px solid;
+		}
+		.s-t {
+			border: 1px solid #000;
+		}
+		.s-t .odd {
+			background: #EEE;
+		}
+		.s-t td, .s-t th {
+			border: 1px solid #000;
+			padding: 3px;
+			text-align: center;
+		}
+		.scNo {
+			color: #800;
+		}
+		.scYes {
+			color: #080;
+		}
+		p {
+		}
+		pre {
+			background: #EEE;
+		}
+		.fa {
+			font-size: 50px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Подключение шрифтов CSS</h1>
+	<h2>Использование встроенных шрифтов</h2>
+	<pre>p {
+    font-family: Verdana, 'Times New Roman', sans-serif;
+}</pre>
+	<p style="font-family: Verdana, 'Times New Roman', monospace;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati facilis quasi ex delectus, consectetur ut quis nisi minus fuga veritatis incidunt maiores optio ipsam accusamus eaque autem eveniet reiciendis. Numquam!</p>
+	<h2>Таблица поддержки шрифтов браузерами</h2>
+	<table class="s-t">
+		<thead>
+			<tr>
+				<td id="v6_1">
+				</td>
+				<th id="v20_6" class="item">
+					<a href="https://socialcompare.com/en/review/eot" target="_top">EOT</a></th>
+				<th id="v21_6" class="item">
+					<a href="https://socialcompare.com/en/review/svg" target="_top">SVG</a></th>
+				<th id="v22_6" class="item">
+					<a href="https://socialcompare.com/en/review/svgz" target="_top">SVGZ</a></th>
+				<th id="v23_6" class="item">
+					<a href="https://socialcompare.com/en/review/truetype" target="_top">TrueType</a>
+				</th>
+				<th id="v24_6" class="item">
+					<a href="https://socialcompare.com/en/review/woff" target="_top">WOFF</a></th>
+				<th id="v25_6" class="item">	
+					<a href="https://socialcompare.com/en/review/woff2" target="_top">WOFF2</a>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="odd">
+				<th id="v7_1">
+					Google Chrome</th>
+				<td id="v20_7">
+					<b class="scNo">No</b></td>
+				<td id="v21_7">
+					<b class="scNo">No</b> deprecated</td>
+				<td id="v22_7">
+					<b class="scNo">No</b> deprecated</td>
+				<td id="v23_7">
+					<b class="scYes">Yes</b> Chrome 4+</td>
+				<td id="v24_7">
+					<b class="scYes">Yes</b> Chrome 6+</td>
+				<td id="v25_7">
+					<b class="scYes">Yes</b> 43+</td>
+			</tr>
+			<tr>
+				<th id="v8_1">
+					Microsoft Edge</th><td id="v20_8">
+					<b class="scYes">Yes</b></td><td id="v21_8">
+					<b class="scNo">No</b></td><td id="v22_8">
+					<b class="scNo">No</b></td><td id="v23_8">
+					<b class="scMaybe">-</b> 12+ partial</td><td id="v24_8">
+					<b class="scYes">Yes</b> 12+</td><td id="v25_8">
+					<b class="scNo">No</b></td></tr><tr class="odd"><th id="v9_1">
+					Internet Explorer</th><td id="v20_9">
+					<b class="scYes">Yes</b> IE4+</td><td id="v21_9">
+					<b class="scNo">No</b></td><td id="v22_9">
+					<b class="scNo">No</b></td><td id="v23_9">
+					<b class="scMaybe">-</b> 9+ partial</td><td id="v24_9">
+					<b class="scYes">Yes</b> IE9+</td><td id="v25_9">
+					<b class="scNo">No</b></td></tr><tr><th id="v10_1">
+					Firefox</th><td id="v20_10">
+					<b class="scNo">No</b></td><td id="v21_10">
+					<b class="scNo">No</b></td><td id="v22_10">
+					<b class="scNo">No</b></td><td id="v23_10">
+					<b class="scYes">Yes</b> FF3.5+</td><td id="v24_10">
+					<b class="scYes">Yes</b> FF3.6+</td><td id="v25_10">
+					<b class="scYes">Yes</b> 39+</td></tr><tr class="odd"><th id="v11_1">
+					Safari</th><td id="v20_11">
+					<b class="scNo">No</b></td><td id="v21_11">
+					<b class="scYes">Yes</b></td><td id="v22_11">
+					<b class="scYes">Yes</b></td><td id="v23_11">
+					<b class="scYes">Yes</b> Safari 3.1+</td><td id="v24_11">
+					<b class="scYes">Yes</b> Safari 5.1+</td><td id="v25_11">
+					<b class="scNo">No</b></td></tr><tr><th id="v12_1">
+					Opera</th><td id="v20_12">
+					<b class="scNo">No</b></td><td id="v21_12">
+					<b class="scNo">No</b> deprecated</td><td id="v22_12">
+					<b class="scNo">No</b> deprecated</td><td id="v23_12">
+					<b class="scYes">Yes</b> 10.1+</td><td id="v24_12">
+					<b class="scYes">Yes</b> Opera 11.10+</td><td id="v25_12">
+					<b class="scYes">Yes</b> 31+</td></tr>
+					<tr class="odd"><th id="v14_1">
+iPhone</th><td id="v20_14">
+					<b class="scNo">No</b></td><td id="v21_14">
+					<b class="scYes">Yes</b></td><td id="v22_14">
+					<b class="scNo">No</b></td><td id="v23_14">
+					<b class="scYes">Yes</b> 4.3+</td><td id="v24_14">
+					<b class="scYes">Yes</b></td><td id="v25_14">
+					<b class="scNo">No</b></td></tr><tr><th id="v15_1">
+iPad</th><td id="v20_15">
+					<b class="scNo">No</b></td><td id="v21_15">
+					<b class="scYes">Yes</b></td><td id="v22_15">
+					<b class="scYes">Yes</b></td><td id="v23_15">
+					<b class="scYes">Yes</b></td><td id="v24_15">
+					<b class="scYes">Yes</b></td><td id="v25_15">
+					<b class="scNo">No</b></td></tr>
+			<tr class="odd">
+				<th id="v16_1">Android</th>
+				<td id="v20_16">
+					<b class="scNo">No</b></td>
+				<td id="v21_16">
+					<b class="scNo">No</b></td>
+				<td id="v22_16">
+					<b class="scNo">No</b></td>
+				<td id="v23_16">
+					<b class="scYes">Yes</b> Android 2.2+</td><td id="v24_16">
+					<b class="scYes">Yes</b> Android 4.4.4+</td><td id="v25_16">
+					<b class="scYes">Yes</b> 44+</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="https://socialcompare.com/en/comparison/browser-fonts-support-comparison" target="_blank">Источник</a>
+	<h2>Bulletproof синтаксис подключения шрифтов</h2>
+	<pre>@font-face {
+  font-family: Open Sans;
+  src: url('opensans.eot');
+  src: local('Open Sans'), local('OpenSans'),
+       url('opensans.eot?#iefix') format('embedded-opentype'),
+       url('opensans.woff2') format('woff2'),
+       url('opensans.woff') format('woff'),
+       url('opensans.ttf')  format('truetype'),
+       url('opensans.svg#svgFontName') format('svg');
+}
+</pre>
+	<p style="font-family: 'Open Sans', sans-serif;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati facilis quasi ex delectus, consectetur ut quis nisi minus fuga veritatis incidunt maiores optio ipsam accusamus eaque autem eveniet reiciendis. Numquam!</p>
+	
+	<h2>Подключение шрифтов через CDN на примере Google Fonts</h2>
+	<pre>&lt;link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" /></pre>
+	<a href="https://fonts.google.com/" target="_blank">Google Fonts</a>
+
+	<h2>Иконочные шрифты на примере Font Awesome</h2>
+	<pre>&lt;link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /></pre>
+	<p>
+		<i class="fa fa-graduation-cap" aria-hidden="true"></i>
+		<i class="fa fa-arrow-right" aria-hidden="true"></i>
+		<i class="fa fa-code" aria-hidden="true"></i>
+		<pre>
+&lt;i class="fa fa-graduation-cap" aria-hidden="true"></i>
+&lt;i class="fa fa-arrow-right" aria-hidden="true"></i>
+&lt;i class="fa fa-code" aria-hidden="true"></i>
+		</pre>
+		<a href="http://fontawesome.io/" target="_blank">Font Awesome</a>
+	</p>
+
+</body>
+</html>
