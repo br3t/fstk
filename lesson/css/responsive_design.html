@@ -6,25 +6,82 @@
 	<script src="../../js/jquery.js"></script>
 	<link href="../../fonts/OpenSans/style.css" rel="stylesheet" />
 	<link href="../../fonts/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
 	<style type="text/css">
-		body {
-			font-size: 20px;
-			font-family: Verdana;
+		.layout {
+			width: 600px;
 		}
-		h2 {
-			margin-top: 50px;
-    		border-bottom: 1px solid;
+		.layout:hover {
+			background: linear-gradient(90deg, rgba(0, 255, 208, 0.2) 50%, rgba(61, 61, 255, 0.2) 50%);
+			background-size: 50%;
+		} 
+		.layout > * {
+			box-sizing: border-box;
+			border: 2px solid #000;
+			margin-bottom: 10px;
+			text-align: center;
 		}
-
+		.layout header {
+			width: 600px;
+			padding: 20px;
+		}
+		.layout .banner-1,
+		.layout .banner-2 {
+			width: 300px;
+			float: left;
+		}
+		.layout main {
+			width: 450px;
+			float: left;
+		}
+		.layout aside {
+			width: 150px;
+			float: left;
+		}
+		.layout footer {
+			width: 600px;
+		}
+		.clear {
+			clear: both;
+			border: none;
+		}
 	</style>
 </head>
 <body>
 	<h1>Адаптивный дизайн CSS</h1>
 	<h2>Установка Viewport</h2>
-	<pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"></pre>
+	<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"></code>
 	<h2>Колонки</h2>
-	<div class="layot">
+	<div class="layout">
+		<header>Header</header>
+		<div class="banner-1">Banner-1</div>
+		<div class="banner-2">Banner-2</div>
+		<div class="clear"></div>
+		<main>Main<p>Some content</p><p>here</p></main>
+		<aside>Sidebar<p>links</p><p>links</p></aside>
+		<div class="clear"></div>
+		<footer>Footer</footer>
 	</div>
-
+	<h2>Media Queries</h2>
+	<code>@media not|only ТИП_МЕДИА and (ЗНАЧЕНИЕ ДЛЯ МЕДИА) {<br />
+&nbsp; &nbsp;КОД CSS;<br />
+}</code>
+	<code><link rel="stylesheet" media="ТИП_МЕДИА and|not|only (ЗНАЧЕНИЕ ДЛЯ МЕДИА)" href="style.css"></code>
+	<h3>Типы медиа</h3>
+	<ul>
+		<li>all</li>
+		<li>print</li>
+		<li>screen</li>
+		<li>speach</li>
+	</ul>
+	<h3>Значения для медиа</h3>
+	<ul>
+		<li>aspect-ratio</li>
+		<li>hover</li>
+		<li>height, width</li>
+		<li>scripting</li>
+		<li>min-width, min-height</li>
+		<li>max-width, max-height</li>
+	</ul>
 </body>
 </html>

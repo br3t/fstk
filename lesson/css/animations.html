@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Анимации CSS @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style type="text/css">
+		.row {
+			overflow: hidden;
+			/*border-top: 1px solid #000;*/
+			width: 600px;
+		}
+		.square {
+			width: 100px;
+			height: 100px;
+			background: #F00;
+			margin: 30px 0 0;
+		}
+		.a-1 {
+			animation: myanimation 3s infinite;
+		}
+		@keyframes myanimation {
+			100% {
+				background: #00F;
+				margin-left: 300px;
+			}
+		}
+		.a-2 {
+			animation: myanimation2 4s infinite alternate;
+		}
+		@keyframes myanimation2 {
+			33% {
+				background: #FF0;
+				margin: 30px 0 0 150px;
+			}
+			66% {
+				background: #0F0;
+				margin: 130px 300px;
+			}
+			100% {
+				background: #F00;
+				margin: 30px 0px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<h1>Анимации CSS</h1>
+	<h2>Код создания анимации</h2>
+	<code><strong>animation:</strong>animation-name animation-duration [animation-timing-function:ease] [animation-delay:0] [animation-iteration-count:1] [animation-direction:normal] [animation-fill-mode:none] [animation-play-state:running]</code>
+	<pre>div {
+	background: #F00;
+	margin: 30px 0 0;
+	animation: myanimation 3s infinite;
+}
+@keyframes myanimation {
+	100% {
+		background: #00F;
+		margin-left: 300px;
+	}
+}</pre>
+	<div class="row">
+		<div class="square a-1"></div>
+	</div>
+	<h2>Сложная анимация</h2>
+	<pre>div {
+	background: #F00;
+	margin: 30px 0 0;
+	animation: myanimation2 4s infinite alternate;
+}
+@keyframes myanimation2 {
+	33% {
+		background: #FF0;
+		margin: 30px 0 0 150px;
+	}
+	66% {
+		background: #0F0;
+		margin: 130px 300px;
+	}
+	100% {
+		background: #F00;
+		margin: 30px 0px;
+	}
+}</pre>
+	<div class="row" style="height: 300px;">
+		<div class="square a-2"></div>
+	</div>
+</body>
+</html>
