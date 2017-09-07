@@ -45,6 +45,50 @@
 			clear: both;
 			border: none;
 		}
+		.media-examples > div {
+			background: #F88;
+			display: none;
+			padding: 20px;
+    		margin-bottom: 20px;
+		}
+		.media-examples > div:nth-child(even) {
+			background: #8F8;
+		}
+		@media (orientation: landscape) {
+			.media-examples .ol {
+				display: block;
+			}
+		}
+		@media (orientation: portrait) {
+			.media-examples .op {
+				display: block;
+			}
+		}
+		@media (width: 400px) {
+			.media-examples .w4 {
+				display: block;
+			}
+		}
+		@media (max-width: 400px) {
+			.media-examples .maxw4 {
+				display: block;
+			}
+		}
+		@media (min-width: 400px) {
+			.media-examples .minw4 {
+				display: block;
+			}
+		}
+		@media (max-width: 500px) {
+			.media-examples .maxw5 {
+				display: block;
+			}
+		}
+		@media (hover) {
+			.media-examples .hover {
+				display: block;
+			}
+		}
 	</style>
 </head>
 <body>
@@ -76,12 +120,22 @@
 	</ul>
 	<h3>Значения для медиа</h3>
 	<ul>
+		<li>orientation</li>
 		<li>aspect-ratio</li>
-		<li>hover</li>
+		<li>hover,touch-enabled</li>
 		<li>height, width</li>
-		<li>scripting</li>
 		<li>min-width, min-height</li>
 		<li>max-width, max-height</li>
 	</ul>
+	<h2>Примеры media</h2>
+	<div class="media-examples">
+		<div class="ol">Orientation: landscape</div>
+		<div class="op">Orientation: portrait</div>
+		<div class="w4">Width: 400px</div>
+		<div class="maxw4">Max-width: 400px</div>
+		<div class="maxw5">Max-width: 500px</div>
+		<div class="minw4">Min-width: 400px</div>
+		<div class="hover">Hover</div>
+	</div>
 </body>
 </html>
