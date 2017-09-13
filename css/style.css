@@ -2,7 +2,31 @@ body {
 	font-size: 20px;
 	font-family: Verdana, sans-serif;
 }
+h2, h3 {
+	border-bottom: 1px solid;
+}
 h2 {
 	margin-top: 50px;
-	border-bottom: 1px solid;
+}
+.console,
+.listing {
+	background: #200;
+	display: block;
+	color: #85ff00;
+	padding: 20px;
+}
+.listing {
+	color: #fff;
+}
+.listing .comment {
+	color: #888;
+}
+.string {
+	color: #edff00;
+}
+.var {
+	color: #cf2862;
+}
+.selector {
+	color: #00ffe7;
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Использование сборщика проектов gulp@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+
+</head>
+<body>
+	<h1>Использование сборщика проектов gulp</h1>
+	<h2>Установка Node.js</h2>
+	<p>Скачиваем с <a href="https://nodejs.org/en/download/" target="_blank">официального сайта</a> последнюю версию Node.js и устанавливаем его.</p>
+	<h2>Установка gulp</h2>
+	<p>Gulp устанавливаем с помощью встроенного в node.js менеджера пакетов <b>npm:</b></p>
+	<code class="console">$ npm install gulp-cli -g<br />
+$ npm install gulp -D<br />
+$ touch gulpfile.js</code>
+	<h2>Настройка gulpfile.js</h2>
+	<code class="listing">var gulp = require(<span class="string">'gulp'</span>);<br />
+var minifyCSS = require(<span class="string">'gulp-csso'</span>); <span class="comment">// минификация css</span><br />
+var autoprefixer = require(<span class="string">'gulp-autoprefixer'</span>); <span class="comment">// добавление vendor-префиксов</span><br />
+var concat = require( <span class="string">'gulp-concat'</span> ); <span class="comment">// объединение файлов в один</span><br />
+var uglify = require(<span class="string">'gulp-uglify'</span>); <span class="comment">// минификация js</span><br />
+<br />
+gulp.task(<span class="string">'css'</span>, function(){<br />
+&nbsp; &nbsp; return gulp.src(<span class="string">'src/css/*.css'</span>)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(concat(<span class="string">'style.min.css'</span>))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(autoprefixer({<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; browsers: [<span class="string">'last 50 versions'</span>]<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(minifyCSS())<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(gulp.dest(<span class="string">'css/'</span>))<br />
+});<br />
+<br />
+gulp.task(<span class="string">'minify-js'</span>, function() {<br />
+&nbsp; &nbsp; gulp.src([<span class="string">'src/js/*.js'</span>])<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(concat(<span class="string">'script.min.js'</span>))<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(uglify())<br />
+&nbsp; &nbsp; &nbsp; &nbsp; .pipe(gulp.dest(<span class="string">'js/'</span>))<br />
+});<br />
+<br />
+gulp.task(<span class="string">'default'</span>, [ <span class="string">'js'</span>, <span class="string">'css'</span> ]);<br /></code>
+	<h2>Использование package.json</h2>
+	<p>Инициализируем создание файла <u>package.json</u> с помощью команды:</p>
+	<code class="console">$ npm init</code>
+	<p>В интерактивном режиме заполняем все необходимые поля нашего проекта или пропускаем их. После того, как файл <u>package.json</u> создастся, запишем в блок <b>dependencies</b> все необходимые зависимости. В итоге для нашего проекта получим такой файл:</p>
+	<code class="listing">{<br />
+&nbsp; &nbsp;"name": "test",<br />
+&nbsp; &nbsp;"version": "1.0.0",<br />
+&nbsp; &nbsp;"description": "",<br />
+&nbsp; &nbsp;"main": "gulpfile.js",<br />
+&nbsp; &nbsp;"dependencies": {<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"gulp": "^3.9.1",<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"gulp-autoprefixer": "^4.0.0",<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"gulp-concat": "^2.6.1",<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"gulp-csso": "^3.0.0",<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"gulp-uglify": "^3.0.0"<br />
+&nbsp; &nbsp;},<br />
+&nbsp; &nbsp;"devDependencies": {},<br />
+&nbsp; &nbsp;"scripts": {<br />
+&nbsp; &nbsp;&nbsp; &nbsp;"test": "echo \"Error: no test specified\" && exit 1"<br />
+&nbsp; &nbsp;},<br />
+&nbsp; &nbsp;"author": "Me",<br />
+&nbsp; &nbsp;"license": "ISC"<br />
+}<br />
+</code>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Использование препроцессора Sass@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Использование препроцессора Sass</h1>
+	<h2>Установка Sass</h2>
+	<p>Скачиваем <a href="http://sass-lang.com/install" target="_blank">подходящую версию Sass</a> и устанавливаем её.</p>
+	<p>При установке консольной версии препроцессинг будет происходить при запуске команды:</p>
+	<code class="console">$ sass style.scss style.css</code>
+	<h2>Основные принципы Sass</h2>
+	<h3>Использование переменных</h3>
+	<p>При написании проекта может возникнуть необходимость переиспользования значений каких-либо правил. Для этого используются переменные. Имя переменной задается с помощью знака $.</p>
+	<code class="listing"><span class="var">$main-color:</span> #000;<br />
+<span class="var">$contrast-color</span>: #eee;<br /><br />
+<span class="selector">body</span> {<br />
+&nbsp; background: <span class="var">$contrast-color;</span><br />
+&nbsp; color: <span class="var">$main-color;</span><br />
+}<br />
+<span class="selector">.invert</span> {<br />
+&nbsp; background: <span class="var">$main-color;</span><br />
+&nbsp; color: <span class="var">$contrast-color;</span><br />
+}<br /></code>
+	<p>В результате получим код:</p>
+	<code class="listing"><span class="selector">body</span> {<br />
+&nbsp; background: #eee;<br />
+&nbsp; color: #000;<br />
+}<br />
+<br />
+<span class="selector">.invert</span> {<br />
+&nbsp; background: #000;<br />
+&nbsp; color: #eee;<br />
+}<br />
+</code>
+	<h3>Вложенные селекторы</h3>
+	<p>Если необходимо использовать сложную систему селекторов, описывающую состояние вложенности элементов друг в друга, то можно использовать вложенность Sass.</p>
+	<code class="listing"><span class="selector">body</span> {<br />
+&nbsp; background: #f00;<br />
+&nbsp; <span class="selector">#wrapper</span> {<br />
+&nbsp; &nbsp; width: 800px;<br />
+&nbsp; &nbsp; <span class="selector">p</span> {<br />
+&nbsp; &nbsp; &nbsp; color: #000;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; }<br />
+}</code>
+	<p>В результате получим CSS:</p>
+	<code class="listing"><span class="selector">body</span> {<br />
+&nbsp; background: #f00;<br />
+}<br />
+<span class="selector">body #wrapper</span> {<br />
+&nbsp; width: 800px;<br />
+}<br />
+<span class="selector">body #wrapper p</span> {<br />
+&nbsp; color: #000;<br />
+}<br /></code>
+	<p>Не следует злоупотреблять вложенностью, т.к. это ухудшает читаемость исходного файла.</p>
+	<h3>Импорт файлов</h3>
+	<p>При необходимсоти вы можете импортировать один файл в другой практически так же, как это делается в CSS <b>@import</b></p>
+	<code class="listing"><span class="comment">// theme.scss</span><br />
+<span class="selector">body</span> { color: #000; background: #fff; }<br /><br /><br />
+<span class="comment">// style.scss</span><br />
+@import <span class="string">'theme'</span>;<br />
+<span class="selector">body</span> { font-family: sans-serif; }<br />
+	</code>
+	<p>Результирующий код будет:</p>
+	<code class="listing"><span class="selector">body</span> { color: #000; background: #fff; }<br />
+<span class="selector">body</span> { font-family: sans-serif; }</code>
+	<h3>Использование примесей</h3>
+	<p>Чтобы избежать необходимости писать повторяющиеся участки кода можно воспрользоваться примесями (миксинами). Директива <b>@mixin</b> добавляет саму примесь, а директива <b>@include</b> позволяет использовать код этой примеси.</p>
+	<code class="listing">@mixin border-radius(<span class="var">$radius</span>) {<br />
+&nbsp; -webkit-border-radius: <span class="var">$radius</span>;<br />
+&nbsp; &nbsp; &nbsp;-moz-border-radius: <span class="var">$radius</span>;<br />
+&nbsp; &nbsp; &nbsp; -ms-border-radius: <span class="var">$radius</span>;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border-radius: <span class="var">$radius</span>;<br />
+}<br />
+<br />
+<span class="selector">.box</span> { @include border-radius(10px); }<br /></code>
+	<p>В результате препроцессинга получим:</p>
+	<code class="listing"><span class="selector">.box</span> {<br />
+&nbsp; -webkit-border-radius: 10px;<br />
+&nbsp; -moz-border-radius: 10px;<br />
+&nbsp; -ms-border-radius: 10px;<br />
+&nbsp; border-radius: 10px;<br />
+}<br /></code>
+	<h3>Наследование свойств</h3>
+	<p>С помощью директивы <b>@extend</b> можно CSS-правила одного объекта использовать для другого:</p>
+	<code class="listing"><span class="selector">.user</span> {<br />
+&nbsp; width: 50px;<br />
+&nbsp; height: 50px;<br />
+}<br />
+<span class="selector">.offline</span> {<br />
+&nbsp; @extend <span class="selector">.user</span>;<br />
+&nbsp; background: #DDD;<br />
+}<br />
+<span class="selector">.online</span> {<br />
+&nbsp; @extend <span class="selector">.user</span>;<br />
+&nbsp; background: #DFD;<br />
+}<br /></code>
+	<p>Итоговый CSS будет:</p>
+	<code class="listing"><span class="selector">.user, .offline, .online</span> {<br />
+&nbsp; width: 50px;<br />
+&nbsp; height: 50px;<br />
+}<br />
+<span class="selector">.offline</span> {<br />
+&nbsp; background: #DDD;<br />
+}<br />
+<span class="selector">.online</span> {<br />
+&nbsp; background: #DFD;<br />
+}<br /></code>
+	<h3>Математические операции</h3>
+	<p>Sass позволяет производить простые математические операции со свойствами типа "размер", оперируя различными единицами измерения:</p>
+	<code class="listing"><span class="var">$colunms</span>: 12;<br /><br />
+<span class="selector">.col-1</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 1 / <span class="var">$colunms</span> * 100%;<br />
+}<br />
+<span class="selector">.col-2</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 2 / <span class="var">$colunms</span> * 100%;<br />
+}<br />
+<span class="selector">.col-3</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 3 / <span class="var">$colunms</span> * 100%;<br />
+}</code>
+	<p>Код после препроцессинга:</p>
+	<code class="listing"><span class="selector">.col-1</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 8.33333333%;<br />
+}<br />
+<span class="selector">.col-2</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 16.66666667%;<br />
+}<br />
+<span class="selector">.col-3</span> {<br />
+&nbsp; float: left;<br />
+&nbsp; width: 25%;<br />
+}<br />
+</code>
+</body>
+</html>
