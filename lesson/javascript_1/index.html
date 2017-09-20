@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы javascript (1)@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style type="text/css">
+	.table td {
+		padding: 10px;
+	}
+	.table-2 {
+		    border-collapse: collapse;
+	}
+	.table-2 td {
+		border: 1px solid #999;
+		padding: 10px;
+	}
+	.table-2 td.red {
+		border: 1px solid #999;
+		padding: 10px;
+	}
+	</style>
+</head>
+<body>
+	<h1>Основы javascript (1)</h1>
+	<h2>Способы подключения скриптов</h2>
+	<ul>
+		<li>Внутрь HTML-тэгов (обработчики событий)</li>
+		<li>С помощью тега <b>&lt;script>...&lt;/script></b> - "встроенные скрипты"</li>
+		<li>С помощью тега <b>&lt;script src="...">&lt;/script></b> - внешние скрипты</li>
+	</ul>
+	<h2>Правила именования переменных</h2>
+		<ol>
+			<li>Может содержать буквы и цифры</li>
+			<li>Начинается с буквы</li>
+			<li>Нельзя использовать спецсимволы кроме <b>$</b> и <b>_</b> (в т.ч. с последних двух может начинаться)</li>
+		</ol>
+	<h2>Выбор имени переменной</h2>
+	<ol>
+		<li>Не использовать транслитерацию</li>
+		<li>Ограниченное использование коротких имен</li>
+		<li>Называем переменные максимально приближенно к их содержимому</li>
+		<li>Используем camelCase или snake_case</li>
+	</ol>
+	<h2>Зарезервированные ключевые слова</h2>
+	<table class="table"><tbody><tr><td>break</td><td>default</td><td>function</td><td>return</td><td>var</td></tr><tr><td>case</td><td>delete</td><td>if</td><td>switch</td><td>void</td></tr><tr><td>catch</td><td>do</td><td>in</td><td>this</td><td>while</td></tr><tr><td>const</td><td>else</td><td>instanceof</td><td>throw</td><td><span>with</span></td></tr><tr><td>continue</td><td>finally</td><td>let</td><td>try</td><td></td></tr><tr><td>debugger</td><td>for</td><td>new</td><td>typeof</td><td></td></tr>
+	<tr><td>class</td><td>enum</td><td>export</td><td>extends</td><td>import</td></tr><tr><td>super</td><td>Implements</td><td>interface</td><td>package</td><td>private</td></tr><tr><td>protected</td><td>public</td><td>static</td><td>yield</td></tr></tbody></table>
+	<h2>Типы переменных</h2>
+	<ul>
+		<li>number</li>
+		<li>string</li>
+		<li>boolean</li>
+		<li>null</li>
+		<li>undefined</li>
+		<li>object</li>
+	</ul>
+	<h2>Преобразование типов</h2>
+	<h3>Явное приведение</h3>
+	<table class="table-2"><tbody><tr><td rowspan="8" class="top red">Логическое</td><td><code class="listing">!!'0' === true</code></td></tr><tr><td><code class="listing">!!0 === false</code></td></tr><tr><td><code class="listing">!!'5' === true</code></td></tr><tr><td><code class="listing">!!'' === false</code></td></tr><tr><td><code class="listing">!!undefined === false</code></td></tr><tr><td><code class="listing">!!null === false</code></td></tr><tr><td><code class="listing">!!NaN === false</code></td></tr><tr><td><code class="listing">Boolean([]) === true</code></td></tr><tr><td rowspan="12" class="top red">В число</td><td><code class="listing">+'132' === 132</code></td></tr><tr><td><code class="listing">'132' * 1 === 132</code></td></tr><tr><td><code class="listing">'132' - 0 === 132</code></td></tr><tr><td><code class="listing">Number('132') === 132</code></td></tr><tr><td><code class="listing">Number('132.132') === 132.132</code></td></tr><tr><td><code class="listing">Number('132abc') === NaN</code></td></tr><tr><td><code class="listing">Number('132.132abc') === NaN</code></td></tr><tr><td><code class="listing">parseInt('132abc') === 132</code></td></tr><tr><td><code class="listing">parseInt('132.132abc') === 132.132</code></td></tr><tr><td><code class="listing">parseFloat('132abc') === 132</code></td></tr><tr><td><code class="listing">parseFloat('132.132') === 132.132</code></td></tr><tr><td><code class="listing">parseFloat('132.132abc') === 132.132</code></td></tr><tr><td rowspan="3" class="top red">В строку</td><td><code class="listing">True + '' === 'True'</code></td></tr><tr><td><code class="listing">String(132) === '132'</code></td></tr><tr><td><code class="listing">String(null) === 'null'</code></td></tr></tbody></table>
+	<h3>Неявное приведение</h3>
+	<table class="table-2"><tbody><tr><td rowspan="7" class="top red">Логическое</td><td><code class="listing">if (undefined) === false</code></td></tr><tr><td><code class="listing">if (null) === false</code></td></tr><tr><td><code class="listing">if (132) === true</code></td></tr><tr><td><code class="listing">if (0) === false</code></td></tr><tr><td><code class="listing">if (NaN) === false</code></td></tr><tr><td><code class="listing">if ('false') === true</code></td></tr><tr><td><code class="listing">if ('') === false</code></td></tr><tr><td rowspan="2" class="top red">В число</td><td><code class="listing">alert( +true ) === 1</code></td></tr><tr><td><code class="listing">alert( +false ) === 0</code></td></tr><tr><td rowspan="1" class="top red">В строку</td><td><code class="listing">alert( true ) === 'true'</code></td></tr></tbody></table>
+</body>
+</html>
