@@ -47,46 +47,52 @@
 		}
 		.media-examples > div {
 			background: #F88;
-			display: none;
+			display: block;
+			opacity: 0.1;
 			padding: 20px;
     		margin-bottom: 20px;
 		}
 		.media-examples > div:nth-child(even) {
 			background: #8F8;
 		}
+		@media (min-aspect-ratio: 1/2) {
+			.media-examples .mar-85 {
+				opacity: 1;
+			}
+		}
 		@media (orientation: landscape) {
 			.media-examples .ol {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (orientation: portrait) {
 			.media-examples .op {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (width: 400px) {
 			.media-examples .w4 {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (max-width: 400px) {
 			.media-examples .maxw4 {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (min-width: 400px) {
 			.media-examples .minw4 {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (max-width: 500px) {
 			.media-examples .maxw5 {
-				display: block;
+				opacity: 1;
 			}
 		}
 		@media (hover) {
 			.media-examples .hover {
-				display: block;
+				opacity: 1;
 			}
 		}
 	</style>
@@ -131,6 +137,7 @@
 	<div class="media-examples">
 		<div class="ol">Orientation: landscape</div>
 		<div class="op">Orientation: portrait</div>
+		<div class="mar-85">Min-aspect-ratio: 1/2</div>
 		<div class="w4">Width: 400px</div>
 		<div class="maxw4">Max-width: 400px</div>
 		<div class="maxw5">Max-width: 500px</div>
