@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 	<meta charset="utf-8" />
-	<title>Основы javascript (1)@ Курс Frontend-разработки</title>
+	<title>Основы JavaScript 1. Переменные и их типы. Приведение типов@ Курс Frontend-разработки</title>
 	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
 	<style type="text/css">
 	.table td {
@@ -22,7 +22,7 @@
 	</style>
 </head>
 <body>
-	<h1>Основы javascript (1)</h1>
+	<h1>Основы JavaScript 1. Переменные и их типы. Приведение типов</h1>
 	<h2>Способы подключения скриптов</h2>
 	<ul>
 		<li>Внутрь HTML-тэгов (обработчики событий)</li>
@@ -38,6 +38,7 @@
 	<h2>Выбор имени переменной</h2>
 	<ol>
 		<li>Не использовать транслитерацию</li>
+		<li>Не использовать кириллицу</li>
 		<li>Ограниченное использование коротких имен</li>
 		<li>Называем переменные максимально приближенно к их содержимому</li>
 		<li>Используем camelCase или snake_case</li>
@@ -56,8 +57,59 @@
 	</ul>
 	<h2>Преобразование типов</h2>
 	<h3>Явное приведение</h3>
-	<table class="table-2"><tbody><tr><td rowspan="8" class="top red">Логическое</td><td><code class="listing">!!'0' === true</code></td></tr><tr><td><code class="listing">!!0 === false</code></td></tr><tr><td><code class="listing">!!'5' === true</code></td></tr><tr><td><code class="listing">!!'' === false</code></td></tr><tr><td><code class="listing">!!undefined === false</code></td></tr><tr><td><code class="listing">!!null === false</code></td></tr><tr><td><code class="listing">!!NaN === false</code></td></tr><tr><td><code class="listing">Boolean([]) === true</code></td></tr><tr><td rowspan="12" class="top red">В число</td><td><code class="listing">+'132' === 132</code></td></tr><tr><td><code class="listing">'132' * 1 === 132</code></td></tr><tr><td><code class="listing">'132' - 0 === 132</code></td></tr><tr><td><code class="listing">Number('132') === 132</code></td></tr><tr><td><code class="listing">Number('132.132') === 132.132</code></td></tr><tr><td><code class="listing">Number('132abc') === NaN</code></td></tr><tr><td><code class="listing">Number('132.132abc') === NaN</code></td></tr><tr><td><code class="listing">parseInt('132abc') === 132</code></td></tr><tr><td><code class="listing">parseInt('132.132abc') === 132.132</code></td></tr><tr><td><code class="listing">parseFloat('132abc') === 132</code></td></tr><tr><td><code class="listing">parseFloat('132.132') === 132.132</code></td></tr><tr><td><code class="listing">parseFloat('132.132abc') === 132.132</code></td></tr><tr><td rowspan="3" class="top red">В строку</td><td><code class="listing">True + '' === 'True'</code></td></tr><tr><td><code class="listing">String(132) === '132'</code></td></tr><tr><td><code class="listing">String(null) === 'null'</code></td></tr></tbody></table>
+	<table class="table-2"><tbody>
+		<tr>
+			<td class="top red">Логическое</td>
+			<td><code class="listing">!!'0' === true<br />!!0 === false<br />!!'5' === true<br />!!'' === false<br />!!undefined === false<br />!!null === false<br />!!NaN === false<br />Boolean([]) === true</code></td>
+		</tr>
+		<tr>
+			<td class="top red">В число</td>
+			<td><code class="listing">
+				+'132' === 132<br />
+				'132' * 1 === 132<br />
+				'132' - 0 === 132<br />
+				Number('132') === 132<br />
+				Number('132.132') === 132.132<br />
+				Number('132abc') === NaN<br />
+				Number('132.132abc') === NaN<br />
+				parseInt('132abc') === 132<br />
+				parseInt('132.132abc') === 132<br />
+				parseFloat('132abc') === 132<br />
+				parseFloat('132.132') === 132.132<br />
+				parseFloat('132.132abc') === 132.132</code>
+			</td>
+		</tr>
+		<tr>
+			<td rowspan="3" class="top red">В строку</td>
+			<td><code class="listing">
+				True + '' === 'True'<br />
+				String(132) === '132'<br />
+				String(null) === 'null'</code>
+			</td>
+		</tr>
+	</tbody></table>
 	<h3>Неявное приведение</h3>
-	<table class="table-2"><tbody><tr><td rowspan="7" class="top red">Логическое</td><td><code class="listing">if (undefined) === false</code></td></tr><tr><td><code class="listing">if (null) === false</code></td></tr><tr><td><code class="listing">if (132) === true</code></td></tr><tr><td><code class="listing">if (0) === false</code></td></tr><tr><td><code class="listing">if (NaN) === false</code></td></tr><tr><td><code class="listing">if ('false') === true</code></td></tr><tr><td><code class="listing">if ('') === false</code></td></tr><tr><td rowspan="2" class="top red">В число</td><td><code class="listing">alert( +true ) === 1</code></td></tr><tr><td><code class="listing">alert( +false ) === 0</code></td></tr><tr><td rowspan="1" class="top red">В строку</td><td><code class="listing">alert( true ) === 'true'</code></td></tr></tbody></table>
+	<table class="table-2"><tbody>
+		<tr>
+			<td class="top red">Логическое</td>
+			<td><code class="listing">
+				if (undefined) === false<br />
+				if (null) === false<br />
+				if (132) === true<br />
+				if (0) === false<br />
+				if (NaN) === false<br />
+				if ('false') === true<br />
+				if ('') === false</code>
+			</td>
+		</tr>
+		<tr>
+			<td class="top red">В число</td>
+			<td><code class="listing">
+				alert( +true ) === 1<br />
+				alert( +false ) === 0</code>
+			</td>
+		</tr>
+		<tr><td class="top red">В строку</td>
+			<td><code class="listing">alert( true ) === 'true'</code></td></tr></tbody></table>
 </body>
 </html>
