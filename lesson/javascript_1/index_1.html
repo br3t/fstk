@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 1.1. Операторы@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style type="text/css">
+		.fullwidth-table {
+			border-collapse: collapse;
+			background: #fff;
+			border-width: 1px solid rgba(212,221,228,.5);
+			margin-bottom: 20px;
+			width: 100%;
+		}
+		.fullwidth-table th {
+			background: rgba(212,221,228,.5);
+			border: 1px solid #d4dde4;
+			padding: 5px;
+		}
+		.fullwidth-table td {
+			border: 1px solid #ccc;
+			padding: 5px;
+			text-align: left;
+			vertical-align: top;
+		}
+		.fullwidth-table code {
+			background-color: #eee;
+			font-family: monospace;
+			padding: 2px 5px;
+			word-wrap: break-word;
+		}
+	</style>
+</head>
+<body>
+	<h1>Основы JavaScript 1.1. Операторы</h1>
+	<p>В зависимости от количества операндов различают унарные, бинарные и тернарный операторы.</p>
+	<h2>Операторы сравнения</h2>
+	<ul>
+		<li>(Не)равенство: <b>==, !=</b></li>
+		<li>Строгое (не)равенство: <b>===, !==</b></li>
+		<li>Больше/меньше: <b>&gt;, &gt;=, &lt;, &lt;=</b></li>
+	</ul>
+
+	<h2>Арифметические операторы</h2>
+	<ul>
+		<li>Основные операции: <b>+, -, *, /, %</b></li>
+		<li>Инкремент и декремент: <b>++, --</b></li>
+	</ul>
+	<h2>Строковые операторы</h2>
+	<ul>
+		<li>Конкатенации строк: <b>+</b></li>
+		<li>Конкатенация с присвоением: <b>+=</b></li>
+	</ul>
+	<h2>Побитовые операторы</h2>
+	<ul>
+		<li><b>&amp;, |, ^, ~, &lt;&lt;, &gt;&gt;, &gt;&gt;&gt;</b></li>
+	</ul>
+	<h2>Операторы присваивания</h2>
+	<ul>
+		<li><b>=, +=, -=, *=, /=, &gt;&gt;=, &lt;&lt;=, &gt;&gt;&gt;=, &amp;=, |=, ^=</b></li>
+	</ul>
+	<h2>Логические операторы</h2>
+	<ul>
+		<li>Логическое И: <b>&amp;&amp;</b></li>
+		<li>Логическое ИЛИ: <b>||</b></li>
+		<li>Логическое НЕ: <b>!</b></li>
+	</ul>
+	<h2>Условный оператор</h2>
+	<ul>
+		<li>условие <b>?</b> если_условие_верно <b>:</b> если условие_ложно</li>
+	</ul>
+	<h2>Таблица приоритета операторов</h2>
+	<table class="fullwidth-table">
+		 <tbody>
+		  <tr>
+		   <th>Приоритет</th>
+		   <th>Тип оператора</th>
+		   <th>Ассоциативность</th>
+		   <th>Конкретные операторы</th>
+		  </tr>
+		  <tr>
+		   <td>20</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Grouping" class="new" title="Документация об этом ещё не написана; пожалуйста, поспособствуйте её написанию!"><code>Группировка</code></a></td>
+		   <td>не определено</td>
+		   <td><code>( … )</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="3">19</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Property_Accessors#Dot_notation" title="Доступ к свойствам объекта представляют точечная и скобочная нотации."><code>Доступ к элементам</code></a></td>
+		   <td>слева направо</td>
+		   <td><code>… . …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Property_Accessors#Bracket_notation" title="Доступ к свойствам объекта представляют точечная и скобочная нотации."><code>Доступ к элементам с возможностью вычисления</code></a></td>
+		   <td>слева направо</td>
+		   <td><code>… [ … ]</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new" title="Оператор (операторная функция) new&nbsp;создает&nbsp;экземпляр объекта, встроенного или определенного пользователем, имеющего конструктор."><code>new</code></a> (со списком аргументов)</td>
+		   <td>неопределено</td>
+		   <td><code>new … ( … )</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="2">18</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Functions">Вызов функции</a></td>
+		   <td>слева направо</td>
+		   <td><code>… ( <var>… </var>)</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/new" title="Оператор (операторная функция) new&nbsp;создает&nbsp;экземпляр объекта, встроенного или определенного пользователем, имеющего конструктор."><code>new</code></a> (без списка аргументов)</td>
+		   <td>справа налево</td>
+		   <td><code>new …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="2">17</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Increment" title="Арифметические операции принимают в качестве операндов числовые значения (это может быть и литерал и переменная) и возвращают результат в виде одного числового значения. Стандартными арифметическими операциями являются сложение (+), вычитание (-), умножение (*) и деление (/)."><code>Постфиксный инкремент</code></a></td>
+		   <td>не определено</td>
+		   <td><code>… ++</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Decrement" title="Арифметические операции принимают в качестве операндов числовые значения (это может быть и литерал и переменная) и возвращают результат в виде одного числового значения. Стандартными арифметическими операциями являются сложение (+), вычитание (-), умножение (*) и деление (/)."><code>Постфиксный декремент</code></a></td>
+		   <td>не определено</td>
+		   <td><code>… --</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="9">16</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_NOT" class="new">Логическое отрицание</a></td>
+		   <td>справа налево</td>
+		   <td><code>! …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Bitwise_NOT">Побитовое отрицание</a></td>
+		   <td>справа налево</td>
+		   <td><code>~ …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Unary_plus">Унарный плюс</a></td>
+		   <td>справа налево</td>
+		   <td><code>+ …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Unary_negation">Унарный минус</a></td>
+		   <td>справа налево</td>
+		   <td><code>- …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Increment">Префиксный инкремент</a></td>
+		   <td>справа налево</td>
+		   <td><code>++ …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Decrement">Префиксный декремент</a></td>
+		   <td>справа налево</td>
+		   <td><code>-- …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/typeof">typeof</a></td>
+		   <td>справа налево</td>
+		   <td><code>typeof …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/void">void</a></td>
+		   <td>справа налево</td>
+		   <td><code>void …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/delete">delete</a></td>
+		   <td>справа налево</td>
+		   <td><code>delete …</code></td>
+		  </tr>
+		  <tr>
+		   <td>15</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Exponentiation">Возведение в степень</a></td>
+		   <td>справа налево</td>
+		   <td><code>… ** …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="3">14</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Multiplication">Умножение</a></td>
+		   <td>слева направо</td>
+		   <td><code>… * …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Division">Деление</a></td>
+		   <td>слева направо</td>
+		   <td><code>… / …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Remainder">Остаток</a></td>
+		   <td>слева направо</td>
+		   <td><code>… % …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="2">13</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Addition">Сложение</a></td>
+		   <td>слева направо</td>
+		   <td><code>… + …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Subtraction">Вычитание</a></td>
+		   <td>слева направо</td>
+		   <td><code>… - …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="3">12</td>
+		   <td><a target="_blank" href="https://developer.mozilla.orghttps://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#&lt;&lt;_(Left_shift)">Побитовый сдвиг влево</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &lt;&lt; …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">Побитовый сдвиг вправо</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &gt;&gt; …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators">Сдвиг вправо с заполнением нулей</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &gt;&gt;&gt; …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="6">11</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Less_than_operator" class="new">Меньше</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &lt; …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Less_than__or_equal_operator" class="new">Меньше или равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &lt;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Greater_than_operator" class="new">Больше</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &gt; …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Greater_than_or_equal_operator" class="new">Больше или равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &gt;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/in">in</a></td>
+		   <td>слева направо</td>
+		   <td><code>… in …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/instanceof">instanceof</a></td>
+		   <td>слева направо</td>
+		   <td><code>… instanceof …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="4">10</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality" class="new">Равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… == …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality" class="new">Не равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… != …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity" class="new">Строго равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… === …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Nonidentity" class="new">Строго не равно</a></td>
+		   <td>слева направо</td>
+		   <td><code>… !== …</code></td>
+		  </tr>
+		  <tr>
+		   <td>9</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Bitwise_AND">Побитовое «И»</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &amp; …</code></td>
+		  </tr>
+		  <tr>
+		   <td>8</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Bitwise_XOR">Побитовое иключающее «ИЛИ»</a></td>
+		   <td>слева направо</td>
+		   <td><code>… ^ …</code></td>
+		  </tr>
+		  <tr>
+		   <td>7</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Bitwise_OR">Побитовое «ИЛИ»</a></td>
+		   <td>слева направо</td>
+		   <td><code>… | …</code></td>
+		  </tr>
+		  <tr>
+		   <td>6</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_AND" class="new">Логическое «И»</a></td>
+		   <td>слева направо</td>
+		   <td><code>… &amp;&amp; …</code></td>
+		  </tr>
+		  <tr>
+		   <td>5</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_OR" class="new">Логическое «ИЛИ»</a></td>
+		   <td>слева направо</td>
+		   <td><code>… || …</code></td>
+		  </tr>
+		  <tr>
+		   <td>4</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Conditional_Operator" class="new">Условный</a></td>
+		   <td>справа налево</td>
+		   <td><code>… ? … : …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="12">3</td>
+		   <td rowspan="12"><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Assignment_Operators">Присваивание</a></td>
+		   <td rowspan="12">справа налево</td>
+		   <td><code>… = …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… += …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… -= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… *= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… /= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… %= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… &lt;&lt;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… &gt;&gt;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… &gt;&gt;&gt;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… &amp;= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… ^= …</code></td>
+		  </tr>
+		  <tr>
+		   <td><code>… |= …</code></td>
+		  </tr>
+		  <tr>
+		   <td rowspan="2">2</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/yield">yield</a></td>
+		   <td>справа налево</td>
+		   <td><code>yield …</code></td>
+		  </tr>
+		  <tr>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/yield*">yield*</a></td>
+		   <td>справа налево</td>
+		   <td><code>yield* …</code></td>
+		  </tr>
+		  <tr>
+		   <td>1</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Spread_operator">Оператор расширения</a></td>
+		   <td>неопределено</td>
+		   <td><code>...</code> …</td>
+		  </tr>
+		  <tr>
+		   <td>0</td>
+		   <td><a target="_blank" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Comma_Operator" class="new">Запятая / Последовательность</a></td>
+		   <td>слева направо</td>
+		   <td><code>… , …</code></td>
+		  </tr>
+		 </tbody>
+	</table>
+	<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/Operator_Precedence" target="_blank">Источник</a></p>
+
+	<h2>Взаимодействие с пользователем</h2>
+	<ul>
+		<li><a href="alert.jpg" target="_blank">alert</a> &mdash; простое уведомление <input type="button" value="click" onclick="alert('Clack!')" /></li>
+		<li>confirm &mdash; подтверждение <input type="button" value="click" onclick="confirm('Нажмите Нет, если вы не робот.');" /></li>
+		<li>prompt &mdash; пользовательский ввод <input type="button" value="click" onclick="prompt('Введите ваше имя:', 'Василий')" /></li>
+	</ul>
+	
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 2. Условные конструкции и циклы@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<h1>Основы JavaScript 2. Условные конструкции и циклы</h1>
+	<h2>Условный оператор if</h2>
+	<p><b>if</b> выполняет код, если условие == true.</p>
+	<code class="listing">
+		<span class="var">if</span>(условие){<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		}
+	</code>
+	<p><b>else</b> позволяет задать альтернативный блок кода для случая, если условие == false</p>
+	<code class="listing">
+		<span class="var">if</span>(условие){<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		} <span class="var">else</span> {<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		}
+	</code>
+	<p>Новый <b>if</b> может следовать сразу за <b>else</b>, создавая таким образом сложную цепочку условий.</p>
+	<code class="listing">
+		<span class="var">if</span>(условие){<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		} <span class="var">else</span> <span class="var">if</span>(условие2){<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		} <span class="var">else</span> {<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		}
+	</code>
+	<h2>Циклы</h2>
+	<h3>Цикл while</h3>
+	<p>Проверяет условие и выполняется до тех пор, пока оно выполняется.</p>
+	<code class="listing">
+		<span class="var">while</span> (условие) {<br>
+		&nbsp; &nbsp; <span class="comment">// тело цикла</span><br>
+		}</code>
+	<h3>Цикл do-while</h3>
+	<p>Выполняется, после каждой итерации проверяет условие. Т.е. выполняется не менее одного раза.</p>
+	<code class="listing">
+		<span class="var">do</span> {<br>
+		&nbsp; &nbsp; <span class="comment">// тело цикла</span><br>
+		} <span class="var">while</span>(условие);
+	</code>
+	<h3>Цикл for</h3>
+	<p>Проверяет условие перед началом цикла. Позволяет задать начальные данные и изменение цикла прямо в <b>for</b>.</p>
+	<code class="listing">
+		<span class="var">for</span>(начало; условие; шаг) {<br>
+		&nbsp; &nbsp; <span class="comment">// тело цикла</span><br>
+		}
+	</code>
+	<h3>Директивы цикла</h3>
+	<ul>
+		<li>continue — пропуск итерации</li>
+		<li>break — досрочный выход из цикла</li>
+	</ul>
+	<h3>Метки цикла</h3>
+	<code class="listing">
+		label:<br>
+		&nbsp; &nbsp; <span class="var">for</span>(начало; условие; шаг) {<br>
+		&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">for</span>(начало; условие; шаг) {<br>
+		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">// тело цикла</span><br>
+		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">break</span> label;<br>
+		&nbsp; &nbsp; &nbsp; &nbsp; }<br>
+		&nbsp; &nbsp; }
+	</code>
+	
+</body>
+</html>
