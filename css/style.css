@@ -18,6 +18,7 @@ h2 {
 	background: #200;
 	display: block;
 	color: #85ff00;
+	font-family: Menlo, Courier, monospace;
 	padding: 20px;
 }
 .listing {
