@@ -15,14 +15,17 @@ h2 {
 }
 .console,
 .listing {
-	background: #200;
+	background: #272822;
 	display: block;
-	color: #85ff00;
-	font-family: Menlo, Courier, monospace;
+	color: #A6E22E;
+	font-family: Menlo, "Lucida Sans Typewriter", monospace;
 	padding: 20px;
 }
+.name {
+	color: #A6E22E;
+}
 .listing {
-	color: #fff;
+	color: #F8F8F2;
 }
 .listing .comment {
 	color: #888;
@@ -31,8 +34,17 @@ h2 {
 	color: #edff00;
 }
 .var {
-	color: #cf2862;
+	color: #F92672;
+}
+.key {
+	color: #66D9EF;
 }
 .selector {
-	color: #00ffe7;
+	color: #A1EFE4;
+}
+.more {
+	color: #FD971F;
+}
+.more2 {
+	color: #AE81FF;
 }

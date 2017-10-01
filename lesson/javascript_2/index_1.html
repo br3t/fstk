@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 2.Функции@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<h1>Основы JavaScript 2. Функции</h1>
+	<h2>Создание функции</h2>
+	<h3>Function Declaration</h3>
+	<p>Простейший способ создать функцию &mdash; использовать следующий синтаксис:</p>
+	<code class="listing">
+		<span class="key">function</span> runMe() {<br>
+		&nbsp; &nbsp; <span class="comment">// тело функции</span><br>
+		}
+	</code>
+	<p>Такое объявление функции называется <b>Function Expression</b>. Особенностью такого объявления является то, что функция определяется на этапе анализа кода, в результате чего функцию можно использовать в любом месте программы.</p>
+	<code class="listing">
+		runMe();<span class="comment">// можно вызывать до определения функции</span><br>
+		<br>
+		<span class="key">function</span> runMe() {<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		}
+	</code>
+	<p>Правила именования функций такие же, как для переменных. Рекомендуется использовать глаголы для названий функций.</p>
+
+	<h3>Функциональные выражения - Function Expression</h3>
+	<p>Объявить функцию можно просто присвоив значение переменной:</p>
+	<code class="listing">
+		<span class="key">var</span> executeMe = <span class="key">function</span> () {<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		}
+	</code>
+	<p>В этом случае функцию можно будет вызвать только ниже её определения:</p>
+	<code class="listing">
+		executeMe();<span class="comment">// Ошибка! Функция не определена</span><br>
+		<br>
+		<span class="key">var</span> executeMe = <span class="key">function</span> () {<br>
+		&nbsp; &nbsp; <span class="comment">// код</span><br>
+		};<br>
+		<br>
+		executeMe();<span class="comment">// Ок, функция определена и она выполнится</span><br>
+	</code>
+
+
+	<h2>Передача параметров функции</h2>
+	<p>Чаще всего результат выполнения функции зависит от каких-то других переменных. Такие переменные передаются в функцию в качестве параметров:</p>
+	<code class="listing">
+		<span class="key">function</span> shoMessage(message) {<br>
+		&nbsp; &nbsp; alert(message);<br>
+		}<br>
+		<br>
+		shoMessage(<span class="string">"Hello there!"</span>);
+	</code>
+	<p>Переменных может быть несколько, в этом случае они разделяются запятой:</p>
+	<code class="listing">
+		<span class="key">function</span> shoMessage(author, time, message) {<br>
+		&nbsp; &nbsp; alert(<span class="string">'['</span> + time + <span class="string">'] '</span> + author + <span class="string">': '</span> + message);<br>
+		}<br>
+		<br>
+		shoMessage(<span class="string">"Basil"</span>, <span class="string">"00:42"</span>, <span class="string">"Hello there!"</span>);
+	</code>
+
+	<h2>Возврат значений</h2>
+	<p>Кроме того функция может возвращать результаты своих вычислений для дальнейшего использования. Возврат значения осуществляется с помощью оператора <b>return</b>:</p>
+	<code class="listing">
+		<span class="key">function</span> <span class="name">dbl</span>(n) {<br>
+		&nbsp; &nbsp; <span class="var">return</span> 2 * n;<br>
+		}<br>
+		<br>
+		<span class="key">var</span> doubled = dbl(2);<br />
+		alert(doubled);<br />
+	</code>
+	<p>Если <b>return</b> в функции не задан или после <b>return</b> ничего нет, то функция возвращает <b>undefined</b>.</p>
+
+
+	<h2>Создание функции через new Function</h2>
+	<p>Также для создания функции может использоваться следующий синтаксис:</p>
+	<code class="listing">
+		<span class="key">var</span> killMe = <span class="key">new Function</span> (<br />
+		&nbsp; &nbsp; <span class="string">'a, b'</span>, <span class="comment">// параметры функции</span><br>
+		&nbsp; &nbsp; <span class="string">'return a + b;'</span> <span class="comment">// код функции</span><br>
+		);
+	</code>
+	<p>Такую запись используют в тех случаях, когда тело функции генерируется динамически и может зависить от каких либо условий. Но рекомендуется не использовать этот синтаксис, а проверку таких условий осуществлять прямо в теле функции.</p>
+
+	<h2>Область видимости переменных</h2>
+	<p>Переменные внутри функции, объявленные с помощью <b>var</b>, имеют локальную область видимости. Если за пределами функции есть переменная с таким же именем, то внутри функции бцдет использоваться её локальная переменная. Если Задать переменную без <b>var</b>, то создастся глобальная переменная.</p>
+	<code class="listing">
+		<span class="key">var</span> a = 1,<br />
+		&nbsp; &nbsp; b = 2;<br />
+		<span class="key">function</span> <span class="name">rotate</span>() {<br />
+		&nbsp; &nbsp; <span class="key">var</span> a = 3; <span class="comment">// локальная переменная не изменит глобальной</span><br>
+		&nbsp; &nbsp; b = 4; <span class="comment">// без var меняем глобальную переменную</span><br>
+		&nbsp; &nbsp; <span class="key">var</span> с = 5; <span class="comment">// локальная переменная не видна за пределами функции</span><br>
+		&nbsp; &nbsp; d = 6; <span class="comment">// без var создали новую глобальную переменную</span><br>
+		}<br />
+		rotate();<br />
+		<br />
+		alert(a);  <span class="comment">// 1</span><br>
+		alert(b);  <span class="comment">// 4</span><br>
+		alert(c);  <span class="comment">// Error: c is not undefined</span><br>
+		alert(d);  <span class="comment">// 6</span><br>
+	</code>
+	<p>Рекомендуется без особой необходимости не использовать глобальные переменные внутри функции.</p>
+
+	<h2>Рекурсия</h2>
+	<p>Функция в своих вычислениях может использовать результат выполнения <a href="deeper.jpg" target="_blank">самой себя</a>, но с другими параметрами. Такая функция называется рекурсивной. </p>
+	<p>Например, чтобы найти факториал числа 7 нужно 7 умножить на факториал числа 6. Факториал 6, в свою очередь, находится как произведение 6 на факториал 5 и т.д. Факториал 1 равен 1. Таким образом, факториал можно рассчитать с помощью рекурсивной функции:</p>
+	<code class="listing">
+		<span class="key">function</span> <span class="name">factorial</span>(n) {<br />
+		&nbsp; &nbsp; <span class="var">if</span>(n <= 1) {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> 1; <span class="comment">// базовый случай, когда углубляться дальше не надо</span><br />
+		&nbsp; &nbsp; } <span class="key">else</span> {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> n * factorial(n - 1);<br />
+		&nbsp; &nbsp; }<br />
+		}<br />
+		alert(factorial(6));
+	</code>
+
+	<h2>Именованные функциональные выражения - Named Function Expression</h2>
+	<p>Для того, чтобы рекурсивные функции можно было определять в виде функциональных выражений был создан специальный синтаксис - именованные функциональные выражения.</p>
+	<p>Имя функционального выражения доступно только внутри самой функции и не может быть перезаписано. Такая запись позволяет присваить функцию переменной с любым именем, не меняя содержимае функции, которая всегда сможет вызывать себя благодаря внутреннему имени.</p>
+	<code class="listing">
+		<span class="key">var</span> factorial = <span class="key">function</span> <span class="name">f</span>(n) {<br />
+		&nbsp; &nbsp; <span class="var">return</span> n==1 ? 1 : n*f(n-1);<br />
+		}<br />
+		<span class="key">var</span> fctrl =  factorial; <span class="comment">// копируем функцию в другую переменную</span><br />
+		<br />
+		factorial(6); <span class="comment">// работает как обычное функциональное выражение</span><br />
+		f(6); <span class="comment">// Error: f is not defined</span><br />
+		fctrl(6); <span class="comment">// работает, функция скопировалась</span><br />
+	</code>
+
+	<h2>Анонимная функция</h2>
+	<p>В некоторых случаях есть необходимость прозвести некоторые вычисления внутри функции, но сделать это единожды. Например, есть некий код:</p>
+	<code class="listing">
+		<span class="key">var</span> showAlert = <span class="key">function</span>() {<br />
+		&nbsp; &nbsp; alert(<span class="string">"You shall not pass!"</span>);<br />
+		};<br />
+		<span class="key">setTimeout</span>(showAlert, 3000);
+	</code>
+	<p>Этот код с задержкой в 3 секунды вызывает функцию <b>showAlert</b>, которая, в свою очередь, выводит alert на экран. В случае, когда функция <b>showAlert</b> вызывается только здесь и больше не используется, мы можем воспользоваться <b>анонимной функцией:</b></p>
+	<code class="listing">
+		<span class="key">setTimeout</span>(<span class="key">function</span>() {<br />
+		&nbsp; &nbsp; alert(<span class="string">"You shall not pass!"</span>);<br />
+		}, 3000);
+	</code>
+	<p>Чаще всего анонимные функции используются в асинхронных функциях в качестве функций-коллбэков.</p>
+
+	<h2>Замыкание</h2>
+	<p>При запуске функции выделяется память под локальные переменные этой функции, а после запуска эти переменные удаляются из памяти. Таким образом, при каждом очередном запуске функции переменные принимают одно и то же значение.</p>
+	<code class="listing">
+		<span class="key">function</span> <span class="name">myCounter</span>() {<br />
+		&nbsp; &nbsp; <span class="key">var</span> i = 0; <span class="comment">// создается заново с каждым запуском</span><br />
+		&nbsp; &nbsp; i++;<br />
+		&nbsp; &nbsp; alert('i = ' + i);<br />
+		}<br />
+		<br />
+		myCounter(); <span class="comment">// "i = 1"</span><br />
+		myCounter(); <span class="comment">// "i = 1"</span><br />
+		myCounter(); <span class="comment">// "i = 1"</span><br />
+	</code>
+	<p>Но если функция вернет в <b>return</b> другую функцию, которая будет как-либо использовать локальную перменную, то такая переменная останется в памяти. В таком случае говорят, что переменная <b>"попала в замыкание".</b></p>
+	<code class="listing">
+		<span class="key">function</span> <span class="name">createCounter</span>() {<br />
+		&nbsp; &nbsp; var i = 0;<br />
+		&nbsp; &nbsp; <span class="var">return</span> <span class="key">function</span>() {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; i++; <span class="comment">// остается в памяти, т.к. "кому-то" нужна</span><br />
+		&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">'i = '</span> + i);<br />
+		&nbsp; &nbsp; }<br />
+		}<br />
+		<br />
+		var myCounter = createCounter();<br />
+		myCounter(); <span class="comment">// "i = 1"</span><br />
+		myCounter(); <span class="comment">// "i = 2"</span><br />
+		myCounter(); <span class="comment">// "i = 3"</span><br />
+	</code>
+</body>
+</html>
