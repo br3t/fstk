@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 3. Массивы и объекты@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Основы JavaScript 3. Массивы и объекты</h1>
+	<h2>Массивы</h2>
+	<p>Массивы предназначены для хранения коллекций данных, в т.ч. упорядоченных. Синтаксис создания массива:</p>
+	<code class="listing">
+		<span class="comment">// создание с помощью литерала</span><br />
+		<span class="key">var</span> array1 = []; <span class="comment">// пустой массив</span><br />
+		<span class="key">var</span> array2 = [1, 2, 3]; <span class="comment">// массив с элементами</span><br />
+		<span class="key">var</span> array3 = [<span class="key">true</span>, 42, <span class="string">"dog"</span>]; <span class="comment">// массив с элементами разного типа</span><br />
+		<br />
+		<span class="comment">// создание массива в помощью new Array</span><br />
+		<span class="key">var</span> array4 = <span class="var">new</span> <span class="key">Array</span>(); <span class="comment">// пустой массив</span><br />
+		<span class="key">var</span> array5 = <span class="var">new</span> <span class="key">Array</span>(2); <span class="comment">// массив длиной 2 элемента</span><br />
+		<span class="key">var</span> array6 = <span class="var">new</span> <span class="key">Array</span>(0.5); <span class="comment">// Error: Invalid array length</span><br />
+		<span class="key">var</span> array7 = <span class="var">new</span> <span class="key">Array</span>(<span class="string">"2"</span>); <span class="comment">// массив длиной 1 элемент</span><br />
+		<span class="key">var</span> array8 = <span class="var">new</span> <span class="key">Array</span>(1, <span class="string">"2"</span>, <span class="key">null</span>); <span class="comment">// массив с элементами разного типа</span><br />
+	</code>
+	<p>Помимо индексов массив имеет специальное свойство <b>length</b>, которое указывает на длину неразреженного массива.</p>
+	<p>Доступ к элементам массива осуществляется с помощью квадратных скобок:</p>
+	<code class="listing">
+		<span class="key">var</span> days = [<span class="string">"Sunday"</span>, <span class="string">"Monday"</span>];<br />
+		alert(days[0]);<br />
+		alert(days[1]);<br />
+		days[2] = <span class="string">"Tuesday"</span><br />
+		alert(days[2]);<br />
+	</code>
+	<p>Массивы в JavaScript так же не имеют строгой типизации, т.е. могут содержать в себе разнородные данные, в том числе и другие массивы. Такие массивы называются многомерными.</p>
+	<code class="listing">
+		<span class="key">var</span> matrix = [<br />
+		&nbsp; &nbsp; [1, 2, 3], <br />
+		&nbsp; &nbsp; [4, 5, 6], <br />
+		&nbsp; &nbsp; [7, 8, 9] <br />
+		];<br />
+		alert(matrix[0][0]);<br />
+		alert(matrix[2][2]);<br />
+	</code>
+</body>
+</html>
