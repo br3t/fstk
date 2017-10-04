@@ -4,10 +4,28 @@
 	<meta charset="utf-8" />
 	<title>Основы JavaScript 3. Массивы и объекты@ Курс Frontend-разработки</title>
 	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		.methods {
+			border: 1px solid #000;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		.methods td,
+		.methods th {
+			border: 1px solid #000;
+			padding: 5px 7px;
+			text-align: left;
+		}
+		.methods th {
+			width: 300px;
+			vertical-align: top;
+		}
+	</style>
 </head>
 <body>
 	<h1>Основы JavaScript 3. Массивы и объекты</h1>
 	<h2>Массивы</h2>
+	<h3>Создание и использование</h3>
 	<p>Массивы предназначены для хранения коллекций данных, в т.ч. упорядоченных. Синтаксис создания массива:</p>
 	<code class="listing">
 		<span class="comment">// создание с помощью литерала</span><br />
@@ -41,5 +59,36 @@
 		alert(matrix[0][0]);<br />
 		alert(matrix[2][2]);<br />
 	</code>
+	<h3>Методы массивов</h3>
+	<table class="methods">
+		<tr>
+			<th>toString()</th>
+			<td>преобразует массив в строку</td>
+		</tr>
+		<tr>
+			<th>pop()</th>
+			<td>удаляет элемент c конца массива, возвращает удаленный элемент *</td>
+		</tr>
+		<tr>
+			<th>push(<em>el1, el2, ...</em>)</th>
+			<td>добавляет элемент(ы) в конец массива *</td>
+		</tr>
+		<tr>
+			<th>shift()</th>
+			<td>удаляет элемент c начала массива, возвращает удаленный элемент *</td>
+		</tr>
+		<tr>
+			<th>unshift(<em>el1, el2, ...</em>)</th>
+			<td>добавляет элемент(ы) в начало массива *</td>
+		</tr>
+		<tr>
+			<th>indexOf(<em>val</em> [, fromIndex])</th>
+			<td>возвращает индекс элемента со значением <b>val</b> или -1, если элемент не найден. Ищет с начала массива. Если задан <b>fromIndex</b>, то осуществляет поиск, начиная с заданной позиции и до конца массива</td>
+		</tr>
+		<tr>
+			<th>lastIndexOf(<em>val</em> [, fromIndex])</th>
+			<td>возвращает индекс элемента со значением <b>val</b> или -1, если элемент не найден. Ищет с конца массива. Если задан <b>fromIndex</b>, то осуществляет поиск, начиная с заданной позиции и до начала массива</td>
+		</tr>
+	</table>
 </body>
 </html>
