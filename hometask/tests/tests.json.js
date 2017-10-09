@@ -5,6 +5,7 @@ var testsData = [
 	tasks: [{
 		id: 2,
 		title: 'Task 2',
+		functionName: 'reverse',
 		tests: [
 			{
 				input: [[1,2,3]],

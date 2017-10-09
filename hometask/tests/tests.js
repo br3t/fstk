@@ -1,5 +1,5 @@
 var testManager = {
-	selectedTests: null
+	selectedTaskData: null
 };
 testManager.init = function() {
 	var ctx = this;
@@ -8,12 +8,7 @@ testManager.init = function() {
 	$('body').on('change', '#tests-list', function() {
 		if($(this).val()) {
 			var selectedTask = $(this).val().split(':');
-			var url = '../' + selectedTask[0] + '/index.html #task-' + selectedTask[1];
-			$( "#task-info" ).load(url);
-
-			var selectedLessonData = testsData.find(function(v) { return v.folder == selectedTask[0]; });
-			var selectedTaskData = selectedLessonData.tasks.find(function(v) { return v.id == selectedTask[1]; });
-			ctx.selectedTests = selectedTaskData.tests;
+			ctx.getSelectedTests(selectedTask);
 		}
 	});
 
@@ -34,6 +29,32 @@ testManager.fillSelect = function() {
 		lessonHtml += '</optgroup>';
 		select.append(lessonHtml);
 	});
+};
+
+testManager.getSelectedTests = function(selectedTask) {
+	var url = '../' + selectedTask[0] + '/index.html #task-' + selectedTask[1];
+	$( "#task-info" ).load(url);
+
+	var selectedLessonData = testsData.find(function(v) { return v.folder == selectedTask[0]; });
+	ctx.selectedTaskData = selectedLessonData.tasks.find(function(v) { return v.id == selectedTask[1]; });
+};
+
+testManager.runTests = function() {
+	var result = '';
+	var functionCode = $('#task-solution').val();
+	eval(functionCode);
+	this.selectedTaskData.tests.forEach(function(v) {
+		var testResult = this.proxy(this.selectedTaskData.functionName, v.input);
+		if(this.isSimilar(testResult, v.output)) {
+			console.log('Ok');
+		} else {
+			console.log(':(');
+		}
+	});
+};
+
+testManager.isSimilar = function() {
+
 };
 
 $(document).ready(function() {
