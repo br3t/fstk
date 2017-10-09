@@ -7,6 +7,15 @@
 	<script src="../../js/jquery.js"></script>
 	<script src="tests.json.js"></script>
 	<script src="tests.js"></script>
+	<style>
+		#task-solution {
+			font-size: 14px;
+			padding: 10px;
+			width: 100%;
+			box-sizing: border-box;
+			height: 300px;
+		}
+	</style>
 </head>
 <body>
 	<h1>Тесты</h1>
@@ -14,7 +23,7 @@
 		<option value="">-------</option>
 	</select>	
 	<div id="task-info"></div>
-	<textarea id="task-solution" cols="30" rows="10"></textarea>
+	<textarea id="task-solution" class="console" placeholder="Код вашей функции"></textarea>
 	<button id="run-tests">Run tests</button>
 	<div class="test-results"></div>
 </body>
