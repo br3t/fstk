@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 4. Объекты@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		.methods {
+			border: 1px solid #000;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		.methods tr:nth-child(2n) {
+			background: #FFF;
+		}
+		.methods td,
+		.methods th {
+			border: 1px solid #000;
+			padding: 5px 7px;
+			text-align: left;
+			vertical-align: top;
+		}
+		.methods th {
+			width: 400px;
+			font-family: Menlo, "Lucida Sans Typewriter", monospace;;
+		}
+	</style>
+</head>
+<body>
+	<h1>Основы JavaScript 3. Объекты</h1>
+	<h2>Объекты</h2>
+	<h3>Создание и использование</h3>
+	<p>Объекты предназначены для хранения комплексных данных, например описаний (в виде перечня свойств) каких-либо сложных сущностей. Синтаксис создания объекта:</p>
+	<code class="listing">
+		<span class="comment">// создание массива в помощью new Object</span><br />
+		<span class="key">var</span> emptyObject = <span class="var">new</span> <span class="key">Object</span>(); <span class="comment">// пустой объект</span><br /><br />
+		<span class="comment">// создание с помощью литерала</span><br />
+		<span class="key">var</span> yetAnotherEmptyObject = {}; <span class="comment">// пустой объект</span><br />
+		<span class="key">var</span> user = { <span class="comment">// объект со свойствами</span><br />
+		&nbsp; &nbsp; name: <span class="string">"Basil"</span>,<br />
+		&nbsp; &nbsp; "full address": <span class="string">"Shevchenko street, b. 32, ap. 911"</span>,<br />
+		&nbsp; &nbsp; medals: {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; gold: 2,<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; silver: 3,<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; bronze: 15<br />
+		&nbsp; &nbsp; }<br />
+		};
+	</code>
+	<p>Свойствами объектов могут быть данные любого типа, в том числе и другие объекты.<br />Доступ к свойствам объекта осуществляется с помощью оператора <b>"."</b> (точка) или квадратных скобок:</p>
+	<code class="listing">
+		alert(object3.name);<br />
+		alert(object3[<span class="string">"full address"</span>]); <span class="comment">// т.к. обращение через точку вызовет ошибку</span><br />
+		<span class="key">var</span> property  = <span class="string">"name"</span>;<br />
+		alert(object3[property]); <span class="comment">// т.к. название свойства находится в переменной</span><br />
+		alert(object3.medals.gold);<br /><br />
+		object3.medals.silver = 4;<br />
+		object3.medals.wooden = 1;<br />
+		<span class="var">delete</span> object3.medals.wooden; <span class="comment">// удаление свойств</span><br />
+	</code>
+	<h3>Проверка наличия свойств</h3>
+	<p>Самый простой способ проверить наличие свойства у объекта &mdash; воспользоваться оператором <b>in</b>:</p>
+	<code class="listing">
+		<span class="key">if</span> (<span class="string">"medals"</span> <span class="var">in</span> user){<br />
+		&nbsp; &nbsp; alert(<span class="string">"User has medals!"</span>);<br />
+		}<br />
+	</code>
+	<p>Можно также воспользоваться сравнением значения свойства с <b>undefined</b> (т.к. несуществующие свойства объекта по умолчанию получают это значение), но такая проверка может оказаться неточной в случае, когда свойство у объекта есть и его значение <b>undefined</b>.</p>
+</body>
+</html>
