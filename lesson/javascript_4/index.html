@@ -29,6 +29,11 @@
 <body>
 	<h1>Основы JavaScript 4. Объекты</h1>
 	<h2>Объекты</h2>
+	<p>Важное свойство объектов &mdash; объекты копируются по ссылке, а не по значению. Это значит, что:</p>
+	<ul>
+		<li>при изменении свойств в переменной-"копии" изменения внесутся и в переменную-"оригинал"</li>
+		<li>две переменные типа "объект" равны только в том случае, если они ссылаются на один и тот же объект</li>
+	</ul>
 	<h3>Создание и использование</h3>
 	<p>Объекты предназначены для хранения комплексных данных, например описаний (в виде перечня свойств) каких-либо сложных сущностей. Синтаксис создания объекта:</p>
 	<code class="listing">
@@ -43,6 +48,9 @@
 		&nbsp; &nbsp; &nbsp; &nbsp; gold: 2,<br />
 		&nbsp; &nbsp; &nbsp; &nbsp; silver: 3,<br />
 		&nbsp; &nbsp; &nbsp; &nbsp; bronze: 15<br />
+		&nbsp; &nbsp; },<br />
+		&nbsp; &nbsp; sing: <span class="key">function</span>() {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">"We are the champions, my friends!"</span>);<br />
 		&nbsp; &nbsp; }<br />
 		};
 	</code>
@@ -65,5 +73,20 @@
 		}<br />
 	</code>
 	<p>Можно также воспользоваться сравнением значения свойства с <b>undefined</b> (т.к. несуществующие свойства объекта по умолчанию получают это значение), но такая проверка может оказаться неточной в случае, когда свойство у объекта есть и его значение <b>undefined</b>.</p>
+	<h3>Перебор свойств</h3>
+	<p>Помимо проверки наличия свойств у оператора <b>in</b> есть и другое предназначение &mdash; перебор свойств объекта:</p>
+	<code class="listing">
+		<span class="var">for</span>(<span class="key">var</span> property <span class="var">in</span> user) {<br />
+		&nbsp; &nbsp; console.log(property + <span class="string">" => "</span> + user[property]);<br />
+		}
+	</code>
+	<p>Перебор свойств можно использовать для "клонирования" объекта, когда нужно создать копию объекта без копирования по ссылке:</p>
+	<code class="listing">
+		<span class="key">var</span> animal = { name: <span class="string">"Barsik"</span>, type: <span class="string">"cat"</span>};<br />
+		<span class="key">var</span> animal2 = {};<br />
+		<span class="var">for</span>(<span class="key">var</span> property <span class="var">in</span> user) {<br />
+		&nbsp; &nbsp; animal2[property] = animal[property];<br />
+		}
+	</code>
 </body>
 </html>
