@@ -19,11 +19,12 @@ function reverse(elements) {
 }
 console.log(reverse(unreversed));</pre>
 	</section>
-
-	<h2>Задача №3. Поломанный sort</h2>
-	<p>Дан массив зарплат (целые числа), полученный из базы данных. Необходимо исправить функцию <b>sortSalaries</b>, сортирующую список по возрастанию. Из-за программного сбоя нельзя использовать функцию-callback внутри <b>sort</b> и нельзя использовать собственную "ручную" сортировку. При переборе массива использовать <b>for</b>.</p>
-	<pre class="hometask">var salaries = [3100, 890, 1120, 740, 2100,
-  550, 540, 3200, 1570, 250];
+	
+	<section id="task-3">
+		<h2>Задача №3. Поломанный sort</h2>
+		<p>Дан массив зарплат (целые числа), полученный из базы данных. Необходимо исправить функцию <b>sortSalaries</b>, сортирующую список по возрастанию. Из-за программного сбоя нельзя использовать функцию-callback внутри <b>sort</b> и нельзя использовать собственную "ручную" сортировку. При переборе массива использовать <b>for</b>.</p>
+		<pre class="hometask">var salaries = [3100, 890, 1120, 740, 2100,
+	  550, 540, 3200, 1570, 250];
 function sortSalaries(salaryList) {
   var salaryListCopy = salaryList.slice();
   // ...
@@ -31,7 +32,8 @@ function sortSalaries(salaryList) {
   // ...
   return salaryListCopy;
 }
-console.log(sortSalaries(salaries));</pre>
+console.log(sortSalaries(salaries));</pre>	
+	</section>
 
 	<h2>Задача №4. Максимум из минимумов</h2>
 	<p>Дан массив зарплат из задачи №3. Нужно найти максимальную зарплату, меньшую 1000. Использовать <b>reduce</b>. Результ вывести в консоль.</p>

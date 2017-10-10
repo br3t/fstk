@@ -15,6 +15,22 @@
 			box-sizing: border-box;
 			height: 300px;
 		}
+		.message-wrap {
+			width: 98%;
+			border-radius: 10px;
+			padding: 10px;
+			box-sizing: border-box;
+			border: 1px solid #000;
+			margin: 0 auto 10px;
+		}
+		.error {
+			border: 1px solid #f00;
+			background: #fdd;
+		}
+		.ok {
+			border: 1px solid #0f0;
+			background: #dfd;
+		}
 	</style>
 </head>
 <body>
@@ -25,6 +41,6 @@
 	<div id="task-info"></div>
 	<textarea id="task-solution" class="console" placeholder="Код вашей функции"></textarea>
 	<button id="run-tests">Run tests</button>
-	<div class="test-results"></div>
+	<div id="test-results"></div>
 </body>
 </html>
