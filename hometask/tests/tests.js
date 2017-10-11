@@ -62,7 +62,10 @@ testManager.runTests = function() {
 				ctx.addMessage('ok', 'Тест ' + counter + ' пройден');
 			break;
 			case 1:
-				ctx.addMessage('ok', 'Тест ' + counter + ' пройден, но имеется ошибка в типе результата');
+				ctx.addMessage('error', 'Тест ' + counter + ' пройден, но имеется ошибка в типе результата' +
+					'<div><b>Ввод:</b> ' + v.input + '<br />' +
+					'<b>Вывод:</b> ' + testResult + '<br />' +
+					'<b>Ожидаемый вывод:</b> ' + v.output);
 			break;
 			default:
 				ctx.addMessage('error', 'Тест ' + counter + ' провален' +

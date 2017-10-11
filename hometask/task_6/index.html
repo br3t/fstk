@@ -82,11 +82,11 @@ function balance(actions) {
   var itemsOut = 0;
   var itemsAvailable = [];
   // ...
-  console.log('Пришло: ' + itemsIn + '\n' + 
-  'Отправлено: ' + itemsOut + '\n' +
-  'Товары на складе: ' + itemsAvailable);
+  return 'Пришло: ' + itemsIn + '; ' +
+    'Отправлено: ' + itemsOut + '; ' +
+    'Товары на складе: ' + itemsAvailable;
 }
-balance(transactions);</pre>
+console.log( balance(transactions) );</pre>
 	</section>
 
 
