@@ -54,13 +54,14 @@
 		&nbsp; &nbsp; }<br />
 		};
 	</code>
-	<p>Свойствами объектов могут быть данные любого типа, в том числе и другие объекты.<br />Доступ к свойствам объекта осуществляется с помощью оператора <b>"."</b> (точка) или квадратных скобок:</p>
+	<p>Свойствами объектов могут быть данные любого типа, в том числе и другие объекты.<br />Доступ к свойствам объекта осуществляется с помощью оператора <b>"."</b> (точка) или квадратных скобок. При этом попытка доступа к несуществующему свойству не вызовет ошибки, а вернёт <b>undefined</b>:</p>
 	<code class="listing">
 		alert(object3.name);<br />
 		alert(object3[<span class="string">"full address"</span>]); <span class="comment">// т.к. обращение через точку вызовет ошибку</span><br />
 		<span class="key">var</span> property  = <span class="string">"name"</span>;<br />
 		alert(object3[property]); <span class="comment">// т.к. название свойства находится в переменной</span><br />
-		alert(object3.medals.gold);<br /><br />
+		alert(object3.medals.gold);<br />
+		alert(object3.height); <span class="comment">// undefined </span><br /><br />
 		object3.medals.silver = 4;<br />
 		object3.medals.wooden = 1;<br />
 		<span class="var">delete</span> object3.medals.wooden; <span class="comment">// удаление свойств</span><br />

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы JavaScript 4.1. Встроенные инструменты@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		.methods {
+			border: 1px solid #000;
+			border-collapse: collapse;
+			width: 100%;
+		}
+		.methods tr:nth-child(2n) {
+			background: #FFF;
+		}
+		.methods td,
+		.methods th {
+			border: 1px solid #000;
+			padding: 5px 7px;
+			text-align: left;
+			vertical-align: top;
+		}
+		.methods th {
+			width: 400px;
+			font-family: Menlo, "Lucida Sans Typewriter", monospace;;
+		}
+	</style>
+</head>
+<body>
+	<h1>Основы JavaScript 4.1. Встроенные инструменты</h1>
+	<h2>Работа со строками</h2>
+	<p>Длина строки доступна с помощью свойства <b>length</b>. Несмотря на то, что отдельный символ строки можно получить с помощью квадратных скобок, что делает строки похожими на массив символов, изменением <b>length</b> нельзя обрезать строку.</p>
+	<code class="listing">
+		<span class="key">var</span> language = <span class="string">'javascript'</span>;<br />
+		alert(language.length); <span class="comment">// 10</span><br />
+		language.length = 3;<br />
+		alert(language.length); <span class="comment">// 10, нельзя изменить длину</span><br />
+		alert(language[0]); <span class="comment">// "j", отсчет символов начинается с нуля</span><br />
+	</code>
+	<p>Для работы со строками в JavaScript существуют следующие методы:</p>
+	<table class="methods">
+		<tr>
+			<th>charAt(<em>n</em>)</th>
+			<td>возвращает символ с индексом <b>n</b>. Аналог <b>[n]</b></td>
+		</tr>
+		<tr>
+			<th>charCodeAt(<em>n</em>)</th>
+			<td>возвращает Unicode-код символа в позиции <b>n</b></td>
+		</tr>
+		<tr>
+			<th>String.fromCharCode(<em>code</em>)</th>
+			<td>возвращает символ по его Unicode-коду <b>code</b></td>
+		</tr>
+		<tr>
+			<th>indexOf(<em>subString [, start]</em>)</th>
+			<td>возвращает позицию найденной подстроки или -1, если подстрока не найдена. В <b>start</b> можно указать, с какой позиции начинать поиск</td>
+		</tr>
+		<tr>
+			<th>toUpperCase()</th>
+			<td>перевод строки в верхний регистр</td>
+		</tr>
+		<tr>
+			<th>toLowerCase()</th>
+			<td>перевод строки в нижний регистр</td>
+		</tr>
+		<tr>
+			<th>substr(<em>start [, size]</em>)</th>
+			<td>возвращает подстроку, начинающуюся со <b>start</b>, и размером <b>size</b> или до конца строки</td>
+		</tr>
+		<tr>
+			<th>substring(<em>start [, finish]</em>)</th>
+			<td>возвращает подстроку, начинающуюся со <b>start</b>, и до <b>finish</b>, не включая её, или до конца строки. Индексы, выходящие за диапазон строки урезает, при <b>finish < start</b> меняет аргументы местами</td>
+		</tr>
+		<tr>
+			<th>slice(<em>start [, finish]</em>)</th>
+			<td>работает аналогично <b>substring</b>, но отрицательные индексы отсчитываются с конца строки</td>
+		</tr>
+	</table>
+
+	<h2>Работа с числами</h2>
+	<p>Способы записи чисел:</p>
+	<ul>
+		<li>обычная запись <b>n = 10;</b></li>
+		<li>"научная запись" <b>n = 1e1;</b></li>
+		<li>в восьмиричной системе <b>n = 012;</b></li>
+		<li>в шестнадцатиричной системе <b>n = 0xA;</b></li>
+	</ul>
+	<p>Особенностью чисел в Javascript является неточность вычислений (например, <b>0.1 + 0.2 != 0.3</b>), связанная с тем, что некоторые дробные числа не могут быть представлены в двоичной системе в виде конечной дроби. Следует помнить об этом и по возможности избегать требующих точности вычислений с дробными числами, заменяя их на операции с целыми.</p>
+	<p>Для работы с числами в JavaScript существуют следующие функции и методы:</p>
+	<table class="methods">
+		<tr>
+			<th>isNaN(<em>n</em>)</th>
+			<td>проверяет <b>n</b> на <b>NaN</b></td>
+		</tr>
+		<tr>
+			<th>isFinite(<em>n</em>)</th>
+			<td>проверяет, конечно ли <b>n</b>. Возвращает <b>false</b> для <b>Infinity</b>, <b>-Infinity</b> и <b>NaN</b></td>
+		</tr>
+		<tr>
+			<th>parseInt(<em>n [, base]</em>)</th>
+			<td>посимвольно преобразует <b>n</b> в целое число. Если указан <b>base</b>, то интерпретирует <b>n</b> как число в base-ричной системе исчисления. <b>base</b> должно быть больше в пределах 2..36, иначе вернётся <b>NaN</b></td>
+		</tr>
+		<tr>
+			<th>parseFloat(<em>n</em>)</th>
+			<td>посимвольно преобразует <b>n</b> в число с дробной частью</td>
+		</tr>
+		<tr>
+			<th>.toString(<em>base</em>)</th>
+			<td>преобразует число в строку-число в base-ричной системе исчисления. <b>base</b> должно быть больше в пределах 2..36, иначе сгенерируется ошибка </td>
+		</tr>
+		<tr>
+			<th>.toFixed(<em>precision</em>)</th>
+			<td>возвращает строку-число, округленное до <b>precision</b> знаков после запятой. Если значимых значений нет, то дополняет нулями</td>
+		</tr>
+	</table>
+	<h3>Математические функции</h3>
+	<p>Для выполнения математических операций используются методы специального объекта <b>Math</b>:</p>
+	<table class="methods">
+		<tr>
+			<th>floor(<em>n</em>)</th>
+			<td>округляет <b>n</b> до целого вниз</td>
+		</tr>
+		<tr>
+			<th>ceil(<em>n</em>)</th>
+			<td>округляет <b>n</b> до целого вверх</td>
+		</tr>
+		<tr>
+			<th>round(<em>n</em>)</th>
+			<td>округляет <b>n</b> до целого по правилам округления</td>
+		</tr>
+	</table>
+</body>
+</html>
