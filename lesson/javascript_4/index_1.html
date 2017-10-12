@@ -227,5 +227,48 @@
 		<span class="key">var</span> dateArguments = <span class="key">new</span> Date(2018, 0, 1, 12, 0, 0);<br />
 		alert(dateArguments); <span class="comment">// Mon Jan 01 2018 12:00:00 GMT+0200 (MSK)</span><br />
 	</code>
+
+	<h2>Работа с JSON</h2>
+	<p>JSON &mdash; универсальный формат хранения данных. Для работы с этим форматом в JavaScript используют объект <b>JSON</b> с двумя методами: для извлечения данных из JSON и для преобразования данных в JSON.</p>
+	<code class="listing">
+		<span class="comment">// извлечение данных</span><br />
+		<span class="key">var</span> fromJsonString = <span class="string">'[1, "a", {"b": 2}]'</span>;<br />
+		<span class="key">var</span> fromJsonObject = JSON.parse(fromJsonString); <span class="comment">// в переменную попадает распаршенный массив <b>[1, "a", {"b": 2}]</b></span>
+	</code>
+	<p>С помощью второго наобязательного параметра-функции можно при парсинге обрабатывать свойства результирующего объекта:</p>
+	<code class="listing">
+		<span class="key">var</span> fromJsonString2 = <span class="string">'{"integer": 1.1, "float": 2.2, "more": {"integer": 3.3}}'</span>;<br />
+		<span class="key">var</span> fromJsonObject2 = JSON.parse(fromJsonString2, <span class="var">function</span> (key, value) {<br />
+		&nbsp; &nbsp; <span class="var">if</span>(key==<span class="string">"integer"</span>) {<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; return parseInt(value);<br />
+		&nbsp; &nbsp; }<br />
+		&nbsp; &nbsp; return value;<br />
+		});<br />
+		<span class="comment">// fromJsonObject2={integer: 1, float: 2.2, more: {integer: 3}}</span>
+	</code>
+	<p>Данная функция работает рекурсивно, т.е. преобразуются все совпадения свойств, в т.ч. и вложенных.</p>
+	<p>Для отправки на сервер, сохранения в localStorage и т.д. используют преобразование данных в JSON-строку с помощью метода <b>stringify</b>. Такой процесс называется <b>сериализацией</b></p>
+	<code class="listing">
+		<span class="key">var</span> toJsonObject = {<span class="string">"name"</span>: <span class="string">"Bill"</span>, <span class="string">"age"</span>: 42};<br />
+		<span class="key">var</span> toJsonString = JSON.stringify(toJsonObject);<br />
+		<span class="comment">// toJsonString = '{"name":"Bill","age":42}'</span>
+	</code>
+	<p>С помощью второго необязательного параметра можно указать (с помощью массива или функции), какие свойства необходимо сериализовать.</p>
+	<code class="listing">
+		<span class="key">var</span> toJsonObject2 = {<span class="string">"name"</span>: <span class="string">"Bill"</span>, <span class="string">"age"</span>: 42};<br />
+		<span class="key">var</span> toJsonString2 = JSON.stringify(toJsonObject, [<span class="string">"name"</span>]);<br />
+		<span class="comment">// toJsonString2 = '{"name":"Bill"}'</span>
+	</code>
+	<p>Третий необзательный параметр метода <b>stringify</b> позволяет отформатировать выходную строку, добавив указанное количество пробелов или указанную строку</p>
+	<code class="listing">
+		<span class="key">var</span> toJsonObject3 = {<span class="string">"name"</span>: <span class="string">"Bill"</span>, <span class="string">"age"</span>: 42};<br />
+		<span class="key">var</span> toJsonString3 = JSON.stringify(toJsonObject, "", 4);<br />
+		<span class="comment">/* toJsonString3 = <br />
+		{<br />
+    	&nbsp; &nbsp; "name": "Bill",<br />
+    	&nbsp; &nbsp; "age": 42<br />
+		}<br />
+		*/</span>
+	</code>
 </body>
 </html>
