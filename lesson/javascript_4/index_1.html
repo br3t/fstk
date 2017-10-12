@@ -128,6 +128,104 @@
 			<th>round(<em>n</em>)</th>
 			<td>округляет <b>n</b> до целого по правилам округления</td>
 		</tr>
+		<tr>
+			<th>abs(<em>n</em>)</th>
+			<td>вычисляет абсолютное значение для <b>n</b></td>
+		</tr>
+		<tr>
+			<th>sin(<em>angle</em>)</th>
+			<td>вычисляет синус угла <b>angle</b>, заданного в радианах</td>
+		</tr>
+		<tr>
+			<th>cos(<em>angle</em>)</th>
+			<td>вычисляет косинус угла <b>angle</b>, заданного в радианах</td>
+		</tr>
+		<tr>
+			<th>tan(<em>angle</em>)</th>
+			<td>вычисляет тангенс угла <b>angle</b>, заданного в радианах</td>
+		</tr>
+		<tr>
+			<th>asin(<em>n</em></th>
+			<td>вычисляет арксинус <b>n</b></td>
+		</tr>
+		<tr>
+			<th>acos(<em>n</em></th>
+			<td>вычисляет арккосинус <b>n</b>, результат в раианах</td>
+		</tr>
+		<tr>
+			<th>atan(<em>n</em>)</th>
+			<td>вычисляет арктангенс <b>n</b></td>
+		</tr>
+		<tr>
+			<th>atan2(<em>x, y</em>)</th>
+			<td>вычисляет угол до точки (x, y)</td>
+		</tr>
+		<tr>
+			<th>min(<em>e1, e2, ...</em>)</th>
+			<td>возвращает минимальное значение из аргументов</td>
+		</tr>
+		<tr>
+			<th>max(<em>e1, e2, ...</em>)</th>
+			<td>возвращает максимальное значение из аргументов</td>
+		</tr>
+		<tr>
+			<th>pow(<em>n, exp</em>)</th>
+			<td>вычисляет <b>n</b> в степени <b>exp</b></td>
+		</tr>
+		<tr>
+			<th>sqrt(<em>n</em>)</th>
+			<td>вычисляет квадратный корень из <b>n</b></td>
+		</tr>
+		<tr>
+			<th>log(<em>n</em>)</th>
+			<td>вычисляет натуральный логарифм от <b>n</b></td>
+		</tr>
+		<tr>
+			<th>exp(<em>n</em>)</th>
+			<td>вычисляет <b>e</b> (экспонента) в степени <b>n</b></td>
+		</tr>
+		<tr>
+			<th>random()</th>
+			<td>возвращает псевдослучайное число в диапазоне <b>[0;1)</b></td>
+		</tr>
 	</table>
+	<p>Объект <b>Math</b> также содержит в себе математические константы:</p>
+	<ul>
+		<li>число Пи: <b>Math.PI = 3.141592653589793</b></li>
+		<li>экспоненту: <b>Math.E = 2.718281828459045</b></li>
+	</ul>
+	<p>и некоторые заранее вычисленные величины:</p>
+	<ul>
+		<li>квадратный корень из 2: <b>Math.SQRT2 == Math.sqrt(2)</b></li>
+		<li>квадратный корень из &frac12;: <b>Math.SQRT1_2 == Math.sqrt(.5)</b></li>
+	</ul>
+
+	<h2>Работа с датой и временем</h2>
+	<p>Работы с датой и временем в JavaScript осуществляется при помощи объекта <b>Date</b>:</p>
+	<code class="listing">
+		<span class="comment">// получаем объект текущего момента времени</span><br />
+		<span class="key">var</span> dateNow = <span class="key">new</span> Date();<br />
+		alert(dateNow); <span class="comment">// <script>document.write(new Date());</script></span><br /><br />
+		
+		<span class="comment">// получаем текущий timestamp в миллисекундах</span><br />
+		<span class="key">var</span> dateNow2 = Date.now();<br />
+		alert(dateNow2); <span class="comment">// <script>document.write(Date.now());</script></span><br /><br />
+
+		<span class="comment">// задаем дату в виде миллисекунд, прошедших после после 1 января 1970 года</span><br />
+		<span class="key">var</span> dateMilliseconds = <span class="key">new</span> Date(60 * 1000);<br />
+		alert(dateMilliseconds); <span class="comment">// Thu Jan 01 1970 02:01:00 GMT+0200 (MSK)</span><br /><br />
+
+		<span class="comment">// задаем дату в виде строки в формате RFC2822</span><br />
+		<span class="key">var</span> dateString = <span class="key">new</span> Date(<span class="string">"Wed Oct 11 2017 12:00:00 GMT+0300 (EEST)"</span>);<br />
+		alert(dateString); <span class="comment">// Wed Oct 11 2017 12:00:00 GMT+0300 (EEST)</span><br /><br />
+
+		<span class="comment">// задаем дату в виде строки в формате ISO 8601 Extended</span><br />
+		<span class="key">var</span> dateString2 = <span class="key">new</span> Date(<span class="string">"2017-10-12T19:30:00+03:00"</span>); <br />
+		alert(dateString2); <span class="comment">// Thu Oct 12 2017 19:30:00 GMT+0300 (EEST)</span><br /><br />
+
+		<span class="comment">// задаем дату в виде массива в формате <b>год, месяц, число, часы, минуты, секунды</b></span><br />
+		<span class="key">var</span> dateArguments = <span class="key">new</span> Date(2018, 0, 1, 12, 0, 0);<br />
+		alert(dateArguments); <span class="comment">// Mon Jan 01 2018 12:00:00 GMT+0200 (MSK)</span><br />
+	</code>
 </body>
 </html>
