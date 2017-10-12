@@ -1,5 +1,34 @@
 var testsData = [
 {
+	title: 'ДЗ по теме JS 1. Операторы, циклы',
+	folder: 'task_5',
+	tasks: [{
+		id: 2,
+		title: 'Задача №7',
+		functionName: 'reverse',
+		tests: [
+			{
+				input: [6,24],
+				output: 73.5
+			},{
+				input: [6,7],
+				output: 2.1
+			},{
+				input: [23,24],
+				output: 2.1
+			},{
+				input: [7,8],
+				output: 4.2
+			},{
+				input: [24,24],
+				output: 0
+			},{
+				input: [24,23],
+				output: 0
+			}
+		]
+	}]
+},{
 	title: 'ДЗ по теме JS 2. Массивы',
 	folder: 'task_6',
 	tasks: [{

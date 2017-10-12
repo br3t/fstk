@@ -88,7 +88,7 @@ testManager.proxy = function(functionName, input) {
 			case 1:
 				result = window[functionName](input[0]);
 			break;
-			case 3:
+			case 2:
 				result = window[functionName](input[0], input[1]);
 			break;
 			case 3:
