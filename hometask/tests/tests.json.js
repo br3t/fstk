@@ -9,10 +9,13 @@ var testsData = [
 		tests: [
 			{
 				input: [6,24],
-				output: 73.5
+				output: 71.4
 			},{
 				input: [6,7],
 				output: 2.1
+			},{
+				input: [6,8],
+				output: 6.3
 			},{
 				input: [23,24],
 				output: 2.1
