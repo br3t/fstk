@@ -28,5 +28,21 @@ function top3Oldest(menlist) {
 }
 console.log(top3Oldest(sportsmen));</pre>
 	</section>
+
+	<section id="task-3">
+		<h2>Задача №3. Спаммер консоли</h2>
+		<p>Создать объект <b>spammer</b> с двумя методами <b>startSpam</b> и <b>stopSpam</b>. При передаче методу startSpam некой строки он каждую секунду выводит в консоль (console.log) эту строку. При повторном запуске с другой строкой первая строка продолжает выводиться, а новая строка выводится отдельным console.log. Запуск метода stopSpam с параметром в виде строки находит эту строку среди выводимых в консоль и останавливает "спам" этой строки. Примерный результирующий вывод в консоль с расшифровкой по времени приведен ниже:</p>
+		<pre class="hometask">spammer.startSpam('first');
+first // 00:00:01
+first // 00:00:02
+spammer.startSpam('second');
+first // 00:00:03
+second // 00:00:03
+first // 00:00:04
+second // 00:00:04
+spammer.stopSpam('first');
+second // 00:00:05
+second // 00:00:06</pre>
+	</section>
 </body>
 </html>
