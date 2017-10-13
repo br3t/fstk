@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Домашнее задание по JavaScript 3. Объекты</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Домашнее задание по JavaScript 3. Объекты</h1>
+	<section id="task-1">
+		<h2>Задача №1. Только брутфорс.</h2>
+		<p>Имеется зашифрованный пароль (например, "YTFiMmMz") и извесна функция шифрования <b>btoa</b>. Извесно, что пароль имеет длину от 1 до 6 символов и состоит из цифр и букв <b>a, b, c</b>. Написать функцию, которая с помощью последовательного перебора найдет пароль. Функцию <b>btoa</b> считаем "необратимой", т.е. использовать <b>atob</b> нельзя.</p>
+		<pre class="hometask">var password = "YTFiMmMz";
+function bruteForce(psswrd) {
+  // ...
+  var encodedVariant = btoa(variant);
+  // ...
+}
+console.log(bruteForce(password));</pre>
+	</section>
+
+	<section id="task-2">
+		<h2>Задача №2. Самые старые</h2>
+		<p>Имеется информация о спортсменах в виде массива объектов с полями "имя" и "возраст" (<b>[{name:"Yan", age: 33}, ...]</b>). Написать функцию, которая вернет имена трех самых старых спортсменов.</p>
+		<pre class="hometask">var sportsmen = [...];
+function top3Oldest(menlist) {
+  // ...
+}
+console.log(top3Oldest(sportsmen));</pre>
+	</section>
+</body>
+</html>
