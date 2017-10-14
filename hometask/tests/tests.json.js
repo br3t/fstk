@@ -159,8 +159,8 @@ var testsData = [
 				input: ["YzBiYTk="],
 				output: "c0ba9"
 			},{
-				input: ["84620"],
-				output: "ODQ2MjA="
+				input: ["ODQ2MjA="],
+				output: "84620"
 			}
 		]
 	}]
