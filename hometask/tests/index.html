@@ -8,6 +8,12 @@
 	<script src="tests.json.js"></script>
 	<script src="tests.js"></script>
 	<style>
+		.task-info {
+			font-size: .8em;
+		}
+		.task-info h2 {
+			margin-top: 0;
+		}
 		#task-solution {
 			font-size: 14px;
 			padding: 10px;
@@ -31,6 +37,16 @@
 			border: 1px solid #0f0;
 			background: #dfd;
 		}
+		#run-tests {
+			margin: 10px auto;
+			display: block;
+			width: 100%;
+			height: 50px;
+			cursor: pointer;
+		}
+		.help {
+			font-size: 14px;
+		}
 	</style>
 </head>
 <body>
@@ -40,7 +56,7 @@
 	</select>	
 	<div id="task-info"></div>
 	<textarea id="task-solution" class="console" placeholder="Код вашей функции"></textarea>
-	<p>Для запуска тестов введите только код функции из задачи. Если функции в задаче нет, то создайте анонимную функцию, поместив в нее код для проверки.</p>
+	<p class="help">Для запуска тестов введите только код функции из задачи. Если функции в задаче нет, то создайте анонимную функцию, поместив в нее код для проверки.</p>
 	<button id="run-tests">Run tests</button>
 	<div id="test-results"></div>
 </body>
