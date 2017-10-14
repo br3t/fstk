@@ -112,5 +112,57 @@ var testsData = [
 			}
 		]
 	}]
-}
+},{
+	title: 'ДЗ по теме JS 3. Объекты',
+	folder: 'task_7',
+	tasks: [{
+		id: 1,
+		title: 'Задача №1. Объединение объектов',
+		functionName: 'union',
+		tests: [
+			{
+				input: [{a:1},{b:2}],
+				output: {a:1,b:2}
+			},{
+				input: [{d:1,e:1},{f:2,e:3}],
+				output: {d:1,f:2,e:3}
+			},{
+				input: [{},{g:4,h:5}],
+				output: {g:4,h:5}
+			},{
+				input: [{g:4,h:5},{}],
+				output: {g:4,h:5}
+			},
+		]
+	},{
+		id: 1,
+		title: 'Задача №2. Самые старые',
+		functionName: 'topOldest',
+		tests: [
+			{
+				input: [[{name:"Alpha", age: 25}, {name:"Bravo", age: 30}, {name:"Charlie", age: 35},{name:"Delta", age: 40}], 3],
+				output: ["Delta","Charlie","Bravo"]
+			},{
+				input: [[{name:"Alpha", age: 10}, {name:"Bravo", age: 9}, {name:"Charlie", age: 8},{name:"Delta", age: 7}], 2],
+				output: ["Alpha","Bravo"]
+			}
+		]
+	},{
+		id: 6,
+		title: 'Задача №6. Только брутфорс',
+		functionName: 'bruteForce',
+		tests: [
+			{
+				input: ["YmFiYQ=="],
+				output: "baba"
+			},{
+				input: ["YzBiYTk="],
+				output: "c0ba9"
+			},{
+				input: ["84620"],
+				output: "ODQ2MjA="
+			}
+		]
+	}]
+},
 ];
