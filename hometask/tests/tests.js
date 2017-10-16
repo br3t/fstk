@@ -63,15 +63,15 @@ testManager.runTests = function() {
 			break;
 			case 1:
 				ctx.addMessage('error', 'Тест ' + counter + ' пройден, но имеется ошибка в типе результата' +
-					'<div><b>Ввод:</b> ' + v.input + '<br />' +
-					'<b>Вывод:</b> ' + testResult + '<br />' +
-					'<b>Ожидаемый вывод:</b> ' + v.output);
+					'<div><b>Ввод:</b> ' + Json.stringify(v.input) + '<br />' +
+					'<b>Вывод:</b> ' + Json.stringify(testResult) + '<br />' +
+					'<b>Ожидаемый вывод:</b> ' + Json.stringify(v.output));
 			break;
 			default:
 				ctx.addMessage('error', 'Тест ' + counter + ' провален' +
-					'<div><b>Ввод:</b> ' + v.input + '<br />' +
-					'<b>Вывод:</b> ' + testResult + '<br />' +
-					'<b>Ожидаемый вывод:</b> ' + v.output);
+					'<div><b>Ввод:</b> ' + Json.stringify(v.input) + '<br />' +
+					'<b>Вывод:</b> ' + Json.stringify(testResult) + '<br />' +
+					'<b>Ожидаемый вывод:</b> ' + Json.stringify(v.output));
 			break;
 		}
 		counter++;

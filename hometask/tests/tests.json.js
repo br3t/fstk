@@ -136,10 +136,10 @@ var testsData = [
 			},{
 				input: [{g:4,h:5},{}],
 				output: {g:4,h:5}
-			},
+			}
 		]
 	},{
-		id: 1,
+		id: 2,
 		title: 'Задача №2. Самые старые',
 		functionName: 'topOldest',
 		tests: [
