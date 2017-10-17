@@ -19,5 +19,19 @@
 }		
 	</pre>
 
+	<h2>Проблема <span class="spoiler">: злоупотребление тернарным оператором</1span></h2>
+	<pre class="hometask">function count(start, finish) {
+  var result = 0;
+  start < 0 || finish > 24 ? return result : '';
+  if(start == 0) {
+    finish == 0 ? return result : result = finish;
+    return result;
+  } else {
+    start == finish ? '' : result = finish - start;
+    return result;
+  }
+}		
+	</pre>
+
 </body>
 </html>
