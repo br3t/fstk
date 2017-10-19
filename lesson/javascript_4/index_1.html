@@ -270,5 +270,31 @@
 		}<br />
 		*/</span>
 	</code>
+
+	<h2>Строгий режим use strict</h2>
+	<p>В своем развитии JavaScript, при введнии новых возможностей, старался максимально сохранить совместимость старого кода. До того момента, когда синтаксис привели к стардантизированному виду, было написано столько сайтов, использующих устаревшие возможности или устаревший синтаксис, что нельзя было просто отказаться от этого старого кода. Потому в ES5 была введена специальная директива <b>use strict</b>, которая показывает интерпретатору, что использующий ее код написан с соблюдением стандартов.</p>
+	<code class="listing"><span class="string">"use strict"</span>;<br />
+<span class="comment">// вызовет ошибку при попытке создания переменной без var</span><br>
+myVar = 0;<br /><br />
+<span class="comment">// вызовет ошибку при попытке использования with</span><br />
+<span class="key">var</span> user = {};<br />
+<span class="var">with</span>(user) {<br />
+&nbsp; &nbsp; name = <span class="string">"Petro"</span>;<br />
+}<br /><br />
+<span class="comment">// вызовет ошибку при попытке объявить свойство более 1 раза</span><br />
+user = {<br />
+&nbsp; &nbsp; name: <span class="string">"Ivan"</span>,<br />
+&nbsp; &nbsp; name: <span class="string">"Petro"</span><br />
+};<br /><br />
+<span class="comment">// вызовет ошибку при попытке создания функции с одинаковыми параметрами</span><br />
+<span class="key">function</span> <span class="name">rename</span>(name, name, surName) {<br />
+&nbsp; &nbsp; <span class="string">"use strict"</span>;<br />
+&nbsp; &nbsp; this.name = name;<br />
+&nbsp; &nbsp; this.surName = surName;<br />
+}<br /><br />
+<span class="comment">// вызовет ошибку при попытке использования чисел в восьмиричной нотации</span><br />
+<span class="key">var</span> today = 013;
+
+</code>
 </body>
 </html>

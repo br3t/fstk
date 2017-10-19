@@ -69,10 +69,18 @@
 	<code class="listing"><span class="key">var</span> car = {};<br />
 car.color = <span class="string">"red"</span>; <span class="comment">// обычное добавление свойства</span><br /><br />
 Object.defineProperty(car, <span class="string">"speed"</span>, { <span class="comment">// добавление свойства с помощью дескриптора</span><br />
-&nbsp; &nbsp; value: 100,	<span class="comment">// значение свойства</span><br />
-&nbsp; &nbsp; configurable: <span class="var">true</span>,	<span class="comment">// возможность удалять свойство</span><br />
-&nbsp; &nbsp; writable: <span class="var">true</span>,	<span class="comment">// возможность изменять значение свойства</span><br />
-&nbsp; &nbsp; enumerable: <span class="var">true</span>	<span class="comment">// "перечисляемость" свойства</span><br />
+&nbsp; &nbsp; value: 100, <span class="comment">// значение свойства</span><br />
+&nbsp; &nbsp; configurable: <span class="var">true</span>, <span class="comment">// возможность удалять свойство (только в use strict)</span><br />
+&nbsp; &nbsp; writable: <span class="var">true</span>, <span class="comment">// возможность изменять значение свойства (только в use strict)</span><br />
+&nbsp; &nbsp; enumerable: <span class="var">true</span> <span class="comment">// "перечисляемость" свойства</span><br />
+});<br />
+Object.defineProperty(car, <span class="string">"carInfo"</span>, {<br />
+&nbsp; &nbsp; get: <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; return <span class="string">"My speed is "</span> + this.speed;<br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; set: <span class="key">function</span>(value) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.speed = value;<br />
+&nbsp; &nbsp; },<br />
 });
 	</code>
 </body>
