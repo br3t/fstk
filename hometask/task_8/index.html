@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Домашнее задание по JavaScript 4. ООП</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Домашнее задание по JavaScript 4. ООП</h1>
+
+	<section id="task-1">
+		<h2>Задача №1</h2>
+		<p>Имеется код:</p>
+		<pre class="hometask">var user = {};
+var newFirstName = "boris";
+var newFirstName2 = "basil";
+function setNewName(newFirtsName) {
+  var capitalizedName = newFirstName[0].toUpperCase() +
+    newFirstName.substr(1);
+  var prettyfiedName = "-=" + capitalizedName + "=-";
+  this.name = prettyfiedName;
+}
+user.setNewName = setNewName;
+user.setNewName(newFirstName); // user.name = "-=Boris=-", OK
+user.setNewName(newFirstName2); // user.name = "-=Boris=-", ???
+</pre>
+		<p>Почему при вызове с другим параметром значение имени пользователя не изменилось? Как исправить код?</p>
+	</section>
+
+	<section id="task-2">
+		<h2>Задача №2</h2>
+		<p>Написать функцию-конструктор, все созданные объекты которой равны между собой.</p>
+		<pre class="hometask">var Clone = function() {...};
+var clone1 = new Clone;
+var clone2 = new Clone;
+clone1 == clone2 // true</pre>
+	</section>
+
+	<section id="task-3">
+		<h2>Задача №3. Спам 2.0</h2>
+		<p>Написать функцию-конструктор, которая принимает один параметр - время в миллисекундах, и записывает в свойства возвращаемого объекта-спамера. У объекта также есть метод <b>startSpam</b>, которому передается строка для спама. После вызова метода спамер с указанным временным промежутком спамит в консоль.Примерный результирующий вывод в консоль с расшифровкой по времени приведен ниже:</p>
+		<pre class="hometask">>var spammer1 = new Spammer(1000);
+>spammer1.startSpam('first');
+first // 00:00:01
+first // 00:00:02
+>var spammer2 = new Spammer(2000);
+>spammer2.startSpam('second');
+first // 00:00:03
+first // 00:00:04
+second // 00:00:04
+first // 00:00:05
+first // 00:00:06
+second // 00:00:06</pre>
+	</section>
+
+	<section id="task-4">
+		<h2>Задача №4</h2>
+		<p>Написать функцию-конструктор, которая принимает три параметра: тип домашнего животного, кличку (строки) и год рождения (целое). У созданного объекта:</p>
+		<ul>
+			<li>нельзя изменить тип и год рождения</li>
+			<li>год рождения не отображается при переборе через for-in</li>
+			<li>свойство <b>info</b> отображает строку вида "ТИП КЛИЧКА: ВОЗРАСТ лет"</li>
+		</ul>
+		<pre class="hometask">var Pet = function() {...};
+var myPet = new Pet("cat", "Barsik", 2015);
+for(var key in myPet) { console.log(key); } // type, name
+myPet.type = "dog";
+myPet.name = "Murzik";
+myPet.birthYear = 1700;
+console.log(myPet.info); // "cat Murzik: 2 years"</pre>
+	</section>
+
+	<section id="task-5">
+		<h2>Задача №5</h2>
+		<p>Написать функцию-конструктор, которая принимает параметр год и записывает его в свойство объекта. У созданного объекта:</p>
+		<ul>
+			<li>при работе как со строкой выводится дополнительная информация, високосный год или нет</li>
+			<li>при работе как с числом выводится только значение года</li>
+		</ul>
+		<pre class="hometask">var Years = function() {...};
+var year = new Years(2017);
+alert(year); // "2017, не високосный"
+2017 - year // 0</pre>
+	</section>
+
+
+	<h2>Указания по выполнению задания</h2>
+	<ul>
+		<li>проект состоит из одного файла <u>script.js</u> с содержащимися внутри JS</li>
+	</ul>
+	<a href="https://br3t.github.io/fstk/hometask/task_8/index.html">Ссылка на полную версию этой страницы</a>
+
+</body>
+</html>
