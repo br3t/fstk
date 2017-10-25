@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Продвинутый JavaScript 1. ООП@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Продвинутый JavaScript 1. Объектно-ориентированное программирование</h1>
+	<h2>Статические свойства и статические методы</h2>
+	<p>Функции, как и любому другому объекту, можно добавлять свойства и методы. Для функций это не имеет особого смысла до тех пор, пока функция не используется как конструктор.</p>
+	<p>Переменные, объявленные свойствами функции-конструктора, называются <b>статическими свойствами</b>, а методы функции-конструктора &mdash; <b>статическими методами</b>. Такие свойства и методы удобны для хранения каких-либо значений, либо осуществления каких-либо действий, общих для всех объектов.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>() {<br />
+&nbsp; &nbsp; this.isOpened = <span class="var">false</span>;<br />
+&nbsp; &nbsp; this.isPermanent = <span class="var">false</span>;<br />
+&nbsp; &nbsp; Connection.count++;<br />
+}<br />
+Connection.count = 0;<br />
+Connection.server = <span class="string">"localhost"</span>;<br />
+Connection.dropConnections = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; this.count = 0;<br />
+};</code>
+	<p>Приведенный выше код автоматически подсчитывает количество созданных объектов-соединений, а с помощью статического метода можно это значение сбросить.</p>
+
+	<h2>Фабричные методы</h2>
+	<p>При написании функции-конструктора может возникнуть необходимость гибкого создания новых объектов. Такой гибкости можно добиться путем создания полиморфного конструктора, однако, чаще всего, код такой функции сложен и плохочитаем. Например, нам необходимо создавать объекты-векторы, задавая координаты в декартовой системе координат.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vector</span> (x, y) {<br />
+&nbsp; &nbsp; this.x = x;<br />
+&nbsp; &nbsp; this.y = y;<br />
+}</code>
+	<p>Но некоторые участки нашей программы работают с полярными координатами и нам бы хотелось создавать новые вектора в них. Т.к. и в этом случае конструктору так же передавалось бы два числа, то реализовать пересчет координат на основании типов переданных аргументов не получилось бы. Единственный способ решить эту проблему &mdash; добавление ещё одного аргумента, в котором бы передавался тип передаваемых координат:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vector</span> (a, b, type) {<br />
+&nbsp; &nbsp; <span class="var">if</span> (type == <span class="string">"decartes"</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// a -> x , b -> y</span> <br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.x = a;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.y = b;<br />
+&nbsp; &nbsp; } <span class="var">else</span> {<br />
+&nbsp; &nbsp; <span class="comment">// a -> r , b -> theta</span> <br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.x = a * Math.cos(b);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.y = a * Math.sin(b);<br />
+&nbsp; &nbsp; } <br />
+}</code>
+	<p>Чем больше различных систем координат мы бы использовали, тем сложнее становилась бы логика выполнения внутри функции. Этого можно избежать, воспользовавшись статическими методами, каждый из которох при создании нового вектора принимал бы свой тип координат. Таким образом для конструктора <b>Vector</b> можно было бы вернуть его прежний код, условившись, что конструктор будет принимать координаты только в декартовой системе, а для полярных координат добавить статический метод:</p>
+	<code class="listing">Vector.createFromPolar = <span class="key">function</span> (r , theta) {<br />
+&nbsp; &nbsp; <span class="key">var</span> x = r * Math.cos(theta);<br />
+&nbsp; &nbsp; <span class="key">var</span> y = r * Math.sin(theta);<br />
+&nbsp; &nbsp; <span class="key">var</span> vector = <span class="var">new</span> Vector(x, y);<br />
+&nbsp; &nbsp; <span class="var">return</span> vector;<br />
+}</code>
+	<p>Для всех других типов координат мы бы просто добавили собственные статические методы для <b>Vector</b>. Такие статические методы, позволяющие гибко настроить создание нового объекта, называются <b>фабричными методами</b>.</p>
+
+	<h2>Метод call</h2>
+	<p>Благодаря тому, что ключевое слово <b>this</b> резольвится в момент выполнения функции, а не заранее, даже в обычной функции, не являющейся методом какого-либо объекта, можно использовать <b>this</b>. Но для использования этой функции в контексте определенного объекта приходилось копировать функцию в метод этого объекта:</p>
+	<code class="listing"><span class="key">var</span> changeConnection = <span class="key">function</span>(newOpened, newPermanent) {<br />
+&nbsp; &nbsp; this.isOpened = newOpened;<br />
+&nbsp; &nbsp; this.isPermanent = newPermanent;<br />
+};<br /><br />
+<span class="key">var</span> myConnection = <span class="var">new</span> Connection;<br />
+myConnection.change = changeConnection;</code>
+	<p>Можно обойтись без копирования; воспользовавшись методом <b>call</b>, можно выполнить функцию, явно указав ей контекст выполнения:</p>
+	<code class="listing">changeConnection.call(myConnection, true, true);</code>
+
+	<h2>«Одалживание метода»</h2>
+	<p>Благодаря тому, что функции, как и любые объекты, могут копироваться в другие переменные и методы, мы можем добавлять ("одалживать") методы от одних объектов другим. Например, нам нужно объединить все аргументы функции в строку и вернуть её:</p>
+	<code class="listing"><span class="var">function</span> <span class="name">toStr</span>() {<br />
+&nbsp; &nbsp; <span class="var">return</span> arguments.join(<span class="string">'->'</span>);<br />
+}<br />
+toStr(1,2,3); <span class="comment">// ошибка!</span></code>
+	<p>Т.к. <b>arguments</b> не является массивом, то у него нет метода <b>join</b> и потому такая функция работать не будет. Зато такой метод есть у "настоящего" массива и его можно скопировать в <b>arguments. Такое копирование называется "одалживанием".</b></p>
+	<code class="listing"><span class="var">function</span> <span class="name">toStr</span>() {<br />
+&nbsp; &nbsp; arguments.join = [].join;<br />
+&nbsp; &nbsp; <span class="var">return</span> arguments.join(<span class="string">'->'</span>);<br />
+}<br />
+toStr(1,2,3); <span class="comment">// 1->2->3</span></code>
+	<p>Это работает, т.к. в своем внутреннем устройстве <b>join</b> производит перебор значений массива, т.е. оперирует индексами и <b>length</b>, а это всё есть и у <b>arguments</b>.</p>
+	<p>Такое копирование не всегда безопасно, т.к. у объекта-"должника" может быть свой метод с таким же именем и специфической реализацией, и этот метод будет потерян. Потому безопаснее использовать <b>call</b></p>
+	<code class="listing"><span class="var">function</span> <span class="name">toStr</span>() {<br />
+&nbsp; &nbsp; <span class="var">return</span> [].join.call(arguments, <span class="string">'->'</span>);<br />
+}<br />
+toStr(1,2,3); <span class="comment">// 1->2->3</span></code>
+
+	<h2>Метод apply</h2>
+	<p>Метод <b>apply</b> аналогичен методу <b>call</b>, единственное отличие: call принимает параметры для передачи в исполняемую функцию по отдельности, а apply &mdash; в виде массива.</p>
+	<code class="listing">changeConnection.call(myConnection, true, true);<br />
+changeConnection.apply(myConnection, [true, true]);</code>
+	<p>Apply удобно использовать, когда количество передаваемых параметров заранее не извесно, и потому проще передать их массивом, чем по отдельности прописывать в call.</p>
+	<p>Apply так же может быть полезен в следующем случае:</p>
+	<code class="listing"><span class="key">var</span> ages = [19, 23, 22, 25];<br />
+console.log( Math.max.apply(null, ages) );</code>
+	<p>Сам по себе массив не имеет метода для нахождения максимального значения, зато такой метод есть у объекта <b>Math</b>. В качестве контекста выполнения можно указать что угодно, т.к. контекст при поиске максимума методом <b>max</b> не учитывается. Max принимает на вход список аргументов, а не массив, но благодаря способности <b>apply</b> "разворачивать" массивы в список аргументов такая конструкция работает.</p>
+
+	<h2>Привязка контекста</h2>
+	<p>У особенности использования <b>this</b> есть обратная сторона: при некоторых условиях контекст может потеряться и тогда функция не будет работать так, как мы ожидаем.</p>
+	<code class="listing"><span class="key">var</span> connect = {<br />
+&nbsp; &nbsp; isOpen: <span class="var">true</span>,<br />
+&nbsp; &nbsp; close: <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.isOpen = <span class="var">false</span>;<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+setTimeout( connect.close, 1000);</code>
+	<p>В <b>setTimeout</b> передалась функция для выполнения, но не передался контекст её выполнения.</p>
+	<p>Вариантов решения этой проблемы несколько. Во-первых, можно добавить функцию-обертку внутрь <b>setTimeout</b>:</p>
+	<code class="listing"><span class="key">var</span> connect = {<br />
+&nbsp; &nbsp; isOpen: <span class="var">true</span>,<br />
+&nbsp; &nbsp; close: <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.isOpen = <span class="var">false</span>;<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+setTimeout( <span class="key">function</span>() { <br />
+&nbsp; &nbsp; connect.close();<br />
+}, 1000);</code>
+	<p>Второй метод решения проблемы &mdash; метод привязки контекста. Для этого определяют дополнительную функцию, которая и будет осуществлять привязку:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">bind</span>(f, context) {<br />
+&nbsp; &nbsp; <span class="var">return</span> <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> f.apply(context, arguments);<br />
+&nbsp; &nbsp; };<br />
+}<br /><br />
+<span class="key">var</span> connect = {<br />
+&nbsp; &nbsp; isOpen: <span class="var">true</span>,<br />
+&nbsp; &nbsp; close: <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.isOpen = <span class="var">false</span>;<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+setTimeout( bind(connect.close, connect), 1000);</code>
+	<p>Если используется любой современный браузер или IE>8, то можно воспрользоваться встроенным методом <b>bind</b>. Он работает так же, как и созданный вручную в предыдущем примере:</p>
+	<code class="listing">setTimeout( connect.close.bind(connect), 1000);</code>
+
+	<h2>Функции-обёртки, декораторы</h2>
+
+
+	
+</body>
+</html>
+
+
+
