@@ -238,11 +238,11 @@
 	<p>С помощью второго наобязательного параметра-функции можно при парсинге обрабатывать свойства результирующего объекта:</p>
 	<code class="listing">
 		<span class="key">var</span> fromJsonString2 = <span class="string">'{"integer": 1.1, "float": 2.2, "more": {"integer": 3.3}}'</span>;<br />
-		<span class="key">var</span> fromJsonObject2 = JSON.parse(fromJsonString2, <span class="var">function</span> (key, value) {<br />
+		<span class="key">var</span> fromJsonObject2 = JSON.parse(fromJsonString2, <span class="key">function</span> (key, value) {<br />
 		&nbsp; &nbsp; <span class="var">if</span>(key==<span class="string">"integer"</span>) {<br />
-		&nbsp; &nbsp; &nbsp; &nbsp; return parseInt(value);<br />
+		&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> parseInt(value);<br />
 		&nbsp; &nbsp; }<br />
-		&nbsp; &nbsp; return value;<br />
+		&nbsp; &nbsp; <span class="var">return</span> value;<br />
 		});<br />
 		<span class="comment">// fromJsonObject2={integer: 1, float: 2.2, more: {integer: 3}}</span>
 	</code>
@@ -296,5 +296,45 @@ user = {<br />
 <span class="key">var</span> today = 013;
 
 </code>
+
+	<h2>Куки</h2>
+	<p>Куки &mdash; это текстовые файлы, которые сайты сохраняют на компьютере пользователя. При повторном заходе на сайт последний может "узнать" пользователя по содержимому куки.</p>
+	<p>В JavaScript куки доступны через <b>document.cookie</b>. При обращении к этому свойству оно выводит строку, в которой переменные перечислены через <b>точку с запятой (;)</b>, название переменной и ее значение разделены знаком <b>равно (=)</b>. При присваивании <b>document.cookie</b> строки создается новая переменная и добавляется в конец списка куки.</p>
+	<code class="listing">alert(document.cookie); <span class="comment">// test=test; test2=test; test3=test</span><br />
+document.cookie = <span class="string">"test4=test";</span><br />
+alert(document.cookie); <span class="comment">// test=test; test2=test; test3=test; test4=test</span>
+	</code>
+	<p>Так как при чтении куки стоит задача получения значения конкретной переменной, то приходится либо писать дополнительный код для парсинга <b>document.cookie</b>, либо воспользоваться готовой функцией:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">getCookie</span>(name) {<br />
+&nbsp; &nbsp; <span class="key">var</span> matches = document.cookie.match(<span class="var">new</span> RegExp(<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="string">"(?:^|; )"</span> + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, <span class="string">'\\$1'</span>) + <span class="string">"=([^;]*)"</span><br />
+&nbsp; &nbsp; ));<br />
+&nbsp; &nbsp; <span class="var">return</span> matches ? decodeURIComponent(matches[1]) : undefined;<br />
+}</code>
+	<p>Запись куки тоже не делается прямым присваиванием, т.к. чаще всего помимо значения необходимо передать дополнительные параметры для переменной.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">setCookie</span>(name, value, options) {<br />
+&nbsp; &nbsp; options = options || {};<br /><br />
+&nbsp; &nbsp; var expires = options.expires;<br /><br />
+&nbsp; &nbsp; <span class="var">if</span> (<span class="var">typeof</span> expires == <span class="string">"number"</span> &amp;&amp; expires) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> d = <span class="var">new</span> Date();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; d.setTime(d.getTime() + expires * 1000);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; expires = options.expires = d;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="var">if</span> (expires &amp;&amp; expires.toUTCString) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; options.expires = expires.toUTCString();<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; value = encodeURIComponent(value);<br /><br />
+&nbsp; &nbsp; <span class="key">var</span> updatedCookie = name + <span class="string">"="</span> + value;<br /><br />
+&nbsp; &nbsp; <span class="var">for</span> (<span class="key">var</span> propName <span class="var">in</span> options) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; updatedCookie += <span class="string">"; "</span> + propName;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> propValue = options[propName];<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span> (propValue !== <span class="var">true</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; updatedCookie += <span class="string">"="</span> + propValue;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; document.cookie = updatedCookie;<br />
+}	
+	</code>
+	<p>Функция принимает три параметра: имя переменной, значение и опции. В опциях указывается домен (domain) и путь (path), для которых доступна переменная, время жизни (expires) и доступ по https (secure).</p>
 </body>
 </html>
