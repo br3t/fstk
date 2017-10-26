@@ -126,9 +126,43 @@ setTimeout( bind(connect.close, connect), 1000);</code>
 	<code class="listing">setTimeout( connect.close.bind(connect), 1000);</code>
 
 	<h2>Функции-обёртки, декораторы</h2>
-
-
-	
+	<p><b>Декоратор</b> &mdash; приём программирования, который позволяет создать функцию-обертку, изменяющую или расширяющую поведение другой функции.</p>
+	<p>Например, необходимо замерять производительность какой-то функции от запуска к запуску, т.е. сохранять время ее выполнения. Можно внести изменения в саму функцию, но это не всегда удобно, особенно, когда функция является частью какой-то библиотеки. В этом случае удобно воспользоваться декоратором:</p>
+	<code class="listing"><span class="key">var</span> stupidF = <span class="key">function</span> () {<br />
+&nbsp; &nbsp; <span class="key">var</span> n = 0;<br />
+&nbsp; &nbsp; <span class="var">for</span> (<span class="key">var</span> i = 0; i < 1e8; i++) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; n = i + 1;<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+<span class="key">var</span> totalTime = 0;<br />
+<span class="key">var</span> decorator = <span class="key">function</span> (f) {<br />
+&nbsp; &nbsp; <span class="var">return</span> <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> startTime = Date.now();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> result = f.apply(<span class="var">this</span>, arguments);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; totalTime += Date.now() - startTime;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> result;<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+stupidF = decorator(stupidF);<br /><br />
+stupidF();<br />
+stupidF();<br />
+console.log(totalTime);</code>
+	<p>Другой пример использования декоратора &mdash; форматирование вывода функции:</p>
+	<code class="listing"><span class="key">var</span> multiply = <span class="key">function</span> (a, b) {<br />
+&nbsp; &nbsp; <span class="var">return</span> a * b;<br />
+};<br /><br />
+<span class="key">var</span> decorOutput = <span class="key">function</span> (f) {<br />
+&nbsp; &nbsp; <span class="var">return</span> <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> result = f.apply(<span class="var">this</span>, arguments);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; result = parseFloat( result.toFixed(2) );<br />
+&nbsp; &nbsp; &nbsp; &nbsp; result = result.toString().replace(<span class="string">'.'</span>, <span class="string">','</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> result;<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+multiply = decorOutput(multiply);<br /><br />
+multiply(.22, .33);<span class="comment">// 0,07</span><br />
+multiply(.44, .33);<span class="comment">// 0,15</span></code>
+	<p>Таким образом можно модифицировать поведение функции, не меняя код самой функции. Можно применять несколько декораторов последовательно.</p>
 </body>
 </html>
 
