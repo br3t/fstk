@@ -16,11 +16,15 @@
 };
 var runner1 = new Runner;
 var runner2 = new Runner;
+
 Runner.giveMedal(runner1, 'Gold, 1000 m');
 Runner.giveMedal(runner1, 'Silver, 500 m');
-console.log(runner1.medals); // 1,2
+Runner.giveMedal(runner1, 'Gold, 1000 m');
+console.log(runner1.medals); // 1,2,1
+
 Runner.giveMedal(runner2, 'Silver, 500 m');
-console.log(runner1.medals); // 2</pre>
+Runner.giveMedal(runner2, 'Silver, 800 m');
+console.log(runner2.medals); // 2,3</pre>
 	</section>
 
 	<section id="task-2">
