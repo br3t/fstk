@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Power Bank</title>
+	<style type="text/css">
+		#powerbank {
+			width: 600px;
+			height: 210px;
+			line-height: 210px;
+			border: 5px solid;
+			position: relative;
+			text-align: center;
+			font-family: Courier;
+		}
+		#value {
+			font-size: 60px;
+			text-align: center;
+			display: block;
+		}
+		#in,
+		#out1,
+		#out2 {
+			position: absolute;
+		    top: 10px;
+		    width: 50px;
+		    overflow: hidden;
+		    outline: 3px solid;
+		}
+		#in {
+		    left: 10px;
+		    height: 190px;
+		}
+		#out1 {
+		    right: 10px;
+		    height: 90x;
+		    line-height: 90px;
+		}
+		#out2 {
+			height: 90px;
+			line-height: 90px;
+			top: 110px;
+			right: 10px;
+		}
+		#in.yes,
+		#out1.yes,
+		#out2.yes {
+			background: #000;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<h1>PowerBank</h1>
+	<div id="powerbank">
+		<span id="in">in</span>
+		<span id="value">100%</span>
+		<span id="out1">out1</span>
+		<span id="out2">out2</span>
+	</div>
+</body>
+</html>
