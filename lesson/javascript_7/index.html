@@ -4,6 +4,15 @@
 	<meta charset="utf-8" />
 	<title>Продвинутый JavaScript 2. ООП@ Курс Frontend-разработки</title>
 	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		q {
+			padding: 20px 30px;
+			border-left: 2px solid;
+			background: #FFF;
+			display: block;
+			font-style: italic;
+		}
+	</style>
 </head>
 <body>
 	<h1>Продвинутый JavaScript 2. Объектно-ориентированное программирование</h1>
@@ -14,7 +23,7 @@
 	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>() {<br />
 &nbsp; &nbsp; this.isOpened = <span class="var">false</span>;<br />
 &nbsp; &nbsp; this.isPermanent = <span class="var">false</span>;<br />
-&nbsp; &nbsp; this.toggleState = <span class="key">function</span>(newState) {<br />
+&nbsp; &nbsp; this.toggleState = <span class="key">function</span>(<span class="more">newState</span>) {<br />
 &nbsp; &nbsp; &nbsp; &nbsp; this.isOpened = newState;<br />
 &nbsp; &nbsp; }<br />
 }<br />
@@ -33,16 +42,16 @@
 	<h2>Геттеры и сеттеры</h2>
 	<p>Для большинства публичных свойств могут быть ограничения: по типу значения, по абсолютному значению (для числовых свойств) и так далее. В силу того, что свойства публичные, нет никакого контроля над там, чтобы значения таких свойст задавались с учетом ограничений. Потому для обеспечения такого контроля свойства делаются приватными и для каждого свойства задается пара публичных методов для установки и считывания значения таких свойств.</p>
 	<p>В нашем классе соединение можно перебросить на любой порт в любой точке программы.</p>
-	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>(port) {<br />
+	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>(<span class="more">port</span>) {<br />
 &nbsp; &nbsp; this.port = port;<br />
 }<br />
 <span class="key">var</span> myConnection = <span class="key">new</span> Connection(80);<br />
 ...<br />
-myConnection.port = <span class="key">666</span>; <span class="comment">// перебросили порт "вручную"</span></code>
+myConnection.port = 666; <span class="comment">// перебросили порт "вручную"</span></code>
 	<p>Но соединение на таком порту может не поддерживаться нашим <b>Connection</b>, потому следует добавить сеттер для корректной установки порта.</p>
-	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>(port) {<br />
+	<code class="listing"><span class="key">function</span> <span class="name">Connection</span>(<span class="more">port</span>) {<br />
 &nbsp; &nbsp; <span class="comment">// port в LE конструктора</span><br />
-&nbsp; &nbsp; this.setPort = <span class="key">function</span>(newPort) {<br />
+&nbsp; &nbsp; this.setPort = <span class="key">function</span>(<span class="more">newPort</span>) {<br />
 &nbsp; &nbsp; &nbsp; &nbsp; if([80,81,20,21].indexOf(newPort) == -1) {<br />
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">throw new</span> Error(<span class="string">"Choose correct port number!"</span>);<br />
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span>;<br />
@@ -51,20 +60,192 @@ myConnection.port = <span class="key">666</span>; <span class="comment">// пе�
 &nbsp; &nbsp; }<br />
 }<br />
 <span class="key">var</span> myConnection = <span class="key">new</span> Connection(80);<br />
-...<br />
+<span class="comment">// ...</span><br />
 myConnection.setPort(81); <span class="comment">// проверили и поменяли, всё ок</span><br />
 myConnection.setPort(666); <span class="comment">// Ошибка</span></code>
 	<p>Чтобы получать значение приватного свойства нужно добавить метод-геттер.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Connection</span> (<span class="more">port</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// port в LE конструктора</span><br />
+&nbsp; &nbsp; <span class="comment">// ...</span><br />
+&nbsp; &nbsp; this.getPort = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> port;<br />
+&nbsp; &nbsp; }<br />
+}<br />
+<span class="key">var</span> myConnection = <span class="key">new</span> Connection(80);<br />
+<span class="comment">// ...</span><br />
+myConnection.getPort(); <span class="comment">// 80</span></code>
+	<h3>Геттер-сеттер</h3>
+	<p>Иногда бывает удобно не писать по два отдельных метода на каждое приватное свойство, а использовать один метод. В это случае его поведение определяется аргументами, передаваемыми при вызове: вызов без аргумента сработает как геттер, а передача аргумента сохранит его как новое значение приватного свойства, т.е. получится сеттер.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Connection</span> (<span class="name">port</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// port в LE конструктора</span><br />
+&nbsp; &nbsp; this.forPort = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span>(arguments.length > 0) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; port = arguments[0];<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return true</span>;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> port;<br />
+&nbsp; &nbsp; }<br />
+};<br />
+	</code>
 
 	<h2>Функциональное наследование</h2>
-	<p></p>
+	<p>Наследование &mdash; одна из парадигм объектно-ориентированного программирования. Механизм наследования используют в том случае, когда необходимо описать классы для похожих между собой объектов. Вместо того, чтобы создавать каждый класс с нуля, для всех классов выделяют общие свойства и объединяют их в родительском классе.</p>
+	<p>Например, нам необходимо описать классы для автомобилей и мотоциклов.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Car</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> material = <span class="string">"metal"</span>;<br />&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(<span class="string">"Beep!"</span>); };<br />
+}<br /><br />
+<span class="key">function</span> <span class="name">Bike</span> (<span class="more">wheels,   maxSpeed, type</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> material = <span class="string">"metal"</span>;<br />
+&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.type = type;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(<span class="string">"Beep!"</span>); };<br />
+}</code>
+	<p>Одинаковые свойства и методы удобно выделить в отдельный класс <tt>Vehicle</tt>.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vehicle</span> (<span class="more">wheels, maxSpeed</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> material = <span class="string">"metal"</span>;<br />
+&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(<span class="string">"Beep!"</span>); };<br />
+}</code>
+	<p>Для наследования от <tt>Vehicle</tt> необходимо вызвать его конструкторе наследующего класса, передав в качестве контекста <tt>this</tt>:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Car</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; Vehicle.apply(this, arguments); <span class="comment">// наследование</span><br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+}<br /></code>
+	<p>Использование <tt>arguments</tt> позволяет "прокинуть" аргументы в конструктор класса-родителя, присвоив свойствам результирующего объекта нужные значения.</p>
+	<p>Такое наследование называется <b>функциональным</b>, т.к. оно происходит через запуск функции-конструктора родительского класса.</p>
+	<p>Если мы попытаемся получить значение приватного свойства родительского класса, то такой код вызовет ошибку.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Car</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; Vehicle.apply(this, arguments);<br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+&nbsp; &nbsp; this.getMaterial = <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(material); <span class="comment">// ошибка!</span><br />
+&nbsp; &nbsp; };<br />
+}<br /></code>
+	<p>Ошибка возникает потому, что приватное свойство <tt>metarial</tt> в виде локальной переменной осталось в Lexical Environment класса-родителя <tt>Vehicle</tt> и оно недоступно за его пределами. В этом случае принято использовать <b>защищенные</b> свойства.</p>
 
 	<h2>Защищённые свойства</h2>
-	<p></p>
+	<p>Чтобы сохранить доступ к свойству, его нужно сделать публичным, т.е. его необходимо добавить в <tt>this</tt>. Для того, чтобы показать, что свойство только внутреннего использования, в начало имени такого свойства добавляют символ нижнего подчеркивания <b>_</b>.</p>
+	<p>В большинстве языков со строгой типизацией есть возможность программно создать <b>защищенные свойства</b>, доступ к которым имеется у методов текущего или смежных классов, но нет прямого доступа из глобальной области видимости. В JavaScript версии ES2015 такой возможности нет, потому использование нижнего подчеркивания &mdash; это просто договоренность между разработчиками, что не следует напрямую обращаться к этому свойству.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vehicle</span> (<span class="more">wheels, maxSpeed</span>) {<br />
+&nbsp; &nbsp; this._material = <span class="string">"metal"</span>;<br />
+&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(<span class="string">"Beep!"</span>); };<br />
+}<br />
+<span class="key">function</span> <span class="name">Car</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; Vehicle.apply(this, arguments);<br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+&nbsp; &nbsp; this.getMaterial = <span class="key">function</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(this._material); <span class="comment">// работает</span><br />
+&nbsp; &nbsp; };<br />
+}<br />
+<span class="key">var</span> myCar = <span class="var">new</span> Car(4, 180, 3);<br />
+myCar.getMaterial(); <span class="comment">// хорошо</span><br />
+myCar._material; <span class="comment">// плохо</span><br /></code>
 
 	<h2>Переопределение методов (полиморфизм)</h2>
-	<p></p>
-</h2>
+	<p>Т.к. наш класс <tt>Vehicle</tt> описывает общие свойства для различных средств передвижения, то мы можем унаследовать от него класс практически любого транспортного средства. Но для некоторых методов может возникнуть необходимость переопределить или расширить поведение, унаследованное от родительского класса.</p>
+	<p>Для переопределения достаточно переназначить функцию соответствующего метода:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vehicle</span> (<span class="more">wheels, maxSpeed</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.sound = <span class="string">"Beep!"</span>;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(this.sound); };<br />
+}<br />
+<span class="key">function</span> <span class="name">Bus</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; Vehicle.apply(this, arguments);<br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span> () { <span class="comment">// переопределяем</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Tuuuuu!"</span>);<br />
+&nbsp; &nbsp; };<br />
+}<br />
+<span class="key">var</span> myBus = <span class="var">new</span> Bus(8, 100, 42);<br />
+myBus.signal(); <span class="comment">// "Tuuuuu!"</span><br /></code>
+	<p>Если поведение унаследованного метода надо расширить, то делают его "декорирование" (не настоящее декорирование, но по смыслу похоже на него):</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Vehicle</span> (<span class="more">wheels, maxSpeed</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> maxSpeed = maxSpeed || 0;<br />
+&nbsp; &nbsp; this.wheels = wheels;<br />
+&nbsp; &nbsp; this.sound = <span class="string">"Beep!"</span>;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span>() { alert(this.sound); };<br />
+}<br />
+<span class="key">function</span> <span class="name">Scooter</span> (<span class="more">wheels, maxSpeed, passengers</span>) {<br />
+&nbsp; &nbsp; Vehicle.apply(this, arguments);<br />
+&nbsp; &nbsp; this.passengers = passengers;<br />
+&nbsp; &nbsp; <span class="key">var</span> savedSignal = this.signal;<br />
+&nbsp; &nbsp; this.signal = <span class="key">function</span> () { <span class="comment">// дополняем</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.blink();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; savedSignal.apply(this);<br />
+&nbsp; &nbsp; };<br />
+&nbsp; &nbsp; this.blink = <span class="key">function</span> () { <br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Lights is turned off!"</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Lights is turned on!"</span>);<br />
+&nbsp; &nbsp; };<br />
+}<br />
+<span class="key">var</span> myScooter = <span class="var">new</span> Scooter(2, 80, 1);<br />
+myScooter.signal(); <span class="comment">// "Beep!" + blink()</span><br /></code>
+	<p>При вызове скопированной функции необходимо явно указывать контекст <tt>this</tt>, иначе простой запуск <tt>savedSignal()</tt> выведет <tt>undefined</tt> из-за потери контекста.</p>
+	
+	<h2>Опредение типа данных</h2>
+	<h3>Оператор typeof</h3>
+	<p><b>tyoeof</b> хорошо справляется с определением типа, если мы имеем дело с примитивом. Однако он беспомощен, если работает с объектом. Исключение есть только для функций, а вот отличить массив от обычного объекта <tt>typeof</tt> не может.</p>
+	<code class="listing"><span class="var">typeof</span> <span class="key">function</span>() {} <span class="comment">// function</span><br />
+<span class="var">typeof</span> {} <span class="comment">// object</span><br />
+<span class="var">typeof</span> [] <span class="comment">// object</span><br /></code>
+
+	<h3>Проверка на массив</h3>
+	<p>Специально для массивов в ES5 был добавлен метод проверки массивов <tt>Array.isArray()</tt>:</p>
+	<code class="listing">Array.isArray(1); <span class="comment">// false</span><br />
+Array.isArray([]); <span class="comment">// true</span><br />
+Array.isArray({0:1, length:1}); <span class="comment">// false</span><br /></code>
+	<p>Очевидно, использование метода ограничено использованием только для проверки массивов.</p>
+
+	<h3>Скрытое свойство [[Class]]</h3>
+	<p>Во всех встроенных объектах есть специальное свойство <b>[[Class]]</b>, в котором хранится информация о его типе или конструкторе. Квадратные скобки указывают на то, что свойство напрямую извне, но получить его можно, воспользовавшись методом <tt>toString</tt> объекта <tt>Object</tt>.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">classOf</span> (<span class="more">obj</span>) {<br />
+&nbsp; &nbsp; <span class="var">return</span> {}.toString.call(obj);<br />
+}<br />
+classOf(1); <span class="comment">// [object Number]</span><br />
+classOf({}); <span class="comment">// [object Object]</span><br />
+classOf([]); <span class="comment">// [object Array]</span><br /></code>
+	<p>Недостатком нашего <tt>classof</tt> является невозможность опрделить принадлежность какому-либо классу.</p>
+
+	<h3>Оператор instanceof</h3>
+	<p>Для проверки принадлежности объекта какому-либо конструктору можно воспользоваться оператором <tt>instanceOf</tt>:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">JustConstructor</span>() {};<br />
+<span class="key">var</span> fromConstructor = <span class="var">new</span> JustConstructor;<br />
+<span class="key">var</span> vagrant = {};<br /><br />
+fromConstructor <span class="var">instanceof</span> JustConstructor; <span class="comment">// true</span><br />
+vagrant <span class="var">instanceof</span> JustConstructor; <span class="comment">// false</span><br />
+fromConstructor <span class="var">instanceof</span> Object; <span class="comment">// true</span><br />
+vagrant <span class="var">instanceof</span> Object; <span class="comment">// true</span><br />
+	</code>
+	<p>Недостатком этого оператора является то, что мы можем только узнать, является ли конкретный объект сущностью указанного класса, но не можем узнать название класса для конкретного объекта. Более того, <tt>instanceof</tt> возвращает инфомацию с учетом наследования, т.е. проверка <tt>anyObject instanceof Object</tt> всегда вернет <tt>true</tt> как для объекта-из-конструктора, так для объекта-"бродяги".</p>
+
+	<h3>Утиная типизация</h3>
+	<p>Еще один подход грубого определения типа называется <b>утиной типизацией</b> и основан на пословице:</p>
+	<q>Если это выглядит как утка, плавает как утка и крякает как утка, то это, возможно, и есть утка.</q>
+	<p>Метод определяет не тип объекта, а доступные свойства/методы объекта, и если искомые свойства/методы присутствуют, то делают вывод о типе объекта.</p>
+	<code class="listing"><span class="key">var</span> list = [];<br />
+<span class="var">if</span> (list.slice &amp;&amp; list.forEach) {<br />
+&nbsp; &nbsp; console.log(<span class="string">"Похоже на массив"</span>);<br />
+}</code>
+	<p>Для утиной типизации можно использовать более универсальную функцию, первый парметр которой &mdash; объект для проверки, а остальные &mdash; свойства или методы для проверки:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">duckTyping</span>() {<br />
+&nbsp; &nbsp; <span class="key">var</span> objToTest = arguments[0];<br />
+&nbsp; &nbsp; <span class="var">for</span> (<span class="key">var</span> i = 1; i < arguments.length; i++) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span> (!(arguments[i] <span class="var">in</span> objToTest)) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return false</span>;<br />	
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="var">return true</span>;<br />
+}<br /><br />
+duckTyping([], <span class="string">'slice'</span>, <span class="string">'forEach'</span>); <span class="comment">// true</span>
+</code>
 
 </body>
 </html>

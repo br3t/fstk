@@ -57,3 +57,7 @@ pre.hometask {
 .more2 {
 	color: #AE81FF;
 }
+tt {
+	background: #ee8;
+	padding:0 5px;
+}
