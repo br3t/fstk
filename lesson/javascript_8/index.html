@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Продвинутый JavaScript 3. ООП@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		q {
+			padding: 20px 30px;
+			border-left: 2px solid;
+			background: #FFF;
+			display: block;
+			font-style: italic;
+		}
+	</style>
+</head>
+<body>
+	<h1>Продвинутый JavaScript 3. Объектно-ориентированное программирование</h1>
+	<h2>Прототип объекта</h2>
+	<p>При использовании наследования в функциональном стиле наборы методов копируются в каждый объект и для большого количества методов такие объекты могут занимать слишком много памяти. Решением данной проблемы является использование прототипного наследования.</p>
+	<p>У каждого объекта есть скрытое свойство <b>[[Prototype]]</b>, которое работает следующим образом - при обращении к какому-либо свойству объекта оно сначала ищется в самом объекте, если его там нет - в прототипе объекта, если нет и там - в прототипе прототипа объекта и т.д. до тех пор пока свойство не будет найдено, либо обращение вернет undefined. Это называется <b>цепочкой прототипов</b>. Наверху цепочки прототипов всегла находится <em>null</em>, который не имеет прототипа.</p>
+	<p>В браузере свойство [[Prototype]] доступно через <b>__proto__</b>, но это нестандартное свойство и оно доступно не во всех браузерах, потому использоть его явно - плохая практика.</p>
+	<p>Работу цепочки прототипов с использованием __proto__ можно изобразить следующим образом:</p>
+	<code class="listing"><span class="key">var</span> creature = {<br />
+&nbsp; &nbsp; canBreathe: <span class="var">true</span><br />
+};<br />
+<span class="key">var</span> animal = {<br />
+&nbsp; &nbsp; head: 1<br />
+};<br />
+<span class="key">var</span> dog = {<br />
+&nbsp; &nbsp; legs: 4<br />
+};<br />
+<br />
+<span class="comment">// прототипное наследование через __proto__</span><br />
+animal.__proto__ = creature;<br />
+dog.__proto__ = animal;<br />
+<br />
+dog.legs; <span class="comment">// 4, собственное свойство</span><br />
+dog.head; <span class="comment">// 1, берется из animal</span><br />
+dog.canBreathe; <span class="comment">// true, берется из creature</span><br />
+dog.canSwim; <span class="comment">// undefined, не найдено ни в объекте, ни в цепочке прототипов</span><br />
+	</code>
+	<p>Иногда говорят, что прототип - это "резервное хранилище" свойств и методов объекта.</p>
+	<p>Свойства из прототипа берутся только для чтения. При попытке записи или удаления будет изменено свойство объекта, а не прототипа. <b>Но</b> в случае, когда свойства являются массивами или объектами, при изменении внутри объекта могут меняться свойства прототипа.</p>
+	<p>При наличии свойства у объекта и у прототипа с одинаковым именем при обращении к этому свойству будет браться собственное свойство объекта, т.к. в цепочке прототипов оно будет идти раньше свойства прототипа. Такое явление называется <em>"затенением свойства" (property shadowing)</em>. Тоже самое происходит с методами &mdash; <em>переопределение методов (method overriding)</em>.</p>
+
+	<h2>Исользование hasOwnProperty</h2>
+	<p>Одним из недостатков использования прототипов является то, что без использования специального кода невозможно отделить собственные свойства объекта от свойств из прототипа.</p>
+	<code class="listing"><span class="var">for</span> (<span class="key">var</span> prop <span class="var">in</span> dog) {<br />
+&nbsp; &nbsp; console.log(prop);<br />
+}<br />
+<span class="comment">// legs, head, canBreathe</span></code>
+	<p>Для проверки принадлежности свойства объекту используют метод <b>hasOwnropery</b>.</p>
+	<code class="listing">dog.hasOwnProperty(<span class="string">"legs"</span>); <span class="comment">// true</span><br />
+dog.hasOwnProperty(<span class="string">"head"</span>); <span class="comment">// false</span><br />
+dog.hasOwnProperty(<span class="string">"canBreathe"</span>); <span class="comment">// false</span></code>
+
+	<h2>Использование Object.create</h2>
+	<p>В ECMAScript 5 был добавлен метод для определения прототипов объектов <b>Object.create</b>.</p>
+	<code class="listing"><span class="key">var</span> creature = {<br />
+&nbsp; &nbsp; canBreathe: <span class="var">true</span><br />
+};<br />
+<span class="comment">// прототипное наследование через Object.create</span><br />
+<span class="key">var</span> animal = Object.create(creature);<br />
+animal.head = 1;<br /><br />
+<span class="key">var</span> dog = Object.create(animal);<br />
+dog.legs = 4;</code>
+	<p>При наследовании объект-объект следует использовать метод Object.create, а не явное указание __proto__.</p>
+
+	<h2>Object.create(null)</h2>
+	<p>Т.к. при создании объектов в цепочке прототипов всегда присутствует <em>Object</em>, то каждый объект "получает" все методы этого объекта: <em>toString, valueOf</em> и т.д. Такое поведение не всегда является желательным. Например, мы используем объекты как простые хранилища данных, и нам необходимо проверить наличие произвольных свойств.</p>
+	<code class="listing"><span class="key">var</span> dog = { legs: 4 };<br /><br />
+<span class="string">"legs"</span> <span class="var">in</span> dog; <span class="comment">// true, ожидаемо</span><br />
+<span class="string">"toString"</span> <span class="var">in</span> dog; <span class="comment">// true, но нам это не нужно</span></code>
+	<p>Можно добавлять <em>hasOwnProperty</em> для каждой проверки, но можно поступить проще. По сути, нам нужен объект с пустым прототипом и мы можем создать такой объект с помощью <em>Object.create</em> и указанием в качестве объекта-прототипа <em>null</em>:</p>
+	<code class="listing"><span class="key">var</span> dog = Object.create(null);<br />
+dog.legs = 4;<br /><br />
+<span class="string">"legs"</span> <span class="var">in</span> dog; <span class="comment">// true</span><br />
+<span class="string">"toString"</span> <span class="var">in</span> dog; <span class="comment">// false</span></code>
+
+	<h2>Создание прототипов объекта через конструктор</h2>
+	<p>Для создания прототипа в конструкторе объекта самое простое, что можно сделать &mdash; указать <em>__proto__</em> для <em>this</em>:</p>
+	<code class="listing"><span class="key">var</span> animal = {<br />
+&nbsp; &nbsp; head: 1<br />
+};<br /><br />
+<span class="key">var</span> Dog = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; this.legs = 4;<br />
+&nbsp; &nbsp; this.__proto__ = animal;<br />
+}<br /><br />
+<span class="key">var</span> myDog = <span class="var">new</span> Dog();</code>
+	<p>Но <em>__proto__</em> &mdash; нестандартное свойство и оно доступно не во всех браузерах, потому используется свойство <b>prototype</b> функции-конструктора:</p>
+	<code class="listing"><span class="key">var</span> animal = {<br />
+&nbsp; &nbsp; head: 1<br />
+};<br /><br />
+<span class="key">var</span> Dog = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; this.legs = 4;<br />
+}<br />
+Dog.prototype = animal;<br /><br />
+<span class="key">var</span> myDog = <span class="var">new</span> Dog();</code>
+	<p>Свойство <em>prototype</em> имеет смысл только в случае, если функция используется как конструктор.</p>
+
+	<h2>Свойство constructor</h2>
+	<p>При создании функции в ее <em>prototype</em> создается свойство <b>constructor</b>, которое является ссылкой на текущую функцию:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Dog</span>() {<br />
+&nbsp; &nbsp; this.legs = 4;<br />
+};<br />
+Dog.prototype.constructor == Dog; <span class="comment">// true</span><br /><br />
+<span class="key">var</span> myDog = <span class="var">new</span> Dog;<br />
+<span class="key">var</span> yourDog = <span class="var">new</span> Dog.prototype.constructor;<br />
+<span class="key">var</span> hisDog = <span class="var">new</span> DmyDog.__proto__.constructor;<br /></code>
+	<p>Данное свойство можно использовать для создания объектов такого же типа, как и имеющийся, да не зная, какой именно была функция-конструктор.</p>
+	<p>Для сохранения значения этого свойства обычно не перезаписывают весь <em>prototype</em>, а просто добавляют ему необходимые свойства или методы:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Dog</span>() {<br />
+&nbsp; &nbsp; this.legs = 4;<br />
+};<br />
+Dog.prototype.head = 1;<br /><br />
+<span class="key">var</span> myDog = <span class="var">new</span> Dog;</code>
+
+	<h2>Свой Object.create</h2>
+	<p>Object.create доступен только для браузеров с поддержкой ES5, потому имеет смысл написать кроссбраузерную функцию прототипного наследования:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">extend</span>(<span class="string">proto</span>) {<br />
+&nbsp; &nbsp; <span class="var">if</span> (Object.create) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> Object.create(proto);<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="key">var</span> F = <span class="key">function</span>() {};<br />
+&nbsp; &nbsp; F.prototype = proto;<br />
+&nbsp; &nbsp; <span class="key">var</span> object = <span class="var">new</span> F;<br />
+&nbsp; &nbsp; <span class="var">return</span> object;<br />
+}<br /></code>
+
+	<h2>Встроенные "классы" в JavaScript</h2>
+	<p>Объекты можно создавать как с помощью литеральной записи, так и с помощью <em>new Object</em>. Аналогичное справедливо для массивов, строк, функций и чисел. Таком образом о <em>Object, Array, Function, Number, String</em> можно говорить как о конструкторах или как о "встроенных классах".</p>
+	<p>Например, следующий код работает потому, что создание объекта через <em>{}</em> аналогично его созданию через <em>new Object</em> и потому новый объект через прототип получаетс свойства и методы от <em>Object</em></p>
+	<code class="listing"><span class="key">var</span> myDog = {<br />
+&nbsp; &nbsp; legs: 4<br />
+};<br />
+<span class="string">"legs"</span> <span class="var">in</span> myDog; <span class="comment">// true</span><br />
+myDog.hasOwnProperty(<span class="string">"legs"</span>); <span class="comment">// true</span><br />
+<span class="string">"hasOwnProperty"</span> <span class="var">in</span> myDog; <span class="comment">// true</span><br />
+myDog.hasOwnProperty(<span class="string">"hasOwnProperty"</span>); <span class="comment">// false</span></code>
+	<p>"Встроенные классы" связаны между собой прототипами:</p>
+	<code class="listing">console.dir( [1,2,3,4] );<br />
+console.dir( {legs: 4} );<br />
+console.dir( <span class="key">function</span>() {} );<br /></code>
+	<p>Таким образом, все объекты наследуют от <em>Object</em>.</p>
+	<p>При использовании примитивов вместе с методами будут создаваться временные объекты соответствующего типа (<em>Number, String, Boolean</em>), искаться и выполняться нужные методы в цепочке прототипов, а затем временный объект будет уничтожаться. Явно использовать конструкторы Number, String и Boolean не имеет смысла.</p>
+
+	<h2>Класс через прототип</h2>
+	<p>Для создания класса через прототип создается функция-конструктор, а все методы помещаются в прототип функции-конструктора:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">Dog</span>() {<br />
+&nbsp; &nbsp; this.legs = 4;<br />
+&nbsp; &nbsp; this.head = 1;<br />
+};<br />
+Dog.prototype.bark = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; alert(<span class="string">"Woof1"</span>);<br />
+};<br /><br />
+<span class="key">var</span> myDog = <span class="var">new</span> Dog;</code>
+	<p>Таким образом все объекты используют методы из прототипа, а не каждый объект &mdash; свои методы, в результате чего на каждый из объектов выделяется меньше памяти. Но при создании классов в прототипном стиле нет возможности использовать замыкания и, соответственно, приватные свойства - их приходится эмулировать через защищенные, которые, в свою очередь, тоже эмуляция. Также, если в прототипном стиле происходит обращение к несуществующему свойству, то оно будет искаться по всей цепочке прототипов, и если последняя длинная, то такой поиск будет занимать больше времени.</p>
+
+	<h2>Расширение базовых прототипов</h2>
+	<p>Полезные частоиспользуемые функции было бы удобно вынести в прототип встроенного класса. Но это плохая практика, т.к. это нарушает принцип инкапсуляции и это целесообразно делать только в том случае, если необходимо добавить метод, который есть в спецификации, но нет в конкретной версии браузера.</p>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+</body>
+</html>
+
+
+
