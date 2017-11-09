@@ -345,7 +345,7 @@ alert(document.cookie); <span class="comment">// test=test; test2=test; test3=te
 		<li><b>логические</b> &mdash; возникающие, когда программа работает, но работает неправильно и результат работы программы не тот, который ожидается</li>
 	</ul>
 	<p>Ошибки в логике программы хуже поддаются обнаружению именно в связи с тем, что программа продолжает свою работу. При возникновении синтаксической ошибки или ошибки времени выполнения  программа чаще всего "крашится" и выкидывает сообщение с ошибкой в консоль, в результате чего проблему можно локализовать и решить.</p>
-	<h3>Основные типы перехватываемых ошибок</h3>
+	<h3>Основные типы ошибок</h3>
 	<ul>
 		<li><b>SyntaxError</b> - ошибка синтаксиса, например, пропуск символа <tt>var i = {;</tt></li>
 		<li><b>ReferenceError</b> - ошибка ссылки, например, обращение к несуществующей переменной <tt>a++</tt></li>
@@ -359,5 +359,40 @@ alert(document.cookie); <span class="comment">// test=test; test2=test; test3=te
 } <span class="var">catch</span>(e) {<br />
 &nbsp; &nbsp; console.log(<span class="string">"Возникла ошибка "</span>, e);<br />
 }</code>
+	<p>Использование <tt>try..catch</tt> позволяет избежать полного прекращения работы скрипта, т.е. если ошибка возникла внутри этого блока, то код за пределами блока продолжит выполнение. Перехват возможен только для ошибок времени выполнения, синтаксические ошибки прекратят работу скрипта в любом случае.</p>
+	<p>Нет необходимости заворачивать вызов каждой функции в <tt>try..catch</tt>. Используйте её только в тех случаях, если предполагается изменение поведения функции, чтобы это изменение не вызвало поломку всей программы, либо тогда, когда вы не можете быть уверены в содержимом каких-либо объектов, например, при манипуляции с элементами DOM на странице, получении данных с сервера или пользовательского ввода.</p>
+	<h3>Информация об ошибке</h3>
+	<p>При возникновении ошибки в блок <b>catch</b> попадает объект ошибки под именем, указанным в качестве аргумента. Если блок обработки ошибки не содержит никакой сложной логики и большого количества строк кода, то в качестве имени аргумента допустимо использовать просто <b>e</b>. Для примера выше объект ошибки будет иметь следующий вид:</p>
+	<code class="listing">{<br />
+&nbsp; &nbsp; name: <span class="string">"ReferenceError"</span>,<br />
+&nbsp; &nbsp; message: <span class="string">"bad_code is not defined"</span>,<br />
+&nbsp; &nbsp; stack: <span class="string">"ReferenceError: bad_code is not defined↵    at file:///.../javascript_4/index_1.html:370:5"</span><br />
+}</code>
+	<p>В свойстве <b>name</b> содержится тип ошибки, в <b>message</b> &mdash; содержимое ошибки, а в <b>stack</b> &mdash; порядок вызова функций до возникновения ошибки, а также название файла и номер строки кода, вызвавшего возникновение ошибки.</p>
+	<h3>Блок finally</h3>
+	<p>У конструкции <tt>try..catch</tt> есть необязаетльный блок <tt>finally</tt>, используемый для кода, который должен выполниться независимо от того, возникла ошибка или нет. Синтаксис:</p>
+		<code class="listing"><span class="var">try</span> {<br />
+&nbsp; &nbsp; bad_code();<br />
+} <span class="var">catch</span>(e) {<br />
+&nbsp; &nbsp; console.log(<span class="string">"Возникла ошибка "</span>, e);<br />
+} <span class="var">finally</span> {<br />
+&nbsp; &nbsp; console.log(<span class="string">"Вот так вот"</span>);<br />
+}</code>
+	<p>Поведение "выполниться в любом случае" справедливо даже для случаев, когда блок <tt>try..catch</tt> находится в какой-то функции и внутри блока есть <tt>return</tt>.</p>
+	<code class="listing"><span class="key">function</span> <span class="name">provideData</span>() {<br />
+&nbsp; &nbsp; <span class="key">var</span> connect;<br />
+&nbsp; &nbsp; <span class="var">try</span> {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; connect = server.connect();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">var</span> data = connect.getData();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> data;<br />
+&nbsp; &nbsp; } <span class="var">catch</span>(e) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Can`t get data from server"</span>);<br />
+&nbsp; &nbsp; } <span class="var">finally</span> {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; connect.close();<br />
+&nbsp; &nbsp; }<br />
+}</code>
+	<h3>Использование собственных ошибок</h3>
+	<p>При обработке ошибок, связанных с обработкой "внешних" данных (данные сервера, пользовательский ввод, DOM-элементы страницы) может возникнуть необходимость сгенерировать собственную ошибку для дальнейшего проброса обработчику ошибок. Для этого используют оператор <b>throw</b>. Для корректной обработки ошибки в качестве аргумента для <tt>throw</tt> передают объект ошибки, который можно создать либо с помощью конструктора <tt>Error</tt>, либо с помощью более специфических конструкторов <tt>SyntaxError, ReferenceError, RangeError</tt>:</p>
+	<code class="listing"><span class="var">throw new</span> Error(<span class="string">"Data is wrong!"</span>);</code>
 </body>
 </html>
