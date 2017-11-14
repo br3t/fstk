@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы тестирования 2@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>quote {padding-left: 50%;display: block;font: italic 0.8em/1.2em Verdana;}
+	li {margin-bottom: 20px;}
+	</style>
+</head>
+<body>
+	<h1>Основы тестирования 2</h1>
+
+	<h2>Тестирование Javascript с помощью QUnit</h2>
+	<p>На практике очень редко пишут собственные решения для тестирования javascript-кода. Чаще всего используют готовые библиотеки/фреймворки для тестирования, в которых обычно реализован весь необходимый для тестирования функционал.</p>
+	<p>Наиболее популярные библиотеки для тестирования JavaScript-кода:</p>
+	<ul>
+		<li><a href="https://qunitjs.com/" target="_blank">QUnit</a></li>
+		<li><a href="https://mochajs.org/" target="_blank">Mocha</a></li>
+		<li><a href="https://jasmine.github.io/" target="_blank">Jasmine</a></li>
+		<li><a href="http://casperjs.org/" target="_blank">CasperJS</a></li>
+	</ul>
+	<p>Рассмотрим работу с библиотекой QUnit.</p>
+	<h3>Установка QUnit</h3>
+	<p>На официальном сайте проекта предлагаются различные варианты установки библиотеки, в том числе с использованием различных менеджеров пакетов. Воспользуемся самым простым способом: скачаем необходимые css и js файлы, а также создадим страничку <u>tests.html</u> для отображения результатов тестов примерно следующего вида:</p>
+	<code class="listing">&lt;!DOCTYPE html><br />
+&lt;html><br />
+&nbsp; &nbsp; &lt;head><br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">&lt;!-- файлы библиотеки //--></span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;link rel="stylesheet" href="qunit.css" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;script src="qunit.js">&lt;/script><br /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">&lt;!-- код для тестирования //--></span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;script src="script.js">&lt;/script><br /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">&lt;!-- тесты //--></span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;script src="tests.js">&lt;/script><br />
+&nbsp; &nbsp; &lt;/head><br />
+&nbsp; &nbsp; &lt;body><br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">&lt;!-- div для отображения тестов //--></span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;div id="qunit">&lt;/div><br />
+&nbsp; &nbsp; &lt;/body><br />
+&lt;/html></code>
+	<p>Все готово для тестирования.</p>
+
+	<h3>Написание тестов</h3>
+	<p>При написании тестов используются следующие методы объекта QUnit:</p>
+	<ul>
+		<li><b><tt>QUnit.module( name [, hooks] [, nested ] )</tt></b> &mdash; позволяет задать имя модуля тестов, позволяя тем самым их группировать и фильтровать. Помимо имени модуля позволяет задать хуки (функции, выполняемые при прохождении тестов) и вложенные модули тестов.</li>
+		<li><b><tt>QUnit.test( name, callback )</tt></b> &mdash; добавляет в очередь запуска тест с именем <em>name</em>. Функция <em>callback</em> содержит <em>утверждения</em> для проверки</li>
+		<li><b><tt>QUnit.skip( name, callback )</tt></b> &mdash; добавляет тест, который не будет выполнен, но будет отмечен как "пропущенный"</li>
+		<li><b><tt>QUnit.only( name, callback )</tt></b> &mdash; добавляет тест для выполнения, при этом все остальные тесты не будут запущены</li>
+		<li><b><tt>QUnit.start()</tt></b> &mdash; позволяет запустить тесты вручную, если они автостарт тестов был отключен в настройках <tt>QUnit.config.autostart</tt></b></li>
+	</ul>
+	<h3>Структура утверждений</h3>
+	<p><b>Утверждение</b> - это выражение, которое прогнозирует возвращаемый результат при выполнении вашего кода. Если прогноз неверный, то утверждение имеет значение false, что позволяет сделать выводы о наличии ошибок.</p>
+	<p>QUnit использует следующие методы-утверждения:</p>
+	<ul>
+		<li><b><tt>ok( state [, message ] )</tt></b> &mdash; проверка на <tt>state == true</tt>, в <em>message</em> можно указать короткое описание утверждения</li>
+		<li><b><tt>equal( actual, expected [, message ] )</tt></b> &mdash; проверка на нестрогое равенство <tt>actual == expected</tt></li>
+		<li><b><tt>strictEqual( actual, expected [, message ] )</tt></b> &mdash; проверка на строгое равенство <tt>actual === expected</tt></li>
+		<li><b><tt>notOk( state [, message ] )</tt></b> &mdash; проверка на <tt>state == false</tt>, в <em>message</em> можно указать короткое описание утверждения</li>
+		<li><b><tt>notEqual( actual, expected [, message ] )</tt></b> &mdash; проверка на нестрогое неравенство <tt>actual != expected</tt></li>
+		<li><b><tt>notStrictEqual( actual, expected [, message ] )</tt></b> &mdash; проверка на строгое неравенство <tt>actual != expected</tt></li>
+		<li><b><tt>deepEqual( actual, expected [, message ] )</tt></b> &mdash; проверка на нестрогое "глубокое" равенство, используется для сравнения объектов</li>
+		<li><b><tt>expect( amount )</tt></b> &mdash; указывает явно количество ожидаемых утверждений</li>
+	</ul>
+	<h3>Асинхронный тест</h3>
+	<p>Иногда бывает неоходимо тестирование асинхронного кода. Например, скрипт запрашивает данные с сервера, как-то их обрабатывает и это поведение необходимо проверить. В этом случае на время запуска асинхронной функции необходимо приоставить работу теста, и возобновить в тот момент, когда асинхронная функция закончила сою работу. Для этих целей QUnit использует утверждение <tt>acync</tt>, которое возвращает callback-функцию, которую нужно выполнить для возобновления работы тестов.</p>
+	<code class="listing">QUnit.test( <span class="string">"async functions"</span>, <span class="key">function</span>( <span class="more">assert</span> ) {<br />
+&nbsp; assert.expect( 2 );<br />
+<br />
+&nbsp; <span class="key">var</span> ready1 = assert.async();<br />
+&nbsp; <span class="key">var</span> ready2 = assert.async();<br />
+&nbsp; setTimeout(<span class="key">function</span>() {<br />
+&nbsp; &nbsp; assert.ok( <span class="var">true</span>, <span class="string">"async function 1"</span> );<br />
+&nbsp; &nbsp; ready1();<br />
+&nbsp; }, 500 );<br />
+&nbsp; setTimeout(<span class="key">function</span>() {<br />
+&nbsp; &nbsp; assert.ok( <span class="var">true</span>, <span class="string">"async function 2"</span> );<br />
+&nbsp; &nbsp; ready2();<br />
+&nbsp; }, 150);<br />
+});</code>
+	<p>Кроме того, с помощью <tt>timeout( duration )</tt> можно указать время, по истечении которого асинхронный тест будет признан провальным.</p>
+	
+</body>
+</html>
