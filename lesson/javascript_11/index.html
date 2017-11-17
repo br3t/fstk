@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Объектная модель документа@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>quote {padding-left: 50%;display: block;font: italic 0.8em/1.2em Verdana;}
+	li {margin-bottom: 20px;}
+	#dom { border: inset thin; padding: 0.5em 0.5em 0.5em 1em; color: black; min-height: 5em; font-family: monospace; background: white; }
+   #dom ul { padding: 0 0 0 1em; margin: 0; }
+   #dom li { padding: 0; margin: 0; list-style: none; position: relative; }
+   #dom li li { list-style: disc; }
+   #dom .t1 code { color: purple; font-weight: bold; }
+   #dom .t2 { font-style: normal; font-family: monospace; }
+   #dom .t2 .name { color: black; font-weight: bold; }
+   #dom .t2 .value { color: blue; font-weight: normal; }
+   #dom .t3 code, #dom .t4 code, #dom .t5 code { color: gray; }
+   #dom .t7 code, #dom .t8 code { color: green; }
+   #dom span { font-style: italic; font-family: serif; }
+   #dom .t10 code { color: teal; }
+   #dom .misparented, #dom .misparented code { color: red; font-weight: bold; }
+   #dom .unnamed { color: red; font-style: italic; }
+   #dom .template { padding: 0 0 0 1.5em; background: #EEEEEE; color: black; position: relative; overflow: hidden; }
+   #dom .template::after { position: absolute; top: 1em; right: -2.6em; content: 'TEMPLATE'; width: 10em; text-align: center; transform: rotate(30deg); background: black; color: white; }
+   #dom.hidden, .hidden { visibility: hidden; margin: 0.5em 0; padding: 0; height: 0; min-height: 0; }
+   #dom li li { list-style: none; }
+   #dom li:first-child::before { position: absolute; top: 0; height: 0.7em; left: -0.75em; width: 0.5em; border-style: none none solid solid; content: ''; border-width: 0.1em; }
+   #dom li:not(:last-child)::after { position: absolute; top: 0; bottom: -0.7em; left: -0.75em; width: 0.5em; border-style: none none solid solid; content: ''; border-width: 0.1em; }
+
+   .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+	border-collapse: collapse;
+    border-spacing: 0;
+	}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #000;
+}
+	.table>thead>tr>th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #000;
+}
+	</style>
+</head>
+<body>
+	<h1>Объектная модель документа</h1>
+	<p>Объект <tt>window</tt> в браузере обеспечивает доступ:</p>
+	<ul>
+		<li>ко всем переменным и функциям глобальной области видимости, созданным пользовательскими скриптами, как к <tt>[[Global Scope]]</tt></li>
+		<li>ко всем встроенным переменным и функциям браузера, так называемому <b>BOM</b> &mdash; объектной модели браузера</li>
+		<li>к HTML-узлам страницы, т.е. к <b>DOM</b></li>
+	</ul>
+	<p>Window как глобальный объект пользовательских скриптов мы рассматривали ранее.</p>
+	<h3>Объектная модель браузера</h3>
+	<p>К <em>BOM</em> относится все, что не относится к DOM:</p>
+	<ul>
+		<li>методы манипуляций с окнами (<tt><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open" target="_blank">open</a>/close/moveTo/moveBy</tt>)</li>
+		<li>работа с <tt><a href="https://developer.mozilla.org/ru/docs/Web/API/Window/location" target="_blank">location</a></tt></li>
+		<li>данные о браузере и системе <tt><a href="https://developer.mozilla.org/ru/docs/Web/API/Window/navigator" target="_blank">navigator</a></tt></li>
+		<li>работа с историей окна браузера (таба) <tt><a href="https://developer.mozilla.org/ru/docs/Web/API/Window/history" target="_blank">history</a></tt></li>
+		<li>методы консоли браузера <tt><a href="https://developer.mozilla.org/ru/docs/Web/API/Window/console" target="_blank">console</a></tt></li>
+		<li>методы модальных окон браузера <tt>alert, confirm, prompt</tt></li>
+		<li>свойства и методы работы со скроллом <tt>scrollX/scrollY/<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo" target="_blank">scrollTo</a>/scrollBy</tt></li>
+		<li>и другие свойства и методы</li>
+	</ul>
+
+	<h2>Объектная модель документа (DOM)</h2>
+	<p><b>Document Object Model («объектная модель документа»)</b> &mdash; это программный интерфейс доступа к содержимому XML-документов, а также изменять содержимое, структуру и оформление таких документов.</p>
+	<p>В JavaScript DOM используется для доступа и манипуляций с узлами HTML через свойство <tt>document</tt>.</p>
+
+	<h2>Дерево DOM</h2>
+	<p><b>Дерево DOM</b> &mdash; это представление совокупности узлов HTML-страницы в виде древовидной иерархии с учетом вложенности узлов друг в друга.</p>
+	<p>Рассмотрим код простейшей страницы:</p>
+	<code class="listing">&lt;!DOCTYPE html><br />
+&lt;html><br />
+&nbsp; &nbsp; &lt;head><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;title>Page&lt;/title><br />
+&nbsp; &nbsp; &lt;/head><br />
+&nbsp; &nbsp; &lt;body><span class="comment">&lt;!-- myPage body --></span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;main>Hello, &lt;span>word&lt;/span>&lt;/main><br />
+&nbsp; &nbsp; &lt;/body><br />
+&lt;/html><br /></code>
+	<p>DOM-дерево для такой страницы будет выглядеть так:</p>
+	<ul id="dom"><li class="t10">DOCTYPE: <code>html</code></li><li class="t1"><code>HTML</code><ul><li class="t1"><code>HEAD</code><ul><li class="t3"><code>#text</code>: <span></span></li><li class="t1"><code>TITLE</code><ul><li class="t3"><code>#text</code>: <span>Page</span></li></ul></li><li class="t3"><code>#text</code>: <span></span></li></ul></li><li class="t3"><code>#text</code>: <span></span></li><li class="t1"><code>BODY</code><ul><li class="t8"><code>#comment</code>: <span> myPage body </span></li><li class="t3"><code>#text</code>: <span></span></li><li class="t1"><code>MAIN</code><ul><li class="t3"><code>#text</code>: <span>Hello, </span></li><li class="t1"><code>SPAN</code><ul><li class="t3"><code>#text</code>: <span>word</span></li></ul></li></ul></li><li class="t3"><code>#text</code>: <span></span></li></ul></li></ul></li></ul>
+	<!-- Thank you, https://software.hixie.ch/utilities/js/live-dom-viewer/ //-->
+	<p>Похожую структуру можно увидеть, если открыть вкладку <em>Elements</em> инструментов разработчика Google Chrome.</p>
+	<p>Данное дерево состоит из:</p>
+	<ul>
+		<li>корневого узла document (на схеме не показан, является корневым для любой страницы)</li>
+		<li>узел типа документа DOCTYPE</li>
+		<li>узлов-элементов, образуемых html-тегами</li>
+		<li>текстовых узлов <em>#text</em></li>
+		<li>узлов комментариев <em>#comment</em></li>
+	</ul>
+	<p>Особенности построения дерева: пробелы перед <tt>&lt;head></tt> игнорируются, а все узлы после <tt>&lt;/body></tt> попадают внутрь тела страницы. Также при построении дерева браузеры используют "исправление вестки": закрытие тегов или добавление недостающих.</p>
+	<p>Помимо наглядной визуализации структуры документа DOM-дерево дает возможность навигации по документу, используя отношения "родительский/дочерний узел" и "соседний узел".</p>
+
+	<h2>Навигация по DOM-элементам</h2>
+	<p>Прежде, чем применить какие-то изменения к элементам страницы, к ним нужно получить доступ.</p>
+	<p>Своими свойствами объект <tt>document</tt> обеспечивает доступ к следующим узлам:</p>
+	<ul>
+		<li><b>document.documentElement</b> &mdash; доступ к элементу <tt>HTML</tt></li>
+		<li><b>document.body</b> &mdash; доступ к элементу <tt>BODY</tt></li>
+		<li><b>document.head</b> &mdash; доступ к элементу <tt>HEAD</tt> (не поддерживается в IE8 и ниже)</li>
+	</ul>
+	<p>Для перемещению по дереву узлов используют следующие свойства:</p>
+	<ul>
+		<li><b>childNodes</b> &mdash; получение коллекции дочерних узлов</li>
+		<li><b>firstChild</b> &mdash; получение первого элемента коллекции дочерних узлов</li>
+		<li><b>lastChild</b> &mdash; получение первого элемента коллекции дочерних узлов</li>
+		<li><b>previousSibling</b> &mdash; получение предыдущего ("левого") соседнего узла</li>
+		<li><b>nextSibling</b> &mdash; получение следующего ("правого") соседнего узла</li>
+		<li><b>parentNode</b> &mdash; получение родительского узла</li>
+	</ul>
+	<p>Данные свойства работают только для чтения, т.е. напрямую переопределить узел (например, <tt>document.body.firstChild = null</tt>) нельзя.</p>
+	<p>Кроме того, навигация происходит по всем узлам независимо от их типа, а чаще всего интересна навигация и взаимодествие с узлами типа "элемент".</p>
+	<p>Узлы-элементы можно отфильтровать по типу, т.к. у каждого элемента есть собственные свойства:</p>
+	<ul>
+		<li><b>nodeType</b> &mdash; код типа узла, числовое значение из таблицы ниже</li>
+		<li><b>nodeValue</b> &mdash; значение узла (<tt>null</tt> &mdash; для узлов-элементов, содержимое &mdash; для текстовых узлов или узлов-комментариев)</li>
+		<li><b>nodeName</b> &mdash; имя узла, для узлов-элементов содержит название тега (в верхнем регистре)</li>
+		<li><b>tagName</b> &mdash; имя узла-элемента, содержит название тега</li>
+	</ul>
+	<p>Типы узлов</p>
+	<table class="table">
+  <thead>
+    <tr>
+      <th>Код типа (nodeType)</th>
+      <th>Тип узла</th>
+      <th>Описание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="success">
+      <th scope="row">1</th>
+      <td>ELEMENT_NODE</td>
+      <td>Узел элемента</td>
+    </tr>    
+    <tr class="info">
+      <th scope="row">3</th>
+      <td>TEXT_NODE</td>
+      <td>Текстовый узел (#text)</td>
+    </tr>  
+    <tr>
+      <th scope="row">7</th>
+      <td>PROCESSING_INSTRUCTION_NODE</td>
+      <td>Узел инструкции обработки</td>
+    </tr>  
+    <tr>
+      <th scope="row">8</th>
+      <td>COMMENT_NODE</td>
+      <td>Узел комментария (#comment)</td>
+    </tr>  
+    <tr>
+      <th scope="row">9</th>
+      <td>DOCUMENT_NODE</td>
+      <td>Узел документа (#document)</td>
+    </tr> 
+    <tr>
+      <th scope="row">10</th>
+      <td>DOCUMENT_TYPE_NODE</td>
+      <td>Узел типа документа</td>
+    </tr> 
+    <tr>
+      <th scope="row">11</th>
+      <td>DOCUMENT_FRAGMENT_NODE</td>
+      <td>Узел фрагмента документа</td>
+    </tr> 
+  </tbody>
+</table>
+	<p>Для получения только узлов-элементов можно воспользоваться код:</p>
+	<code class="listing"><span class="key">var</span> els = document.documentElement.childNodes;<br />
+<span class="var">for</span>(<span class="key">var</span> i = 0; i < els.length; i++) {<br />
+&nbsp; &nbsp; <span class="var">if</span>(els[i].nodeType == 1) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log( els[i].nodeName );<br />
+&nbsp; &nbsp; }<br />
+}</code>
+	<p>Но есть другой способ получать только узлы-элементы &mdash; использовать свойства, привязанные к элементам:</p>
+	<ul>
+		<li><b>children</b> &mdash; получение коллекции дочерних элементов</li>
+		<li><b>firstElementChild</b> &mdash; получение первого элемента коллекции дочерних элементов</li>
+		<li><b>firstElementChild</b> &mdash; получение первого элемента коллекции дочерних элементов</li>
+		<li><b>previousElementSibling</b> &mdash; получение предыдущего ("левого") соседнего элемента</li>
+		<li><b>nextElementSibling</b> &mdash; получение следующего ("правого") соседнего элемента</li>
+		<li><b>parentElement</b> &mdash; получение родительского элемента</li>
+	</ul>
+	<p>Из особенностей: IE8 и ниже поддерживает только <tt>children</tt> и в него, вопреки стандарту, попадают узлы-комментарии.</p>
+	<p><tt>Document</tt> так же имеет дополнительные навигационные ссылки:</p>
+	<ul>
+		<li><b>images</b> &mdash; коллекция всех изображений</li>
+		<li><b>frames</b> &mdash; коллекция всех фреймов</li>
+		<li><b>forms</b> &mdash; коллекция всех форм</li>
+	</ul>
+	<p>Элемент формы также имеет ссылку на коллекцию элементов формы через <tt>elements</tt></p>
+
+	<h2>Поисковые методы DOM</h2>
+	<p>Для получения конкретного элемента неудобно проходить по всему дереву. Верстка может меняться, из-за чего скрипты, привязанные к конкретному расположению элемента в дереве, могут перестать работать. Потому для на практике для обращения к элементам-потомкам используют поисковые методы DOM:</p>
+	<ul>
+		<li><tt>getElementById( id )</tt> &mdash; получение элемента по его id. Можно также обращаться напрямую к переменной с именем id. Id должен быть уникальным в рамках документа</li>
+		<li><tt>getElementsByTagName( tag )</tt> &mdash; получение коллекции элементов по названию тега. Если указать в качестве параметра "*", то получим все элементы-потомки</li>
+		<li><tt>getElementsByName( name )</tt> &mdash; получение коллекции элементов по имени</li>
+		<li><tt>getElementsByClassName( className )</tt> &mdash; получение коллекции элементов по классу (не поддерживается в IE8 и ниже)</li>
+		<li><tt>querySelector( selector )</tt> &mdash; получение первого элемента, удовлетворяющего селектору <b>*</b></li>
+		<li><tt>querySelectorAll( selector )</tt> &mdash; получение всех элементов, удовлетворяющих селектору <b>*</b></li>
+		<li><tt>closest( css )</tt> &mdash; получение родительского элемента, удовлетворяющего селектору <b>*</b></li>
+		<li><tt>matches( css )</tt> &mdash; проверяет, соответствует ли данный указанному селектору <b>*</b></li>
+	</ul>
+	<p><b>*</b> &mdash; современные методы, перед использованием необходимо проверять поддержку браузерами</p>
+	<p>Для изменения элементов есть следующие свойства:</p>
+	<ul>
+		<li><tt>innerHTML</tt> &mdash; чтение/запись внутреннего html-кода элемента</li>
+		<li><tt>textContent</tt> &mdash; чтение/запись текста элемента за исключением всех тегов (аналогично нестандартному <tt>innerText</tt>)</li>
+		<li><tt>outerHTML</tt> &mdash; чтение html-кода элемента</li>
+		<li><tt>hidden</tt> &mdash; при установке в <tt>true</tt> позволяет скрыть элемент</li>
+	</ul>
+
+	<h2>Атрибуты и DOM-свойства</h2>
+	<p>При интерпретации HTML браузер создает DOM-модель. При этом многие стандартные HTML-атрибуты становятся свойствами элементов.</p>
+	<p>Для манипуляций с атрибутами используют методы:</p>
+	<ul>
+		<li><tt>hasAttribute(name)</tt> &mdash; проверка наличия атрибута name</li>
+		<li><tt>getAttribute(name)</tt> &mdash; получение значения атрибута name</li>
+		<li><tt>setAttribute(name, value)</tt> &mdash; устанавливает атрибут name в значение value</li>
+		<li><tt>removeAttribute(name)</tt> &mdash; удаление атрибута с именем name</li>
+	</ul>
+	<p>Все атрибуты элемента можно получить через свойство <tt>attributes</tt> в виде коллекции.</p>
+	<p>Атрибуты всегда имеют строковые значения, имя можно передавать в любом регистре. Атрибуты элемента видны в <tt>innerHTML</tt> всех его родительских элементов.</p>
+	<p>Синхронизация между свойствами и атрибутами происходит только для стандартных свойств, но и она не всегда точна. Из типичных примеров можно выделить:</p>
+	<ul>
+		<li>свойство <tt>a.href</tt> и <tt>a.getAttribute('href')</tt> могут содержать разные значения, если ссылка имеет относительный путь</li>
+		<li>свойство <tt>checked</tt> флажка принимает значение <em>true/false</em>, а соответствующий атрибут может принимать любое значение</li>
+		<li>при изменении значения элемента формы через изменение <tt>value</tt> значение в атрибуте останется исходным. При этом изменение атрибута изменит свойство</li>
+	</ul>
+	<h3>Атрибут class</h3>
+	<p>Атрибуту <tt>class</tt> соответствую два объекта: <b>className</b> (строка) и <b>classList</b> (коллекция). ClassList поддерживается IE10 и выше.</p>
+	<p>ClassList удобен своими методами для проверки и изменения классов: <tt>contains, add/remove, toggle</tt>.</p>
+
+	<h2>Нестандартные атрибуты</h2>
+	<p>В html элементы могут иметь <em>универсальные атрибуты</em>, такие как <tt>id, style, class</tt>, т.е. атрибуты, общие для всех элементов. Также элементы могут иметь специфические атрибуты, например, <tt>for</tt> у <tt>&lt;label></tt>, <tt>href</tt> у <tt>&lt;a></tt> и т.д. Если элементу добавить нестандартный атрибут, то соответствующее свойство не будет создано. Для управления такими атрибутами нужно использовать только методы <em>*Attribute</em></p>
+	<p>Для пользовательских атрибутов используются атрибуты с именем, начинающимся на <tt>data-</tt>. Доступ к таким атрибутам есть через свойство <tt>dataset</tt>.</p>
+</body>
+</html>
