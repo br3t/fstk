@@ -48,7 +48,7 @@
 	</style>
 </head>
 <body>
-	<h1>Объектная модель документа</h1>
+	<h1>JavaScript в браузере. Объектная модель документа</h1>
 	<p>Объект <tt>window</tt> в браузере обеспечивает доступ:</p>
 	<ul>
 		<li>ко всем переменным и функциям глобальной области видимости, созданным пользовательскими скриптами, как к <tt>[[Global Scope]]</tt></li>
@@ -184,7 +184,7 @@
 	<ul>
 		<li><b>children</b> &mdash; получение коллекции дочерних элементов</li>
 		<li><b>firstElementChild</b> &mdash; получение первого элемента коллекции дочерних элементов</li>
-		<li><b>firstElementChild</b> &mdash; получение первого элемента коллекции дочерних элементов</li>
+		<li><b>lastElementChild</b> &mdash; получение последнего элемента коллекции дочерних элементов</li>
 		<li><b>previousElementSibling</b> &mdash; получение предыдущего ("левого") соседнего элемента</li>
 		<li><b>nextElementSibling</b> &mdash; получение следующего ("правого") соседнего элемента</li>
 		<li><b>parentElement</b> &mdash; получение родительского элемента</li>
@@ -243,5 +243,59 @@
 	<h2>Нестандартные атрибуты</h2>
 	<p>В html элементы могут иметь <em>универсальные атрибуты</em>, такие как <tt>id, style, class</tt>, т.е. атрибуты, общие для всех элементов. Также элементы могут иметь специфические атрибуты, например, <tt>for</tt> у <tt>&lt;label></tt>, <tt>href</tt> у <tt>&lt;a></tt> и т.д. Если элементу добавить нестандартный атрибут, то соответствующее свойство не будет создано. Для управления такими атрибутами нужно использовать только методы <em>*Attribute</em></p>
 	<p>Для пользовательских атрибутов используются атрибуты с именем, начинающимся на <tt>data-</tt>. Доступ к таким атрибутам есть через свойство <tt>dataset</tt>.</p>
+
+	<h2>Стили элеменета, свойство style</h2>
+	<p>Изменение стилевого оформления элемента доступно через его свойство <tt>style</tt>. Названия стилевых свойств соответствуют названиям в CSS, но вместо дефиса используется запись свойств в camelCase-формате (кроме <em>float</em>, для которого в <em>style</em> другое свойство).</p>
+	<code class="listing"><span class="key">var</span> body = document.body;<br />
+body.style.borderRadius = <span class="string">"20px"</span>;<span class="comment"> // border-radius: 20px;</span><br />
+body.style.fontSize = <span class="string">"3em"</span>;<span class="comment"> // font-size: 3em;</span><br />
+body.style.cssFloat = <span class="string">"none"</span>;<span class="comment"> // float: none; исключение!</span><br /></code>
+	<p>Вместе с числовым значением следует всегда явно указывать единицы измерения.</p>
+	<p>Для добавления свойств с вендорными префиксами префикс добавляеся с большой буквы:</p>
+	<code class="listing">body.style.WebkitTransform = <span class="string">"rotate(30deg)"</span>;<span class="comment"> // -webkit-transform: rotate(30deg);</span><br />
+body.style.MsTransform = <span class="string">"rotate(30deg)"</span>;<span class="comment"> // -ms-transform: rotate(30deg);</span><br />
+body.style.transform = <span class="string">"rotate(30deg)"</span>;<span class="comment"> // transform: rotate(30deg);</span><br /></code>
+	<p>Присвоеннное значение стилевого свойства можно сбросить, присвоив пустую строку. Это бывает удобно, например, в случае, если для какого-то элемента на странице мы указали <tt>el.style.display = "none";</tt>, а затем надо вернуть элементу его исходное состояние. Достаточно написать <tt>el.style.display = "";</tt> чтобы удалить назначенное ранее через JavaScript значение.</p>
+	<p>Следует помнить, что самый более простым способом поменять внешний вид элемента является добавление ему класса. Таким образ код короче, к тому же мы перекладываем всю ответственность за отображение элемента на CSS-стили. Редактирование стилевых свойств через JavaScript целесообразно в случаях, когда необходимо задать параметры элементы исходяиз каких-то других параметров, значения которых неизвесны либо завистят размеров окна браузера, времени суток и т.д.</p>
+
+	<h3>cssText</h3>
+	<p>Все присвоенные стили можно прочитать из специального свойства <tt>cssText</tt> в виде одной строки. С помощью него же можно переопределить эти стили.</p>
+	<code class="listing"><span class="key">var</span> body = document.body;<br />
+body.style.backgroundColor = <span class="string">"#F00"</span>;<br />
+body.style.fontSize = <span class="string">"3em"</span>;<br />
+console.log(body.style.cssText); <span class="comment">// 'background-color: rgb(255, 0, 0); font-size: 3em;'</span><br />
+body.style.cssText = <span class="string">"background-color: #0F0; font-size: 16px;";</span></code>
+	<p>При назначении стилевых свойств (не только через <tt>cssText</tt>) внутреннее представление значений может меняться. В частности, при указании цвета в любом формате в свойстве он все равно будет храниться в формате rgb(rgba).</p>
+
+	<h3>getComputedStyle</h3>
+	<p>При получении свойств из <tt>style</tt> отобразятся только свойства, заданные через JavaScript. Для получения стилевых свойств элемента с учетом CSS и каскада используется функция <tt>getComputedStyle</tt>:</p>
+	<code class="listing">&lt;style><br />
+&nbsp; &nbsp; div { color: #F00; }<br />
+&lt;/style><br /><br />
+&lt;div>&lt;/div><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; <span class="key">var</span> computed = getComputedStyle(document.querySelector(<span class="string">"div"</span>));<br />
+&nbsp; &nbsp; console.log(computed.color); <span class="comment">// rgb(255, 0, 0)</span><br />
+&lt;/script><br /></code>
+<div>bI</div>
+	<h2>Добавление элементов на страницу</h2>
+	<p>Для добавления элементов на страницу используется два метода: <tt>append</tt> и <tt>insertBefore</tt>. Оба метода вызываются для родительского элемента, <tt>append</tt> вставляет самым последним дочерним элементом, а <tt>insertBefore</tt> &mdash; перед элементом, указанным в качестве второго параметра.</p>
+	<p>Добавлять можно как уже существующий элемент, в этом случае он просто переместится, так и вновь созданный. За создание элементов отвечает метод <tt>createElement</tt>, который запускается с одним аргументом - типом создаваемого элемента.</p>
+	<code class="listing"><span class="key">var</span> body = document.body;<br />
+<span class="key">var</span> newDiv = document.createElement(<span class="string">"div"</span>); <span class="comment">// создали новый div</span><br />
+newDiv.innerText = <span class="string">"I`m the last div"</span>;<br />
+body.appendChild(newDiv); <span class="comment">// и добавили его в конец body</span><br />
+<br />
+<span class="key">var</span> oldDiv = body.querySelector(<span class="string">"div"</span>); <span class="comment">// нашли самый первый div на странице</span><br />
+body.insertBefore(oldDiv, newDiv); <span class="comment">// и вставили его перед вновь созданным</span></code>
+	<p>При передаче в качестве второго аргумента <tt>null</tt> метод <tt>insertBefore</tt> сработает аналогично вызову <tt>appendChild</tt>.</p>
+
+	<h2>Удаление элементов</h2>
+	<p>В случае необходимости удалить элемент со страницы используют метод <tt>removeChild</tt>:</p>
+	<code class="listing">body.removeChild( oldDiv );</code>
+	<p>Удалить элемент можно также через замену его новым элементом:</p>
+	<code class="listing"><span class="comment">// удаляем oldDiv и вставляем на его место newDiv</span><br />
+body.replaceChild( newDiv, oldDiv );</code>
+	<p>При использований операций вставки над уже созданными элементами не нужно предварительно удалять их со "старого" места, они просто переместятся по дереву DOM в указанную позицию.</p>
 </body>
 </html>
