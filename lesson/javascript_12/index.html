@@ -110,21 +110,6 @@ document.querySelector(<span class="string">"input"</span>).detachEvent(<span cl
 		<li><b>defaultPrevented</b> &mdash; указывает, было ли отменено поведение по умолчанию</li>
 		<li><b>eventPhase</b> &mdash; указывает на фазу обработки события</li>
 	</ul>
-	<!-- <p>Кроме того, события разного типа могут иметь специфические свойства. Свойства объекта события "клик мышью":</p>
-	<ul>
-		<li><b>clientX,clientY</b> &mdash; координаты клика относительно окна браузера</li>
-		<li><b>pageX,pageY</b> &mdash; координаты клика относительно документа (т.е. с учетом прокрутки)</li>
-		<li><b>layerX,layerY</b> &mdash; координаты клика относительно элемента-источника события</li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-		<li><b></b> &mdash; </li>
-	</ul> -->
 	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br /><br />
 &lt;script><br />
 &nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'click'</span>,  <span class="key">function</span> (<span class="more">event</span>) {<br />
@@ -216,20 +201,14 @@ document.querySelector(<span class="string">"input"</span>).detachEvent(<span cl
 	<p>Использование специфических конструкторов позволяет указать свойство события в списке флагов (второй параметр конструктора), чего нельзя было сделать для простого <tt>Event</tt>.</p>
 	<p>Собственные события можно генерировать как с помощью <tt>Event</tt>, так и с помощью конструктора <tt>CustomEvent</tt>.</p>
 
-<!--
-	<h2>Браузерные события (События в деталях):</h2>
 	<h2>Мышь: клики, кнопка, координаты</h2>
-	<h2>Мышь: отмена выделения, невыделяемые элементы</h2>
-	<h2>Мышь: движение mouseover/out, mouseenter/leave</h2>
-	<h2>Мышь: Drag'n'Drop</h2>
-	<h2>Мышь: Drag'n'Drop более глубоко</h2>
-	<h2>Мышь: колёсико, событие wheel</h2>
-	<h2>Мышь: IE8-, исправление события</h2>
-	<h2>Прокрутка: событие scroll</h2>
-	<h2>Клавиатура: keyup, keydown, keypress</h2>
-	<h2>Загрузка документа: DOMContentLoaded, load, beforeunload, unload</h2>
-	<h2>Загрузка скриптов, картинок, фреймов: onload и onerror</h2>
-//-->
+	<p>Cобытия разного типа могут иметь специфические свойства. Свойства объекта события "клик мышью":</p>
+	<ul>
+		<li><b>clientX,clientY</b> &mdash; координаты клика относительно окна браузера</li>
+		<li><b>pageX,pageY</b> &mdash; координаты клика относительно документа (т.е. с учетом прокрутки)</li>
+		<li><b>layerX,layerY</b> &mdash; координаты клика относительно элемента-источника события</li>
+		<li><b>which</b> &mdash; какой кнопкой был осуществлен клик</li>
+	</ul>
 	
 </body>
 </html>

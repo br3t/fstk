@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы AJAX и COMET @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+	</style>
+</head>
+<body>
+	<h1>JavaScript в браузере. Основы AJAX и COMET</h1>
+	<p><b>AJAX, Ajax</b> (ˈeɪdʒæks, от англ. Asynchronous Javascript and XML — «асинхронный JavaScript и XML») &mdash; подход к построению интерактивных пользовательских интерфейсов веб-приложений, заключающийся в «фоновом» обмене данными браузера с веб-сервером. Т.е. ajax &mdash; это не не конкретные инструменты, это методика получения данных.</p>
+	<p>Получение только части данных, а не обновление всей страницы, работает быстрее и улучшает пользовательский опыт. AJAX может использоваться при необходимости реализации таких структур как infinity scroll, live search, lazyload и т.д.</p>
+	<p>Данные в AJAX транспортируются чаще всего в одном из следующих форматов:</p>
+	<ul>
+		<li>HTML (или plain/text) - такие данные чаще всего уже готовы для непосредственной вставки на страницу</li>
+		<li>JSON или XML - структурированные данные, перед вставкой на страницу их необходимо обработать</li>
+		<li>бинарные данные - для получения бинарных файлов</li>
+	</ul>
+	<p>Техника получения только части данных в JavaScript может быть реализована с помощью объекта <tt>XMLHttpRequest</tt> и с помощью скрытого фрейма.</p>
+
+	<h2>Работа c XMLHttpRequest</h2>
+	<p>Простейший пример использования <tt>XMLHttpRequest</tt> выглядит так:</p>
+	<code class="listing"><span class="key">var</span> request = <span class="var">new</span> XMLHttpRequest();<br />
+request.open(<span class="string">'GET'</span>, <span class="string">'/data.php'</span>);<br />
+request.send();<br />
+request.onreadystatechange = <span class="key">function</span>() {<br />
+&nbsp; &nbsp; <span class="var">if</span> (request.readyState == 4) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span> (request.status != 200) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.error( request.status + <span class="string">': '</span> + request.statusText );<br />
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="var">else</span> {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log(request.responseText);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+};</code>
+	<p>У созданного <tt>XMLHttpRequest</tt> есть следующие методы:</p>
+	<ul>
+		<li><b>open</b> &mdash; подготавливает запрос. Первый параметр - метод отправки данных, второй - URL, на который нужно отправить запрос, третий (необязательный) параметр - флаг асинхронности. Четвертый и пятый параметры - необязательные - логин и пароль, если принимающий сервер требует HTTP-авторизацию</li>
+		<li><b>send</b> &mdash; отправляет запрос, необязательный аргумент - тело запроса</li>
+		<li><b>abort</b> &mdash; прерывает отправку запроса</li>
+	</ul>
+	<p>В процессе выполнения запроса и по его завершению заполняются свойства экземпляра <tt>XMLHttpRequest</tt>:</p>
+	<ul>
+		<li><b>status</b> &mdash; HTTP-код ответа (см. список ниже)</li>
+		<li><b>statusText</b> &mdash; описание ответа сервера</li>
+		<li><b>responseText</b> &mdash; текст ответа сервера</li>
+		<li><b>responseXML</b> &mdash; XML ответа сервера, если ответ был в XML</li>
+		<li><b>readyState</b> &mdash; код состояния запроса</li>
+	</ul>
+	<p>Список самых популярных кодов ответа сервера:</p>
+	<ul>
+		<li>200 - OK - успешный запрос</li>
+		<li>301 - Moved Permanently - документ перемещен навсегда</li>
+		<li>302 - Moved Temporary - документ перемещен временно</li>
+		<li>401 - Unauthorized - требуется авторизация</li>
+		<li>403 - Forbidden - доступ запрещен</li>
+		<li>404 - Not Found - документ не найден</li>
+		<li>500 - Internal Server Error - внутренняя ошибка сервера</li>
+	</ul>
+	<p>Экземпляр <tt>XMLHttpRequest</tt> генерирует следующие события:</p>
+	<ul>
+		<li><b>loadstart</b> &mdash; запрос отправлен</li>
+		<li><b>onreadystatechange</b> &mdash; изменение состояния кода запроса</li>
+		<li><b>load</b> &mdash; запрос завершился успешно</li>
+		<li><b>progress</b> &mdash; получена очередная порция данных</li>
+		<li><b>abort</b> &mdash; запрос был прерван программой</li>
+		<li><b>error</b> &mdash; произошла ошибка</li>
+		<li><b>timeout</b> &mdash; запрос завершился по таймауту</li>
+		<li><b>loadend</b> &mdash; запрос завершился (успешно или нет)</li>
+	</ul>
+	<p>Коды состояния AJAX-запроса:</p>
+	<ul>
+		<li>0 - не отправлен</li>
+		<li>1 - подготовлен</li>
+		<li>2 - получены заголовки</li>
+		<li>3 - загружается тело (получена очередная порция данных)</li>
+		<li>4 - запрос завершен</li>
+	</ul>
+	<p>Если есть необходимость установить таймаут ожидания запроса, то для этого задают свойству <tt>timeout</tt> значение в миллисекундах:</p>
+	<code class="listing">request.timeout = 5000;</code>
+
+	<h3>Отправка заголовков</h3>
+	<p>Иногда при работе с запросом необходимо отправить HTTP-заголовки или прочитать заголовки ответа сервера. Для этих целей используются следующие методы:</p>
+	<ul>
+		<li><b>setRequestHeader</b> &mdash; устанавливает HTTP-заголовок для запроса. Первый параметр - название заголовка, второй - значение</li>
+		<li><b>getResponseHeader</b> &mdash; получает HTTP-заголовок ответа. Единственный параметр получает название заголовка, значение которого необходимо получить.</li>
+		<li><b>getAllResponseHeaders</b> &mdash; получает все заголовки ответа. Заголовки получаются в виде одной строки, которую нужно парсить отдельно</li>
+	</ul>
+	<p>Заголовки можно добавить после конфигурирования запроса, но до его отправки.</p>
+	<p>На работу с заголовками для <tt>XMLHttpRequest</tt> наложены ограничения, связанные с безопасностью. Так, нельзя при отправке запроса принудительно указать заголовки <b>Referer</b>, <b>Host</b>, <b>Content-Length</b> и некоторые другие. Такие заголовки браузер формирует сам и не дает для них доступа для Javascript.<br />
+	Из <tt>getResponseHeader</tt>  и <tt>getAllResponseHeaders</tt> нельзя прочитать заголовки <b>Set-Cookie</b> и <b>Set-Cookie2</b>.</p>
+	<p>Кроме "классических" заголовков, подобных тем, которые передаются при отравке обычной формы, можно передать специальный заголовок <tt>X-Requested-With</tt> со значением <tt>XMLHttpRequest</tt> для указания серверу, что запрос выполняется с помощью AJAX.</p>
+	<p>Повторная установка заголовка не перезаписывает, а дополняет его.</p>
+
+	<h3>XMLHttpRequest для Internet Explorer</h3>
+	<p>IE версий 8 и 9 также поддерживают AJAX-запросы, но возможности по использованию <tt>XMLHttpRequest</tt> там ограничены. Например, из событий доступно только <tt>onreadystatechange</tt>. Поэтому для этих версий используют объекты <tt>XDomainRequest</tt>. Для IE 10 и выше <tt>XMLHttpRequest</tt> работает полноценно и можно использовать его. Кроссбраузерный код создания запроса может иметь следующий вид:</p>
+	<code class="listing"><span class="key">var</span> request = <span class="var">new</span> XMLHttpRequest();<br />
+<span class="var">if</span>(!(<span class="string">'onload'</span> <span class="var">in</span> request)) {<br />
+&nbsp; &nbsp; request = <span class="var">new</span> XDomainRequest();<br />
+}</code>
+	
+	<h3>Кеширование запросов</h3>
+	<p>AJAX-запросы, как и обычные страницы, могут кешироваться браузером. IE9 и ниже кеширует все запросы по умолчанию. Чтобы предотвратить кеширование можно:</p>
+	<ul>
+		<li>запретить кеширование в одом из заголовков, отвечающих за кеширование, например <tt>Cache-Control: no-cache</tt></li>
+		<li>добавить дополнительный параметр, значение которого динамически менялось от запроса к запросу</li>
+	</ul>
+
+	<h2>XMLHttpRequest POST, формы и кодировка</h2>
+	<p>При отправке GET-запросов при необходимости передать параметры модифицируют URL, на который нужно отправить запрос. В случает с POST-запросами все необходимые передаваемые на сервер данные помещаются в тело запроса. При отправке обычной формы формирование тела запроса осуществляет браузер, а при отправке AJAX-запроса тело должен сформировать скрипт. При этом данные передаются в одной из кодировок, представленных ниже.</p>
+
+	<h3>Кодировка urlencoded</h3>
+	<p>При необходимости передачи, например, кириллистических строк в параметрах GET-запроса в AJAX необходимо вручную закодировать эти строки с помощью <b>urlencoded</b>:</p>
+	<code class="listing"><span class="key">var </span> input = <span class="string">"Инпут"</span>;<br /><span class="key">var </span> url = <span class="string">'/data.php?name='</span> + encodeURIComponent( input );</code>
+	<p>При этом все символы, кроме символов латиницы, цифр и знаков базовой пунктуации заменяются на последовательности unicode.</p>
+	<p>Запросы POST также можно отправлять в кодировке <b>urlencoded</b>. Особенностью POST-запросов является необходимость явного указания кодировки в заголвоке запроса. В случае кодировки <b>urlencoded</b> в заголовок передают значение <b>application/x-www-form-urlencoded</b>. Код такого запроса будет выглядеть как:</p>
+	<code class="listing"><span class="key">var </span> input = <span class="string">"Инпут"</span>;<br />
+<span class="key">var </span> url = <span class="string">/data.php'</span>;<br />
+<span class="key">var</span> request = new XMLHttpRequest();<br />
+<span class="key">var</span> body = <span class="string">'input='</span> + encodeURIComponent(input);<br />
+request.open(<span class="string">'POST'</span>, url);<br />
+request.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/x-www-form-urlencoded'</span>);<br />
+request.send(body);</code>
+	<p>Для данной кодировки всегда используется UTF-8.</p>
+
+	<h3>Кодировка multipart/form-data</h3>
+	<p>При использовании кодировки <b>urlencoded</b> объем данных при кодировании может сильно увеличиваться, а для больших файлов перекодирование могло бы просходить долго и нагружать браузер. Потому для передачи файлов была создана кодировка <b>multipart/form-data</b>. Но исползовать ее можно не только для передачи файлов, но и для обычныx POST-запросов.</p>
+	<p>В <b>multipart/form-data</b> передаваемые поля идут в теле запроса друг за другом в исходном виде и разделяются специально сгенерированными разделителями <b>boundary</b>, гарантирующим, что данные не будут смешаны со служебной информацией.</p>
+	<p>Для отправки POST-запроса в <b>multipart/form-data</b> с помощью AJAX можно воспользоваться следующим кодом:</p>
+	<code class="listing"><span class="key">var </span> input = <span class="string">"Инпут"</span>;<br />
+<span class="key">var </span> url = <span class="string">/data.php'</span>;<br />
+<span class="key">var</span> request = new XMLHttpRequest();<br />
+<span class="key">var</span> boundary = Math.random().toString().slice(2);<br />
+<span class="key">var</span> body = <span class="string">'--'</span> + boundary + <span class="string">'\r\n'</span> +<br />
+&nbsp; &nbsp; <span class="string">'Content-Disposition: form-data; name="input"\r\n\r\n'</span> +<br />
+&nbsp; &nbsp; input +<br />
+&nbsp; &nbsp; <span class="string">'\r\n'</span> + <br />
+&nbsp; &nbsp; <span class="string">'--'</span> + boundary + <span class="string">'--\r\n'</span>;<br />
+request.open(<span class="string">'POST'</span>, url);<br />
+request.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'multipart/form-data; boundary='</span> + boundary);<br />
+request.send(body);</code>
+
+	<h3>FormData</h3>
+	<p>Севременные браузеры поддерживают формат кодирования форм FormData. Форму можно отправить так:</p>
+	<code class="listing"><span class="key">var</span> myForm = <span class="var">new</span> FormData();<br />
+myForm.append(<span class="string">"input"</span>, <span class="string">"Инпут"</span>);<br />
+<span class="key">var</span> request = new XMLHttpRequest();<br />
+request.open(<span class="string">"POST"</span>, url);<br />
+request.send(myForm);</code>
+	<p>В конструкторе есть необязательный параметр, в который можно передать DOM-элемент существующей формы. С помощью <tt>append</tt> можно добавлять новые поля. Такая форма при отправке будет использовать кодировку <b>multipart/form-data</b>.</p>
+
+	<h3>Передача в формате JSON</h3>
+	<p>Данные для AJAX-запроса можно передавать и как <em>text/plain</em>, и как <em>application/json</em>.</p>
+	<code class="listing"><span class="key">var </span> input = {input: <span class="string">"Инпут"</span>};<br />
+<span class="key">var </span> url = <span class="string">/data.php'</span>;<br />
+<span class="key">var</span> request = new XMLHttpRequest();<br />
+<span class="key">var</span> json = JSON.stringify(input);<br />
+request.open(<span class="string">'POST'</span>, url);<br />
+request.setRequestHeader(<span class="string">'Content-type'</span>, <span class="string">'application/json; charset=utf-8'</span>);<br />
+request.send(json);</code>
+
+	<h2>Кросс-доменные запросы</h2>
+	<p>По умолчанию AJAX-запросы доступны только для документов, у которых совпадает протокол, домен и порт с текущим документом. Однако технически есть возможность отправить запрос на другой домен. Такие запросы называются <b>кроссдоменными</b>. Со стороны JavaScript такой запрос может ничем не отличаться от обычного. Единственное ограничение - такой запрос не может быть синхронным. В остальном за доступность кроссдоменного запроса в большей степени отвечает браузер.</p>
+	<p>За возможность осуществления кроссдоменных запросов отвечает политика <b>CORS</b> (Cross-Origin Resource Sharing). Все запросы в ней разделяются на простые и не простые. К простым относят запросы, которые имеют простой метод - GET, POST или HEAD  - и простые заголовки: <tt>Accept, Accept-Language, Content-Language</tt> и <tt>Content-Type</tt> со значениями application/x-www-form-urlencoded, multipart/form-data или text/plain. Все остальные запросы считаются "не простыми".</p>
+	<p>Простые запросы можно сформировать с помощью формы, а для отправки "непростого" нужно использовать AJAX.</p>
+	<p>Для выполнения простого вопроса через AJAX достаточно совпадения <tt>Access-Control-Allow-Origin</tt> в заголовке ответа совпадающим с <tt>Origin</tt> страницы, выполняющей запрос. Если необходимо разрешить все кроссдоменные запросы, то достаточно указать <tt>Access-Control-Allow-Origin: *</tt> в заголовках сервера.</p>
+	<p>Для чтения заголовков сервера, отличных от "простых" (<tt>Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma</tt>) они должны быть указаны в заголовке ответа <tt>Access-Control-Expose-Headers</tt>.</p>
+	<p>Для передачи вместе с запросом еще и данных о cookie пользователя устанавливают свойство <tt>withCredentials</tt> в true. Чтобы такие данные передались сервер должен отправить заголовок <tt>Access-Control-Allow-Credentials: true</tt>.</p>
+	<p>"Непростые" запросы инициализируют дополнительный подзапрос, которые спрашивает у сервера, разрешены ли "непростые" методы или заголовки. Такой запрос отправляется методом <tt>OPTIONS</tt>, не содержит тела и содержит заголовки <tt>Access-Control-Request-Method</tt> и <tt>Access-Control-Request-Headers</tt>. В ответ сервер в заголовках <tt>Access-Control-Allow-Method</tt> и <tt>Access-Control-Allow-Headers</tt> перечень допустимых методов и заголовков или ошибку. Дополнительно сервер может в заголовке <tt>Access-Control-Max-Age</tt> передать время в секугдах, на которое нужно закешировать разрешение.</p>
+
+	<h2>Индикация прогресса</h2>
+	<p>Запрос <tt>XMLHttpRequest</tt> состоит из стадии закачки данных на сервер и стадии получения ответа. Ответ сервера меняет соответствующие свойства у экземпляра <tt>XMLHttpRequest</tt>, а информация о закачке попадает в свойство <tt>upload</tt>.</p>
+	<p>Для свойства <tt>upload</tt> существуют следующие события:</p>
+	<ul>
+		<li>loadstart</li>
+		<li>progress</li>
+		<li>abort</li>
+		<li>error</li>
+		<li>load</li>
+		<li>timeout</li>
+		<li>loadend</li>
+	</ul>
+	<p>Для стадий закачки и скачивания в событии <tt>onprogress</tt> для события доступна информация о переданном числе байт (<tt>event.loaded</tt>) и общем числе байт (<tt>event.total</tt>). Если информация об общем числе байт недоступна, то в свойстве <tt>event.lengthComputable</tt> будет <em>false</em>. При закачке на сервер <tt>lengthComputable</tt> всегда <em>true</em>, т.к. браузер всегда знает размер передаваемых данных.</p>
+	<p>Событие <tt>onprogress</tt> происходит при передаче каждого байта, но не чаще раза в 50мс. Обновленный <tt>responseText</tt> всегда доступен при каждом обновлении прогресса. <tt>Request.upload.onprogress</tt> указывает на то, что данные были переданы на сервер, но не гарантирует, что данные были получены и обработаны.</p>
+
+	<h2>WebSocket</h2>
+	<p>WebSocket - простой протокол безопасной кроссдоменной передачи данных между браузером и сервером. Сервер должен поддерживать технологию, чтобы браузер мог "общаться" с ним по этому протоколу.</p>
+	<code class="listing"><span class="key">var</span> socket = <span class="var">new</span> WebSocket(<span class="string">'ws://example.com'</span>);</code>
+	<p>Созданный вебсокет имеет следующие события:</p>
+	<ul>
+		<li><b>onopen</b> &mdash; при создании соединения</li>
+		<li><b>onclose</b> &mdash; при закрытии соединения. В <tt>event.wasClean</tt> содержится информация о том, было ли закрыто соединение с ошибкой или корректно. <tt>event.code</tt> и <tt>event.reason</tt> содержат расширенную информацию о закрытии</li>
+		<li><b>onmessage</b> &mdash; при получении данных, данные находятся в <tt>event.data</tt></li>
+		<li><b>onerror</b> &mdash; при ошибке, сообщение об ошибке попадает в <tt>error.message</tt></li>
+	</ul>
+	<p>Данные по данному протоколу отправляются с помощью <tt>socket.send()</tt></p>
+
+<!--
+	<h2>XMLHttpRequest: возобновляемая закачка;</h2>
+	<h2>COMET с XMLHttpRequest: длинные опросы;</h2>
+
+	<h2>Протокол JSONP;</h2>
+	<h2>Server Side Events -- события с сервера;</h2>
+	<h2>IFRAME для AJAX и COMET;</h2>
+	<h2>Атака CSRF;</h2>
+	<h2>Метод fetch: замена XMLHttpRequest;</h2>
+	<h2>Таблица транспортов и их возможностей;</h2>
+	<h2>POST и GET запросы;<h2>
+//-->
+	
+</body>
+</html>

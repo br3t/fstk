@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Playground</title>
+	</head>
+	<body>
+		<h3>GET + urlencoded</h3>
+		<form action="" method="GET">
+		  <input name="input" value="">
+		  <input name="submit" type="submit" value="Submit" / >
+		</form>
+
+		<h3>POST + urlencoded</h3>
+		<form action="" method="POST">
+		  <input name="input" value="">
+		  <input name="submit" type="submit" value="Submit" / >
+		</form>
+
+		<h3>POST + multipart/form-data</h3>
+		<form action="" method="POST" enctype="multipart/form-data">
+		  <input name="input" value="" />
+		  <input name="submit" type="submit" value="Submit" / >
+		</form>
+
+
+<script>
+	/* 
+		http://ready-to.win/ajax.php?
+			type=time&
+			contenttype=json&
+			delay=1
+			error=404
+	*/
+var hello;
+function render(data) {
+	console.log(data);
+}
+
+var responder = {};
+
+function addScript(url, callback) {
+	var script = document.createElement('script');
+	var funcName = 'f' + Math.random().toString().substr(2);
+	script.src = url + '?callback=responder.' + funcName;
+
+	responder[funcName] = function(data) {
+		callback(data);
+		delete responder[funcName];
+	};
+
+	document.body.appendChild(script);
+}
+
+addScript('http://ready-to.win/ajax.php', render);
+
+</script>
+
+
+
+
+	</body>
+</html>
