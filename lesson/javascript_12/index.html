@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Браузерные события@ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+	</style>
+</head>
+<body>
+	<h1>JavaScript в браузере. Браузерные события</h1>
+	<p>JavaScript &mdash; однопоточный язык, в любой момент времени может выполняться только один определенный участок кода. Линейный ход выполнения программы может нарушаться, например, при добавлении <tt>setTimeout</tt> или при возникновении событий.</p>
+	<p><b>Событие</b> &mdash; сигнал браузера о том, что что-то произошло. Событие может быть сгенерировано браузером, пользователем или скриптом. Событие можно обработать, выполнив какой-то код в ответ на возникновение события. Когда говорят о событиях обычно используют следующие термины:</p>
+	<ul>
+		<li><b>Тип события</b> &mdash; это то, каким образом было порождено это событие. Например, наиболее популярные события: <tt>click, focus, submit</tt></li>
+		<li><b>Цель события</b> &mdash; тот объект, на котором произошло событие. Может быть любым DOM-элементом или объектом <tt>window</tt></li>
+		<li><b>Обработчик события</b> &mdash; функция, которая вызывается в ответ на событие</li>
+		<li><b>Объект события</b> &mdash; объект типа <tt>Event</tt>, содержащий всю информацию о произошедшем событии. Передается в обработчик события</li>
+	</ul>
+
+	<h2>Добавление событий на страницу</h2>
+	<h3>Добавление в качестве атрибута onclick</h3>
+	<p>Самый старый метод добавления обработчиков заключается в добавлении кода прямо а атрибут HTML-элемента. Для каждого типа события есть собственный атрибут, начинающийся с <tt>on-</tt>. Таким образом, обработчик события "клик по кнопке" можно добавить как:</p>
+
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" onclick="<span class="string">alert('Thank you!\nClick me again, please!');</span>" /></code>
+
+	<p>Если при клике нужно выполнить много кода, то можно поместить его в функцию, а в обработчике указать вызов этой функции:</p>
+
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" onclick="<span class="string">shout();</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; <span class="key">var</span> count = 1;<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">shout</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">'Thank you!\nYou clicked me'</span> + count + <span class="string">' times.'</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; count++;<br />
+&nbsp; &nbsp; }<br />
+&lt;/script></code>
+	
+	<p>Добавление обработчика в HTML-код нарушает концепцию разделения логики приложения и внешнего вида, потому его не рекомендуется использовать.</p>
+
+	<h3>Добавление в качестве свойства onclick</h3>
+	<p>Атрибуты с <tt>on-</tt> доступны и как свойства.</p>
+
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; <span class="key">var</span> count = 1;<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">shout</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">'Thank you!\nYou clicked me'</span> + count + <span class="string">' times.'</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; count++;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).onclick = shout;<br />
+&lt;/script></code>
+	<p>Таким образом решается проблема разделения внешнего вида и логики. Но каждая новая запись в <tt>onclick</tt> будет перетирать предыдущую, в результате чего перед добавлением каждого нового обработчика нужно следить за тем, чтобы предыдущие не были удалены.</p>
+	<p>Если были добавлены обработчики и в атрибут, и в свойство, то обработчик в свойстве перезапишет обработчик в атрибуте.</p>
+	<p>Если в аргументы обработчика передать <tt>this</tt>, то внутри обработчика можно получить ссылку на объект-источник события.</p>
+
+	<h3>Добавление с помощью addEventListener</h3>
+	<p>Самым универсальным способом добавления обработчика является использование <tt>addEventListener</tt>, первым параметром которого указывается тип события, а вторым - обработчик:</p>
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; <span class="key">var</span> count = 1;<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">shout</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">'Thank you!\nYou clicked me'</span> + count + <span class="string">' times.'</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; count++;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'click'</span>, shout);<br />
+&lt;/script></code>
+	<p>Добавление каждого нового обработчика не удаляет предыдущие, в результате чего можно добавлять сколько угодно обработчиков в любом месте программы. Добавленные через <tt>addEventListener</tt> обработчики не влияют на обработчики, добавленные через <tt>on-</tt></p>
+	<p>Обработчики, добавленные с помощью <tt>addEventListener</tt>, можно удалять "поштучно", используя <tt>removeEventListener</tt>.</p>
+	<code class="listing">document.querySelector(<span class="string">"input"</span>).removeEventListener(<span class="string">'click'</span>, shout);</code>
+	<p>Удаление возможно только того обработчика, который был ранее добавлен. Т.е. если обработчич был добавлен, как анонимная функция, то удалить его через <tt>removeEventListener</tt> не получится.</p>
+	<p>В IE8 и ниже вместо <tt>addEventListener/removeEventListener</tt> используется пара <tt>attachEvent/detachEvent</tt>:</p>
+	<code class="listing">document.querySelector(<span class="string">"input"</span>).attachEvent(<span class="string">'onclick'</span>, shout);<br />
+document.querySelector(<span class="string">"input"</span>).detachEvent(<span class="string">'onclick'</span>, shout);<br /></code>
+	<p>Тип события в этом случае передается с <tt>on</tt>. Обработчики, добавленные таким образом, не получают <tt>this</tt>.</p>
+</code>
+
+	<h2>Порядок обработки событий</h2>
+	<p>Основной поток кода в JavaScript называется <b>главным</b> потоком. Он выполняется непрерывно, пока не останется кода для выполнения, либо пока он не будет прерван, например, модальным окном. Таким образом вновь возникшее событие не обрабатывается мгновенно в параллельном потоке, а попадает в очередь событий и ее обработчик ждет возможности появления "окна" в основном потоке для своего выполнения. В очередь могут попадать несколько событий сразу, например, когда событие <tt>click</tt> следует сразу же за <tt>onmouseup</tt>. Если функция, выполняемая в данный момент, очень "тяжелая", то окна может не быть в течение некоторого времени, и событие не будет обработано быстро. Таким образом интерфейс будет "подтормаживать".</p>
+	<p>Если событие вызвать программно, то оно будет обработано тут же, на месте. В этом случае говорят об <b>синхронном</b> событии.</p>
+	<code class="listing">&lt;input type="<span class="string">button</span>" id="<span class='string'>button1</span>" value="<span class='string'>Click 1</span>" /><br />
+&lt;input type="<span class="string">button</span>" id="<span class='string'>button2</span>" value="<span class='string'>Click 2</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">callback1</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'start callback 1'</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; button2.click();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'end callback 1'</span>);<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">callback2</span> () {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; alert(<span class="string">'callback 2'</span>);<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; button1.onclick = callback1;<br />
+&nbsp; &nbsp; button2.onclick = callback2;<br />
+&lt;/script></code>
+	<p>Обработчик события для <tt>button1</tt> не завершится до тех пор, пока не завершится обработчик для <tt>button2</tt>.</p>
+	<p>Чтобы сохранить последовательность выполнения обработчиков событий можно:</p>
+	<ul>
+		<li>поместить вызов вложенного события в конец кода функции-обработчика</li>
+		<li>"запланировать" вложенное событие через <tt>setTimeout(..., 0)</tt>, чтобы вызов события из timeout дождался выполнения текущего обработчика</li>
+	</ul>
+
+	<h2>Объект события</h2>
+	<p>Указав в явном виде тип события, которые мы хотим обрабатывать, мы имеем возможность отфильтровывать нужные нам. Но информации об одном только типе события обычно недостаточно. Всю дополнительную информацию можно получить из объекта события.</p>
+	<p>Все объекты события имеют базовые свойства:</p>
+	<ul>
+		<li><b>type</b> &mdash; тип события</li>
+		<li><b>target</b> &mdash; объект-источник события, "целевой элемент"</li>
+		<li><b>currentTarget</b> &mdash; объект, перехвативший событие</li>
+		<li><b>bubbles</b> &mdash; указывает, всплыло событие или нет</li>
+		<li><b>cancelable</b> &mdash; указывает на возможность отменить событие</li>
+		<li><b>defaultPrevented</b> &mdash; указывает, было ли отменено поведение по умолчанию</li>
+		<li><b>eventPhase</b> &mdash; указывает на фазу обработки события</li>
+	</ul>
+	<!-- <p>Кроме того, события разного типа могут иметь специфические свойства. Свойства объекта события "клик мышью":</p>
+	<ul>
+		<li><b>clientX,clientY</b> &mdash; координаты клика относительно окна браузера</li>
+		<li><b>pageX,pageY</b> &mdash; координаты клика относительно документа (т.е. с учетом прокрутки)</li>
+		<li><b>layerX,layerY</b> &mdash; координаты клика относительно элемента-источника события</li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+		<li><b></b> &mdash; </li>
+	</ul> -->
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'click'</span>,  <span class="key">function</span> (<span class="more">event</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Type:'</span> + event.type);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Target:'</span> + event.currentTarget);<br />
+&nbsp; &nbsp; });<br />
+&lt;/script></code>
+	<p>В IE8 и ниже объект события не передается в качестве аргумента, а создается в глобальной области видимости как <tt>window.event</tt>.</p>
+
+	<h2>Всплытие и перехват</h2>
+	<p>При наступлении события обработчики сначала срабатывают на самом вложенном элементе, затем на его родителе, затем выше и так далее, вверх по цепочке вложенности.</p>
+	<code class="listing">&lt;div><br />
+&nbsp; &nbsp; &lt;span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br />
+&nbsp; &nbsp; &lt;/span><br />
+&lt;/div><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"div"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"span"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">callb</span>(<span class="more">event</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Clicked on: '</span> + event.currentTarget.tagName);<br />
+&nbsp; &nbsp; }<br />
+&lt;/script></code>
+	<p>При клике на кнопку в консоли последовательно отобразится информация о клике по <tt>INPUT</tt>, затем по <tt>SPAN</tt> и затем <tt>DIV</tt>.</p>
+	<p>Вплытие &mdash; это механизм, при котором событие сначала вызывает обработчик у объекта-источника, затем у его родителя, затем у родителя-родителя и т.д. до самого "верха" &mdash; до <tt>document</tt>.</p>
+	<p>При всплытии у каждого обработчика будет свой <tt>currentTarget</tt> (и <tt>this</tt>), но всегда одинаковый <tt>target</tt>.</p>
+	<h3>Прекращение всплытия</h3>
+	<p>В ряде случаев бывает необходимо прекратить всплытие события, локализовав его обработку конкретным обработчиком. В этом случае используют метод <tt>stopPropagation</tt></p>
+		<code class="listing">&lt;div><br />
+&nbsp; &nbsp; &lt;span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br />
+&nbsp; &nbsp; &lt;/span><br />
+&lt;/div><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"div"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"span"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; document.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'click'</span>, callb);<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">callb</span>(<span class="more">event</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Clicked on: '</span> + event.currentTarget.tagName);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; event.stopPropagation();<br />
+&nbsp; &nbsp; }<br />
+&lt;/script></code>
+	<p>Если необходимо остановить обработку событий не только для "вышестоящих" элементов, но и остановить запуск других обработчиков текущего элемента, то можно воспользоваться методом <tt>stopImmediatePropagation</tt>.</p>
+
+	<h3>Погружение</h3>
+	<p>Помимо всплытия стандарт описывает еще самую первую фазу &mdash; погружение. Т.е. в процессе возникновения событие сначала "выстреливает" для <tt>window</tt> и опускается "вниз" до элемента-источника (фаза погружения), обрабатывается обработчиком, навешанным на элемент-источник (фаза цели), а затем опять "поднимается" к <tt>window</tt> (фаза всплытия).</p>
+	<p>Обработка события на фазе погружения на практике используется редко. Свойства <tt>on-</tt> не знают об этой фазе. Для <tt>addEventListener</tt> можно указать на необходимость перехвата события на фазе погружения с помощью третьего необязательного аргумента <tt>phase</tt>, установив его в <tt>true</tt>:</p>
+	<code class="listing">&lt;input type="<span class="string">button</span>" value="<span class="string">Click me</span>" /><br /><br />
+&lt;script><br />
+&nbsp; &nbsp; document.body.addEventListener(<span class="string">'click'</span>, callb, true);<br />
+&nbsp; &nbsp; document.body.addEventListener(<span class="string">'click'</span>, callb, false);<br />
+&nbsp; &nbsp; <span class="key">function</span> <span class="name">callb</span>(<span class="more">event</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Event phase: '</span> + event.eventPhase);<br />
+&nbsp; &nbsp; }<br />
+&lt;/script></code>
+
+	<h2>Делегирование событий</h2>
+	<p>Благодаря всплытию можно организовать прием обработки событий, называемый "делегирование". Если есть несколько однотипных элементов, для которых нужно обрабатывать одинаковые события, то вместо того, чтобы добавлять отдельный обработчик для каждого элемента, можно добавить один обработчик для события, а нужный элемент выбирать с помощью свойства <tt>target</tt>. </p>
+	<p>Недостаток делегирования - клик может быть не по элементу, а по его дочернему узлу, в этом случае недостаточно будет проверять только <tt>target</tt>. В этом случае нужно проверять <tt>parentNode</tt> до тех пор, пока не найдется искомый элемент.</p>
+	<p>Делегирование удобно использовать для обработки разных событий для однотипных элементов. В этом случае элементы удобно различать по data-атрибуту.</p>
+
+	<h2>Приём проектирования "поведение"</h2>
+	<p>Делегирование позволяет формировать прием проектирования "поведение". При этом подходе добавляется один обработчик события для элемента-контейнера, а поведение каждого конкретного элемента при наступлении события определяется его атрибутом, классом или id.</p>
+
+	<h2>Действия браузера по умолчанию</h2>
+	<p>Для некоторых событий есть поведение браузера по умолчанию. По клике на ссылку происходит переход по указанному в <tt>href</tt> url, по клику на <em>submit</em>-кнопке формы она отправляется на сервер и т.д. Иногда необходимо отменить это действие по умолчанию. Сделать это можно двумя способами:</p>
+	<ul>
+		<li><tt>return false</tt> - если обработчик добавлен через <tt>on-</tt></li>
+		<li><tt>event.preventDefault();</tt> - для любого способа навешивания обработчика</li>
+	</ul>
+	<p>Возможно "подавление" и событий. Например, клик по элементу ввода формы передает фокус элементу. Если "подавить" обработку <tt>onmousedown</tt>, то и фокус элемент не получит. Хотя все еще будет возможно получить фокус с помощью <tt>Tab</tt>.</p>
+
+	<h2>Генерация событий на элементах</h2>
+	<p>События можно не только перехватывать и обрабатывать, но и генерировать. Для современных браузеров (в т.ч. IE12 и выше) новое событие можно создать с помощью конструктора <tt>Event</tt>. Привязка вновь созданного события к DOM-элементу осуществляется с помощью метода <tt>dispatchEvent</tt>. Например, эмуляция клика по телу элемента может выглядеть как:</p>
+	<code class="listing"><span class="key">var</span> event = <span class="var">new</span> Event(<span class="string">'click'</span>, { bubbles: true, cancelable: true});<br />
+	document.body.dispatchEvent(event);</code>
+	<p>Если в обработчике события присутствует <tt>preventDefault</tt>, то программная генерация события вернет <tt>false</tt>.</p>
+	<p>При генерации события браузер автоматически выставить свойства события в зависимости от указанных параметров. Остальные свойства можно вручную добавить перед вызовом <tt>dispatchEvent.</tt></p>
+	<p>Сгенерированные программно события имеют свойство <tt>isTrusted</tt> равное <tt>false</tt>.</p>
+	<p>С помощью такого подхода можно генерировать собственные события, такие, которых нет в браузере.</p>
+	<p>Можно генерировать более специфические события с помощью встроенных конструкторов:</p>
+	<ul>
+		<li>MouseEvent</li>
+		<li>KeyboardEvent</li>
+		<li>UIEvent</li>
+		<li>FocusEvent</li>
+	</ul>
+	<p>Использование специфических конструкторов позволяет указать свойство события в списке флагов (второй параметр конструктора), чего нельзя было сделать для простого <tt>Event</tt>.</p>
+	<p>Собственные события можно генерировать как с помощью <tt>Event</tt>, так и с помощью конструктора <tt>CustomEvent</tt>.</p>
+
+<!--
+	<h2>Браузерные события (События в деталях):</h2>
+	<h2>Мышь: клики, кнопка, координаты</h2>
+	<h2>Мышь: отмена выделения, невыделяемые элементы</h2>
+	<h2>Мышь: движение mouseover/out, mouseenter/leave</h2>
+	<h2>Мышь: Drag'n'Drop</h2>
+	<h2>Мышь: Drag'n'Drop более глубоко</h2>
+	<h2>Мышь: колёсико, событие wheel</h2>
+	<h2>Мышь: IE8-, исправление события</h2>
+	<h2>Прокрутка: событие scroll</h2>
+	<h2>Клавиатура: keyup, keydown, keypress</h2>
+	<h2>Загрузка документа: DOMContentLoaded, load, beforeunload, unload</h2>
+	<h2>Загрузка скриптов, картинок, фреймов: onload и onerror</h2>
+//-->
+	
+</body>
+</html>

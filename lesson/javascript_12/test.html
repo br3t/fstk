@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Playground</title>
+	</head>
+	<body><div>
+    <span>
+        <input type="button" value="Click me" />
+    </span>
+</div>
+
+<script>
+    document.querySelector("input").addEventListener('click', function (event) {
+        console.log('Clicked on:' + event.currentTarget);
+    });
+</script>
+	</body>
+</html>
