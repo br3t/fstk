@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы ECMAScript 6 @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+	</style>
+</head>
+<body>
+	<h1>Современный JavaScript. Основы ECMAScript 6</h1>
+	<p>ECMAScript 6 &mdash; версия языка JavaScript, стандарт которой утвердился в 2015 году.</p>
+	<p>Для использования возможностей ES6 необходим либо запуск скриптов в окружении, поддерживающем эту версию языка, либо использования специальных программ &mdash; <em>транспайлеров</em>, например, Babel (пример работы Babel &mdash; <a href="https://babeljs.io/repl/" target="_blank">тут</a>). Поддержку возможностей ES6 для различных окружений можно посмотреть <a href="https://kangax.github.io/compat-table/es6/" target="_blank">здесь</a>.</p>
+	
+	<h2>Переменные let и const</h2>
+	<p>Стандарт добавляет два нового вида переменных: <b>let</b> и <b>const</b>. Исользуются они так же, как и переменные <b>var</b>:</p>
+	<code class="listing"><span class="key">let</span> myMoney = 0.05;<br />
+<span class="key">const</span> humanStupidity = Infinity;</code>
+	<p>Но данные виды переменных имеют следующие особенности использования:</p>
+	<ul>
+		<li>не может быть объявлена для существующей переменной любого вида в текущем LE</li>
+		<li>на этапе анализа кода они не всплывают, а попадают во "временную мертвую зону". Вызов даже такого относительно безопасного оператора как <tt>typeof</tt> до определения переменной вызовет ошибку ReferenceError</li>
+		<li>обладают блочной областью видимости</li>
+		<li>при использовании в цикле для <tt>let</tt> создается своя копия переменной, т.е. не нужно использовать замыкания при необходимости передачи такой переменной в функцию</li>
+		<li>переменную вида <tt>const</tt> невозможно переопределить. Но если в const содержится ссылка на объект, то сам объект поменять можно</li>
+	</ul>
+	<p>Обычно для констант, содержащих примитивы, имя задается прописными буквами, а для констант-объектов &mdash; строчными.</p>
+	<p>При написании кода обычно руководствуются подходом: объявлять максимум переменных как <tt>const</tt>, а те, которые будут меняться, &mdash; как <tt>let</tt>.</p>
+
+	<h2>Деструктуризация</h2>
+	<p><b>Деструктуризация</b> &mdash; специальный синтаксис присваивания для задания значений массивам и объектам.</p>
+	<h3>Декструктуризация массива</h3>
+	<p>При использовании квадратных скобок можно присвоить элементы массива переменным, находящимся на соответсвующих местах:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt", "tie"</span>];<br />
+<span class="key">let</span> [item1, item2, item3] = suitcase;<br /><br />
+console.log(item1); <span class="comment">// cap</span><br />
+console.log(item2); <span class="comment">// t-shirt</span><br />
+console.log(item3); <span class="comment">// tie</span><br /></code>
+	<p>При необходимости можно пропустить какие-либо перменные, тем самым отбросив ненужные элементы массива:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt", "tie"</span>];<br />
+<span class="key">let</span> [, myFavouriteItem] = suitcase;<br /><br />
+console.log(myFavouriteItem); <span class="comment">// t-shirt</span></code>
+
+	<h3>Spread или rest</h3>
+	<p>Для того, чтобы получить элементы массива, если мы заранее не знаем их количества, мы можем использовать оператор <b>spread</b> (троеточие), который поместит оставшиеся элементы в указанную переменную:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt", "tie", "socks"</span>];<br />
+<span class="key">let</span> [item1, ...restItems] = suitcase;<br /><br />
+console.log(item1); <span class="comment">// cap</span><br />
+console.log(restItems); <span class="comment">// ["t-shirt", "tie", "socks"]</span></code>
+
+	<h3>Значения по умолчанию</h3>
+	<p>Если элементов в массиве меньше, чем запрашиваемых переменных, то "лишние" переменные получат <tt>undefined</tt>:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt"</span>];<br />
+<span class="key">let</span> [,,item3] = suitcase;<br /><br />
+console.log(item3); <span class="comment">// undefined</span></code>
+	<p>Чтобы предупредить такое поведение мы можем указать значение, которое примет переменная, если соответсвующего ей элемента массива не существует. Такое значение называется <b>значением по умолчанию</b>:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt"</span>];<br />
+<span class="key">let</span> [,,item3=<span class="string">"pants"</span>] = suitcase;<br /><br />
+console.log(item3); <span class="comment">// pants</span></code>
+	<p>В качестве значения по умолчанию может быть не только примитив, но и объект или выражение:</p>
+	<code class="listing"><span class="key">let</span> suitcase = [<span class="string">"cap", "t-shirt"</span>];<br />
+<span class="key">let</span> [,,item3=3+1, item4=Math.round(1.49)] = suitcase;<br /><br />
+console.log(item3); <span class="comment">// 4</span><br />
+console.log(item4); <span class="comment">// 1</span><br /></code>
+
+	<h3>Деструктуризация объекта</h3>
+	<p>Деструктуризация работает и с объектами. Для передачи значений необходимо, чтобы совпадали не позиции переменных, а их названия с названиями свойств массива:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"cap"</span>,<br />
+&nbsp; &nbsp; item2: <span class="string">"t-shirt"</span><br />
+};<br />
+<span class="key">let</span> {item1, item2} = suitcase;<br /><br />
+console.log(item1); <span class="comment">// cap</span><br />
+console.log(item2); <span class="comment">// t-shirt</span><br /></code>
+	<p>Если необходимо получить переменную с именем, отличным от названия свойства, то новое имя указывают через двоеточие внутри деструктуризирующих скобок:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"cap"</span>,<br />
+&nbsp; &nbsp; item2: <span class="string">"t-shirt"</span><br />
+};<br />
+<span class="key">let</span> {item1: vintageItem, item2: modernItem} = suitcase;<br /><br />
+console.log(vintageItem); <span class="comment">// cap</span><br />
+console.log(modernItem); <span class="comment">// t-shirt</span><br /></code>
+	<p>Как и в случае деструктуризации массива можно указать параметры по умолчанию:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"cap"</span>,<br />
+&nbsp; &nbsp; item2: <span class="string">"t-shirt"</span><br />
+};<br />
+<span class="key">let</span> {item1: blackItem, item3: whiteItem=<span class="string">"pants"</span>, greyItem=<span class="string">"boa"</span>} = suitcase;<br /><br />
+console.log(blackItem); <span class="comment">// cap</span><br />
+console.log(whiteItem); <span class="comment">// pants</span><br />
+console.log(greyItem); <span class="comment">// boa</span><br /></code>
+	<p>Если необходимо произвести деструктуризацию для уже объявленных переменных, то такую деструктуризацию оборачивают в круглые скобки, чтобы интерпретатор не воспринял такую конструкцию без <tt>let</tt> как логический блок.</p>
+
+	<h3>Вложенные деструктуризации</h3>
+	<p>Даже если объект для "разбора" достаточно сложен, его можно деструктуризировать сразу:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"cap"</span>,<br />
+&nbsp; &nbsp; item2: <span class="string">"t-shirt"</span>,<br />
+&nbsp; &nbsp; socks: {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; count: 2,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; color: <span class="string">"#000"</span><br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; box: [<span class="string">"toothbrush", "toothpaste"</span>]<br />
+};<br />
+<span class="key">let</span> {item1, socks:{count: socksCount=5}, box:[,boxedItem]} = suitcase;<br /><br />
+console.log(item1); <span class="comment">// cap</span><br />
+console.log(socksCount); <span class="comment">// 2</span><br />
+console.log(boxedItem); <span class="comment">// toothpaste</span><br /></code>
+
+
+	<h2>Функции</h2>
+	<p>Как и в строгом режиме, в ES6 нет однозначной привязки между аргументами функции и <tt>arguments</tt>.</p>
+	<h3>Параметры по умолчанию</h3>
+	<p>В ES6 появилась возможность задавать параметры по умолчанию для функций:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">plusTwo</span>(<span class="more">num</span>=0) {<br />
+&nbsp; &nbsp; <span class="var">return</span> num + 2;<br />
+}<br /><br />
+console.log(plusTwo(2)); <span class="comment">// 4</span><br />
+console.log(plusTwo()); <span class="comment">// 2</span></code>
+	<p>Параметр по умолчанию используется для отсутствующего или равного <tt>undefined</tt> аргумента.</p>
+	<p>Параметры по умолчанию могут быть значениями:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">plusTwo</span>(<span class="more">num</span>=1+Math.ceil(2*Math.random())) {<br />
+&nbsp; &nbsp; <span class="var">return</span> num + 2;<br />
+}<br /><br />
+console.log(plusTwo()); <span class="comment">// 4</span><br />
+console.log(plusTwo()); <span class="comment">// 5</span></code>
+	<p>Функция параметра по умолчанию вызовется только в том случае, если этот параметр понадобится.</p>
+
+	<h3>Spread для функций</h3>
+	<p>Подобно деструктуризации, оператор <em>spread</em> может собирать аргументы функции:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">sum</span>(<span class="more">num, ...rest</span>) {<br />
+&nbsp; &nbsp; console.log(num); <span class="comment">// 1</span><br />
+&nbsp; &nbsp; console.log(rest); <span class="comment">// [2, 3, 4]</span><br />
+&nbsp; &nbsp; <span class="var">return</span> 42;<br />
+}<br /><br />
+sum(1, 2, 3, 4);</code>
+	<p>При использовании оператора троеточие не в конце списка аргументов возникнет ошибка, т.к. он собирает "оставшиеся" параметры, и после него уже никаких параметров быть не может.</p>
+	<p>Оператор <tt>...</tt> может использоваться как для преобразования списка аргументов в массив, так и наоборот. Например, для передачи массива не как одного аргумента, а как набора аргументов:</p>
+	<code class="listing"><span class="key">let</span> nums = [1,2,3,4];<br />
+console.log( Math.max(...nums) );</code>
+	
+	<h3>Деструктуризация в параметрах</h3>
+	<p>При передаче аргумента-объекта его также можно деструктуризовать "на месте":</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"cap"</span>,<br />
+&nbsp; &nbsp; item2: <span class="string">"t-shirt"</span>,<br />
+&nbsp; &nbsp; socks: {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; count: 2,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; color: <span class="string">"#000"</span><br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; box: [<span class="string">"toothbrush", "toothpaste"</span>]<br />
+};<br />
+<span class="key">function</span> <span class="name">whatIsInSuitcase</span>({item1, socks:{count}}) {<br />
+&nbsp; &nbsp; console.log(<span class="string">"I have "</span> + item1 + <span class="string">" and "</span> + count + <span class="string">" socks in my suitcase."</span>); <span class="comment">// I have cap and 2 socks in my suitcase.</span><br />
+}<br /><br />
+whatIsInSuitcase(suitcase);</code>
+	<p>Тут же можно указать параметры по умолчанию для каждого из свойств. Необходимо только, чтобы объект для деструктуризации существовал:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">whatIsInSuitcase</span>({item1=<span class="string">"nothing"</span>, socks:{count=1}}) {<br />
+&nbsp; &nbsp; console.log(<span class="string">"I have "</span> + item1 + <span class="string">" and "</span> + count + <span class="string">" socks in my suitcase."</span>); <span class="comment">// I have nothing and 1 socks in my suitcase.</span><br />
+}<br /><br />
+whatIsInSuitcase({socks:{}});</code>
+	<p>Чтобы запускать функцию без параметра нужно указать ожидаемую структуру объекта в параметре по умолчанию:</p>
+<code class="listing"><span class="key">function</span> <span class="name">whatIsInSuitcase</span>({item1=<span class="string">"nothing"</span>, socks:{count=42}} = {socks:{}}) {<br />
+&nbsp; &nbsp; console.log(<span class="string">"I have "</span> + item1 + <span class="string">" and "</span> + count + <span class="string">" socks in my suitcase."</span>); <span class="comment">// I have nothing and 42 socks in my suitcase.</span><br />
+}<br /><br />
+whatIsInSuitcase();</code>
+	
+	<h3>Функция в блоке</h3>
+	<p>Подобно <tt>let</tt> и <tt>const</tt> функция, объявленная внутри блока, не видна за его пределами, даже если она объявлена как Function Declaration. Чтобы добиться интерпретации такого кода как кода ES6, нужно указать <tt>"use strict"</tt>.</p>
+
+	<h3>Стрелочные функции</h3>
+	<p>В ES6 функциям добавили "стрелочный" синтаксис:</p>
+	<code class="listing"><span class="key">let</span> plusTwo = (num) => num + 2;<br />
+console.log( plusTwo(2) ); <span class="comment">// 4</span></code>
+	<p>Для функции без аргументов используются пустые скобки:</p>
+	<code class="listing"><span class="key">let</span> return42 = () => 42;<br />
+console.log( return42() ); <span class="comment">// 42</span></code>
+	<p>Если нужно поместить в тело функции несколько строк кода, то используют фигурные скобки:</p>
+	<code class="listing"><span class="key">let</span> return42 = () => {<br />
+&nbsp; &nbsp; <span class="key">let</span> start = 10;<br />
+&nbsp; &nbsp; start *= 4;<br />
+&nbsp; &nbsp; start += 2;<br />
+&nbsp; &nbsp; <span class="var">return</span> start;<br />
+};<br />		
+console.log( return42() ); <span class="comment">// 42</span></code>
+	<p>Особенностью стрелочных функций также является отсутсвие собственного <tt>this</tt>, что делает удобных их использование в функциях callbackах:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; type: <span class="string">"vintage"</span>,<br />
+&nbsp; &nbsp; items: [<span class="string">"pants", "cap", "t-shirt"</span>],<br />
+&nbsp; &nbsp; showList: <span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.items.forEach((v) => console.log(this.type + <span class="string">" : "</span> + v) );<br />
+&nbsp; &nbsp; }<br />
+};<br />
+suitcase.showList();</code>
+	<p>Из-за отсутствия <tt>this</tt> стрелочные функции нельзя использовать в качестве конструкторов.</p>
+	<p>Стрелочные функции не имеют <tt>arguments</tt>.</p>
+
+	<h2>Строки</h2>
+	<h3>Строковые шаблоны</h3>
+	<p>Был добавлен синтаксис строковых шаблонов:</p>
+	<code class="listing"><span class="key">let</span> str = <span class="string">`my string`</span>;</code>
+	<p>Особенности:</p>
+	<ul>
+		<li>можно использовать многострочные строки</li>
+		<li>можно добавлять переменную внутрь строки через <tt>${var}</tt></li>
+	</ul>
+
+	<h3>Теги шаблонизации</h3>
+	<p>При создании строкового шаблона можно задать имя тега, если в коде встретиться функция с таким именем, то она выполнится и в качестве параметров ей передадутся все строки и все переменные шаблона:</p>
+	<code class="listing"><span class="var">let</span> str = lol<span class="string">`${2} + ${2} is ${2 + 2} \n sure`</span>;<br />
+<span class="key">function</span> <span class="name">lol</span> (<span class="more">literals, ...values</span>) {<br />
+&nbsp; &nbsp; console.log(literals); <span class="comment">// ["", " + ", " is ", " ↵ sure"</span><br />
+&nbsp; &nbsp; console.log(values); <span class="comment">// [2, 2, 4]</span><br />
+}</code>
+	<p>Массив <tt>literals</tt> так же содержит свойство <tt>raw</tt>, в котром литералы содержатся в исходном виде.</p>
+	<p>Тег шаблонизации может изменить шаблон и вернувшийся результат присвоить строке.</p>
+
+	<h3>Новые методы</h3>
+	<p>Для строк добавлены новые методы:</p>
+	<ul>
+		<li><b>includes(str)</b> &mdash; возвращает <tt>true</tt> если искомая подстрока входит в строку</li>
+		<li><b>endsWith(s)</b> &mdash;  возвращает <tt>true</tt> если строка оканчивается на искомую подстроку</li>
+		<li><b>startsWith(s)</b> &mdash;  возвращает <tt>true</tt> если строка начинается на искомую подстроку</li>
+		<li><b>repeat(times)</b> &mdash; возвращает строку times раз</li>
+		<li><b>codePointAt</b> &mdash; возвращает код 4хбайтного символа, например, '𝒳'</li>
+		<li><b>fromCodePoint</b> &mdash; возвращает символ по указанному коду</li>
+	</ul>
+	<p>Использование фигурных скобок в записях с <tt>'\u'</tt> позволяет указать в качестве кода символа более, чем четырехзначное число.</p>
+
+	<h2>Объекты и прототипы</h2>
+	<h3>Короткие свойства</h3>
+	<p>При создании объектов можно воспользоваться синтаксисом, внешне похожим на "деструктуризацию наоборот":</p>
+	<code class="listing"><span class="key">let</span> item1 = <span class="string">"pants"</span>;<br />
+<span class="key">let</span> item2 = <span class="string">"cap"</span>;<br />
+<span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1,<br />
+&nbsp; &nbsp; item2<br />
+};<br />
+console.log(suitcase);</code>
+	<p>Заключив имя свойства в квадратные скобки, можно использовать выражения для вычиления их названий:</p>
+	<code class="listing"><span class="key">let</span> propName = <span class="string">"item1"</span>;<br />
+<span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; [propName]: <span class="string">"t-shirt"</span><br />
+};<br />
+console.log(suitcase);</code>
+
+	<h3>Геттер-сеттер для прототипа</h3>
+	<p>К методу <tt>Object.getPrototypeOf(obj)</tt> добавили сеттер прототипа <tt>Object.setPrototypeOf(obj, newProto)</tt>. Так же разрешен прямой доступ к объекту <tt>__proto__</tt>.</p>
+
+	<h3>Object.assign</h3>
+	<p>Метод <tt>assign</tt> копирует в свой первый аргумент-объект свойства из всех остальных аргументов-объектов. Все последующие свойства перезаписывают предыдущие.</p>
+
+	<h3>Object.is</h3>
+	<p>Метод <tt>is</tt> сравнивает значения двух своих аргументов, почти как это делает <tt>===</tt>, но имеет особенности: с помощью такого сравнения NaN равен NaN.</p>
+
+	<h3>Методы объекта</h3>
+	<p>Был добавлен более короткий синтаксис создания методов объекта:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"tie"</span>,<br />
+&nbsp; &nbsp; open() { <br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Suitcase is opened"</span>); <br />
+&nbsp; &nbsp; }<br />
+};
+</code>
+	<p>В таком же стиле можно добавлять гетеры и сеттеры свойств:</p>
+	<code class="listing"><span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; myState: <span class="string">"opened"</span>,<br />
+&nbsp; &nbsp; get state() { <br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> <span class="string">`Suitcase is ${this.myState}`</span>; <br />
+&nbsp; &nbsp; }<br />
+};<br />
+console.log(suitcase.state);
+</code>
+	<p>Таким же образом можно добавить метод с вычисляемым названием:</p>
+	<code class="listing"><span class="key">let</span> myMethod = <span class="string">"close"</span>;<br />
+<span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; item1: <span class="string">"tie"</span>,<br />
+&nbsp; &nbsp; [myMethod]() { <br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">"Suitcase is closed"</span>); <br />
+&nbsp; &nbsp; }<br />
+};
+</code>
+
+	<h3>super</h3>
+	<p>В ES6 с помощью ключевого слова <b>super</b> в методе объекта можно получить свойство его прототипа:</p>
+	<code class="listing"><span class="key">let</span> item = {<br />
+&nbsp; &nbsp; volume: 10<br />
+};<br />
+<span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; __proto__: item,<br />
+&nbsp; &nbsp; volume: 20,<br />
+&nbsp; &nbsp; info() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`My new volume is ${this.volume},<br />
+&nbsp; &nbsp; &nbsp; &nbsp; my ex one is ${super.volume}`</span>);<br />
+&nbsp; &nbsp; }<br />
+};<br />
+suitcase.info();</code>
+</body>
+</html>

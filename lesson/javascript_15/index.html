@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Основы ECMAScript 6. 2 часть @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+	</style>
+</head>
+<body>
+	<h1>Современный JavaScript. Основы ECMAScript 6. 2 часть</h1>
+	<h2>Классы</h2>
+	<p>В ES6 появился удобный синтаксис для создания классов:</p>
+	<code class="listing"><span class="var">class</span> Suitcase {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = volume;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"closed"</span>;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="name">open</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"opened";</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`Suitcase is ${this.state}`</span>);<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+<span class="key">let</span> myCase = <span class="var">new</span> Suitcase(20);</code>
+	<p>При создании экземпляра запускается внутренний <tt>constructor</tt>, внутри которого производится инициализация нового объекта. Методы класса добавляются в прототип.</p>
+	<p>Такой класс ведет себя как <tt>let</tt>: обладает блочной видимостью и попадает во временную мертвую зону. Создать новый экземпляр без <tt>new</tt> нельзя. Методы имеют доступ к свойствам прототипа <tt>super</tt> и не являются перечислимыми.</p>
+	<p>По аналогии с функциями можно использовать альтернативный синтаксис создания класса - <em>"Class Expression"</em>:</p>
+	<code class="listing"><span class="key">let</span> Suitcase = <span class="var">class</span> {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = volume;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"closed"</span>;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="name">open</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"opened";</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`Suitcase is ${this.state}`</span>);<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+<span class="key">let</span> myCase = <span class="var">new</span> Suitcase(20);</code>
+	<p>Такой класс не имеет имени, но по аналогии с именованными функциональными выражениями имя можно добавить, однако это имя будет доступно только внути самого класса.</p>
+	<p>Как и для обектов, для классов можно задавать геттеры, сеттеры и вычисляемые свойства:</p>
+	<code class="listing"><span class="key">let</span> someMethod = <span class="string">"open"</span>;<br /><br />
+<span class="key">let</span> Suitcase = <span class="var">class</span> {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume, label</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = volume;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.label = label;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"closed"</span>;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="var">get</span> <span class="name">info</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> <span class="string">`"${this.label}", ${this.volume}l`</span>;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="var">set</span> <span class="name">info</span>(<span class="more">newVolume</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = newVolume;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="name">[someMethod]</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"opened";</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`Suitcase is ${this.state}`</span>);<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+<span class="key">let</span> myCase = <span class="var">new</span> Suitcase(20, <span class="string">"Aloha"</span>);</code>
+	<p>Свойства экземпляра класса можно задать только в <tt>constructor</tt>.</p>
+	<p>Для созданного с помощью <tt>class</tt> класса можно создавать статические методы. Для этого используется ключевое слово <tt>static</tt>:</p>
+	<code class="listing"><span class="key">let</span> Suitcase = <span class="var">class</span> {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume, label</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = volume;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.label = label;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"closed"</span>;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Suitcase.oneMoreObject();<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="var">static</span> <span class="name">oneMoreObject</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span>(!(<span class="string">"objectCount"</span> <span class="var">in</span> Suitcase)){<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Suitcase.objectCount = 0;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Suitcase.objectCount++;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="var">static get</span> <span class="name">count</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> Suitcase.objectCount || 0;<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="name">open</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"opened";</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`Suitcase is ${this.state}`</span>);<br />
+&nbsp; &nbsp; }<br />
+};<br /><br />
+<span class="key">let</span> myCase = <span class="var">new</span> Suitcase(20, <span class="string">"Aloha"</span>);</code>
+
+	<h3>Наследование</h3>
+	<p>Наследование реализуется использованием ключевого слова <tt>extends</tt>:</p>
+	<code class="listing"><span class="var">class</span> Case {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.volume = volume;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"closed"</span>;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="name">open</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.state = <span class="string">"opened";</span><br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+<span class="var">class</span> Suitcase <span class="var">extends</span> Case {<br />
+&nbsp; &nbsp; <span class="name">constructor</span>(<span class="more">volume, label</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">super</span>(volume);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.label = <span class="string">label</span>;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="name">tag</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; this.taged = true;<br />
+&nbsp; &nbsp; }<br /><br />
+&nbsp; &nbsp; <span class="name">open</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">super</span>.open();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">`Suitcase is ${this.state}`</span>);<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+<span class="key">let</span> myCase = <span class="var">new</span> Suitcase(20, <span class="string">"Cosy"</span>);</code>
+	<p>В случае наследования через <tt>extends</tt> если конструктор дочернего класса не указан, то автоматически будет вызван конструктор родительского. Явно вызвать конкструктор родительского класса <tt>super</tt> можно только внутри конструктора дочернего. При этом <tt>this</tt> не будет существовать до вызова <tt>super</tt>.</p>
+
+	<h2>Тип данных Symbol</h2>
+	<p><b>Символ (анг. Symbol)</b> &mdash; это уникальный и неизменяемый тип данных, который может быть использован как идентификатор для свойств объектов.</p>
+	<p>Синтаксис создания символа:</p>
+	<code class="listing"><span class="key">let</span> symbol1 = Symbol();<br />
+<span class="key">let</span> symbol2 = Symbol(<span class="string">"my symbol"</span>);<br />
+<span class="key">let</span> symbol3 = Symbol(<span class="string">"my symbol"</span>);<br />
+console.log(symbol2 == symbol3); <span class="comment">// false</span></code>
+	<p>Символ создается без ключевого слова <tt>new</tt> явно указывая на то, что символ &mdash; примитивный тип. Можно передать необязательный параметр-строку описания, который можно использовать для отладки, но который нельзя использовать для идентификации символа.</p>
+	<h3>Глобальный символьный реестр</h3>
+	<p>Символы, созданные с передачей только описания, не будут доступны глобально. В случае необходимости создания символа, доступного из разных частей программы, используют глобальный символьный реестр.</p>
+	<code class="listing"><span class="key">let</span> symbolGlobal = Symbol.for(<span class="string">"my symbol"</span>);<br />
+console.log(symbolGlobal == Symbol.for(<span class="string">"my symbol"</span>)); <span class="comment">// true</span></code>
+	<p>Символы, созданые через <tt>Symbol.for</tt> доступны глобально, при передаче одного и того же аргумента-имени символа в <tt>for</tt> символы равны.</p>
+	<p>Метод <tt>keyFor</tt> позволяет получить имя символа:</p>
+	<code class="listing"><span class="key">let</span> symbolGlobal = Symbol.for(<span class="string">"my symbol"</span>);<br />
+console.log(Symbol.keyFor(symbolGlobal)); <span class="comment">// my symbol</span></code>
+	<p>Для неглобального символа <tt>keyFor</tt> вернет <tt>undefined</tt>.</p>
+	<p>Символы могут использоваться для создания вычислимых свойств объектов.</p>
+	<code class="listing"><span class="key">let</span> secretProp = Symbol(<span class="string">"secret"</span>);<br /><br />
+<span class="key">let</span> suitcase = {<br />
+&nbsp; &nbsp; volume: 20,<br />
+&nbsp; &nbsp; <span class="name">[secretProp]</span>: <span class="string">"secret value"</span><br />
+};</code>
+	<p>Такое свойство не будет перечислимым.</p>
+	<p>Свойства-символы используются разработчиками языка JavaScript. Список известных символов приведен <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#table-1" target="_blank">здесь</a>, они обозначаются как <tt>@@SYMBOL_NAME</tt>, но доступны как свойства <tt>Symbol</tt>. При добавлении новых свойств, если давать им имена в виде строк, то существует риск переопределить свойства, созданные разработчиком программы. Потому было принято ввести символьный тип и для добавления нового функционала объектам использовать его.</p>
+	<p>Т.к. свойства, созданные с помощью символов, неперечислимы, то для получения списка таких свойств используют <tt>Object.getOwnPropertySymbols</tt>.</p>
+
+	<h2>Итераторы</h2>
+	<p>В стандарт было добавлено понятие "итерабельности" (перечислимости) объектов как способности пройти по свойствам объекта в цикле. К итерабельным относятся как классические массивы, так и псевдо-массивы типа <tt>arguments</tt> или коллекций DOM-элементов.</p>
+	<p>Для перебора таких объектов используется цикл <tt>for..of</tt>:</p>
+	<code class="listing"><span class="key">let</span> myArray = [1, 2, 3, 4, 5];<br /> 
+<span class="var">for</span> (<span class="key">let</span> elem <span class="var">of</span> myArray) {<br />
+&nbsp; &nbsp; console.log(elem);<br />
+}</code>
+	<p>Отличие такого цикла от <tt>for..in</tt> в том, что если, например, массиву будут добавлены какие-то дополнительные свойства, то при использовании <tt>for..in</tt> эти свойства также будут отображены (если не блокировать <em>enumerable</em> для них в дескрипторе). <tt>for..of</tt> использует собственный алгоритм прохода, потому даже перечислимые свойства массива не будут отображены.</p>
+	<h3>Встроенные итераторы</h3>
+	<p>Такие типы как String, Array, Map, Set имеют встроенный итератор, т.е. их можно перебирать с помощью <tt>for ..of</tt>. Для массива будут выведены только элементы, а для строки - ее символы, как если бы использовался массив символов:</p>
+	<code class="listing"><span class="key">let</span> myString = <span class="string">"welcome";</span><br />
+<span class="var">for</span> (<span class="key">let</span> symb <span class="var">of</span> myString) {<br />
+&nbsp; &nbsp; console.log(symb);<br />
+}</code>
+	<p>Использование <tt>for..of</tt> гарантирует, что в перечисление не попадет ничего "лишнего".</p>
+	<h3>Собственные итераторы</h3>
+	<p>Итерируемым можно сделать любой объект. Для этого объекту нужно добавить метод <tt>Symbol.iterator</tt>, который будет возвращать объект с методом <tt>next</tt>. В свою очередь <tt>next</tt> должен возвращать объект с двумя свойствами: <tt>value</tt> - значение на текущей итерации и <tt>done</tt> - признак конца итерирования. Все это называется <b>протоколом итерирования</b> и реализуется следующим образом.</p>
+	<p>Допустим, есть объект с двумя свойствами <tt>start</tt> и <tt>finish</tt>. Создадим для него итератор, который будет последовательно выводить целые числа в диапазоне от <tt>start</tt> до <tt>finish</tt>:</p>
+	<code class="listing"><span class="key">let</span> counter = {<br />
+&nbsp; &nbsp; start: 0,<br />
+&nbsp; &nbsp; finish: 10<br />
+};<br /><br />
+counter[Symbol.iterator] = <span class="key">function</span> () {<br />
+&nbsp; &nbsp; <span class="key">let</span> ctx = this;<br />
+&nbsp; &nbsp; <span class="key">let</span> i = ctx.start - 1;<br />
+&nbsp; &nbsp; <span class="key">let</span> iterator = {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="name">next</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; i++;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">return</span> {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; done: i > ctx.finish,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value: i<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; }<br />
+&nbsp; &nbsp; <span class="var">return</span> iterator;<br />	
+};<br /><br /> 
+<span class="var">for</span> (<span class="key">let</span> value <span class="var">of</span> counter) {<br />
+&nbsp; &nbsp; console.log(value);<br />
+}</code>
+	<p>При запуске перебора <tt>for..of</tt> код запускает <tt>counter[Symbol.iterator]</tt> и получает <tt>next</tt>, который запускает на каждом шаге, пока возвращаемый <tt>done</tt> не станет равным <tt>true</tt>.</p>
+	<p>Если указать <tt>finish</tt> как <tt>Infinity</tt> или в коде итератора задать <tt>done: false</tt>, то можно получить бесконечный итератор. В этом случае необходимо останавливать его внутри <tt>for..of</tt> с помощью <tt>break</tt>.</p>
+
+	<h2>Map, Set, WeakMap и WeakSet</h2>
+	<p>ES6 предлагает новые типы коллекций: <b>Map, Set, WeakMap и WeakSet</b>.</p>
+	<p>При создании свойств для объекта их названия приводятся к строке. Использование новых видов коллекций помогает обойти эти ограничения.</p>
+	<h3>Map</h3>
+	<p><b>Map</b> &mdash; это простой ассоциативный массив. Любые примитивы и объекты могут быть как ключами, так и значениями такого массива. В качестве параметра может принимать любой итерируемый объект, содержащий пары ключ-значение, на основании которого будет создан новый Map.</p>
+	<code class="listing"><span class="key">let</span> emptyMap = <span class="key">new</span> Map();<br />
+<span class="key">let</span> fullMap = <span class="key">new</span> Map([<br />
+&nbsp; &nbsp; [<span class="string">'first key'</span>, <span class="string">'first value'</span>],<br />
+&nbsp; &nbsp; [{key: <span class="string">'second key'</span>}, <span class="string">'second value'</span>],<br />
+&nbsp; &nbsp; [null, <span class="string">'third value'</span>],<br />
+]);<br /></code>
+	<p>Для работы с Map используются следующие свойства и методы:</p>
+	<ul>
+		<li><b>size</b> &mdash; получает количество элементов в коллекции</li>
+		<li><b>get(key)</b> &mdash; получает элемент по его ключу</li>
+		<li><b>set(key, value)</b> &mdash; добавляет элемент <tt>value</tt> с ключом <tt>key</tt></li>
+		<li><b>clear()</b> &mdash; очищает коллекцию</li>
+		<li><b>delete(key)</b> &mdash; удаляет элемент по его ключу</li>
+		<li><b>has(key)</b> &mdash; добавляет элемент <tt>value</tt> с ключом <tt>key</tt></li>
+		<li><b>keys()</b> &mdash; возвращает ключи коллекции в виде итератора</li>
+		<li><b>values()</b> &mdash; возвращает значения коллекции в виде итератора</li>
+		<li><b>entries()</b> &mdash; возвращает массивы <tt>[ключ, значение]</tt> элементов коллекции в виде итератора</li>
+		<li><b>forEach(value, key, map)</b> &mdash; метод, аналогичный <tt>forEach</tt> у массивов</li>
+	</ul>
+	<p>Метод <tt>set</tt> возвращает текущую коллекцию, благодаря чему вызовы <tt>set</tt> можно чейнить.</p>
+	<p>При переборе в итераторе элементы коллекции идут в том же порядке, в котором они были добавлены. Перебор свойств в обычных объектах не мог гарантировать этого.</p>
+	<h3>Set</h3>
+	<p><b>Set</b> &mdash; коллекция для хранения уникальных значений, как примитивов, так и объектов.</p>
+	<code class="listing"><span class="key">let</span> myObject = {myProp: <span class="string">'bI'</span>};<br /><br />
+<span class="key">let</span> emptySet = <span class="key">new</span> Set();<br />
+<span class="key">let</span> fullSet = <span class="key">new</span> Set([<br />
+&nbsp; &nbsp; <span class="string">'first value'</span>,<br />
+&nbsp; &nbsp; {key: <span class="string">'second value'</span>},<br />
+&nbsp; &nbsp; myObject,<br />
+&nbsp; &nbsp; <span class="string">'forth value'</span>,<br />
+&nbsp; &nbsp; <span class="string">'first value'</span>,<br />
+&nbsp; &nbsp; {key: <span class="string">'second value'</span>},<br />
+&nbsp; &nbsp; myObject<br />
+]);<br /></code>
+	<p>Как и для <tt>Map</tt>, для <tt>Set</tt> в качестве необязательного аргумента можно передать итерируемый объект, из которого будет создан новый Set.</p>
+	<p>Set сам контролирует уникальность элементов при добавлении. Приведенный выше код создаст коллекцию из 5 элементов, строка <tt>'first value'</tt>  и объект <tt>myObject</tt> повторно добавлены не будут.</p>
+	<p>Основные свойства и методы работы с коллекцией <tt>Set</tt>:</p>
+	<ul>
+		<li><b>add(value)</b> &mdash; добавляет элемент в коллекцию</li>
+		<li><b>delete(value)</b> &mdash; удаляет элемент из коллекции, возвращает <tt>true</tt> в случае успеха</li>
+		<li><b>has(value)</b> &mdash; возвращает <tt>true</tt> если <tt>value</tt> есть в коллекции</li>
+		<li><b>clear()</b> &mdash; очищает коллекцию</li>
+		<li><b>forEach(value, andValue, set)</b> &mdash; по аналогии с <tt>Map</tt>, два раза значение передается для соответствия методу у <tt>Map</tt></li>
+	</ul>
+	<h3>WeakMap и WeakSet</h3>
+	<p><b>WeakMap и WeakSet</b> &mdash; разновидности <tt>Map</tt> и <tt>Set</tt>, работа с которыми специальным образом оптимизирована сборщиком мусора. Если какой-то объект есть только в коллекции <tt>WeakMap</tt> или <tt>WeakSet</tt>, то он удаляется из памяти.</p>
+	<p>Например, <tt>WeakMap</tt> может использоваться как дополнительное хранилище свойств объекта, которое при удалении объекта так же необходимо очистить. Ключами <tt>WeakMap</tt> могут быть только объекты.</p>
+	<code class="listing"><span class="key">let</span> stuff = <span class="key">new</span> WeakMap();<br />
+<span class="key">let</span> developer = { htmlSkill: 5};<br />
+stuff.set(developer, { age: 66 });<br />
+console.log( stuff.get(developer) );<br />
+<span class="var">delete</span> window.developer; <span class="comment">// удалит элемент и из stuff</span></code>
+	<p>Т.е. при использовании <tt>WeakMap</tt> нет необходимости удалять вручную привязанные дополнительные свойства.</p>
+	<p><tt>WeakMap</tt> имеет ряд особенностей:</p>
+	<ul>
+		<li>нельзя узнать текущий размер коллекции</li>
+		<li>нельзя очистить хранилище</li>
+		<li>нельзя получить значения перебором</li>
+	</ul>
+	<p>По прежнему можно удалять элементы через <tt>delete</tt> и проверять через <tt>has</tt>.</p>
+	<p>Недоступность коллекции обусловлено особенностью <tt>WeakMap</tt>. Сборщик мусора может модифицировать этот объект в любой момент времени, потому невозможно получить его достовеное состояние.</p>
+
+	<h2>Promise</h2>
+	<p><b>Объект Promise (обещание)</b> используется для отложенных и асинхронных вычислений.</p>
+	<p>Promise может находиться в трёх состояниях:</p>
+	<ul>
+		<li><b>ожидание (pending)</b> &mdash; начальное состояние, не выполнено и не отклонено</li>
+		<li><b>выполнено (fulfilled)</b> &mdash; операция завершена успешно</li>
+		<li><b>отклонено (rejected)</b> &mdash; операция завершена с ошибкой</li>
+	</ul>
+	<p>При изменении состояния промиса происходит либо событие <tt>onFulfilled</tt>, либо <tt>onRejected</tt>.</p>
+	<p>При необходимости добавления асинхронного кода его помещают в <tt>Promise</tt>, а из основного кода навешивают обработчики событий, которые отработают при изменении состояния промиса:</p>
+	<code class="listing"><span class="key">let</span> promise = <span class="key">new</span> Promise((<span class="more">resolve, reject</span>) => {<br />
+&nbsp; &nbsp; setTimeout(() => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; resolve(<span class="string">"Done!"</span>);</span><br />
+&nbsp; &nbsp; }, 1000);<br />
+});<br /><br />
+promise.then(<br />
+&nbsp; &nbsp; <span class="more">result</span> => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(result);<br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; <span class="more">error</span> => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.error(error);<br />
+&nbsp; &nbsp; }<br />
+);</code>
+	<p>Метод <tt>then</tt> промиса получает два атрибута: на первом месте функция-callback для состояния "fulfilled", на втором месте - callback для ошибки. Для перехвата только ошибки можно использовать метод <tt>catch</tt>.</p>
+	<p>Генерация ошибки через <tt>throw</tt> внутри промиса сгенерирует вызов callback-функции <tt>error</tt></p>
+	<p>Изменить состояние промиса после перехода в fulfilled/rejected нельзя. Если после запуска <tt>resolve</tt> вызвать <tt>reject</tt>, но состояние промиса не поменяется и соответствующий callback не будет вызван.</p>
+	<p>Промисы удобно использовать для любого асинхронного кода, в т.ч. и для ajax-запросов:</p>
+	<code class="listing"><span class="key">let</span> ajax = (<span class="more">url</span>) => {<br />
+&nbsp; &nbsp; <span class="key">let</span> ajaxPromise = <span class="key">new</span> Promise((<span class="more">resolve, reject</span>) => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="key">let</span> request = <span class="key">new</span> XMLHttpRequest();<br />
+&nbsp; &nbsp; &nbsp; &nbsp; request.open(<span class="string">"GET"</span>, url, true);<br /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; request.onload = () => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span> (this.status == 200) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; resolve(this.response);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } <span class="var">else</span> {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="key">let</span> error = <span class="key">new</span> Error(this.statusText);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; error.code = this.status;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reject(error);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; &nbsp; &nbsp; };<br /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; request.onerror = () => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reject(<span class="key">new</span> Error(<span class="string">"Connection error"</span>));<br />
+&nbsp; &nbsp; &nbsp; &nbsp; };<br /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; request.send();<br />
+&nbsp; &nbsp; });<br />
+&nbsp; &nbsp; <span class="var">return</span> ajaxPromise;<br />
+};<br /><br />
+<span class="key">let</span> ajaxExample = ajax(<span class="string">"http://example.com"</span>);<br />
+ajaxExample.then(console.log).catch(console.error);</code>
+	<p>Промисы так же можно делать вложенными. Для этого необходимо, чтобы результат в <tt>then</tt> возвращался в виде промиса:</p>
+	<code class="listing"><span class="key">let</span> promises = <span class="key">new</span> Promise((<span class="more">f, r</span>) => {<br />
+&nbsp; &nbsp; setTimeout(() => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; f(<span class="string">"Hello"</span>);<br />
+&nbsp; &nbsp; }, 1000);<br />
+});<br /><br />
+promises.then(<span class="more">result</span> => {<br />
+&nbsp; &nbsp; <span class="var">return</span> <span class="key">new</span> Promise((<span class="more">f2, r2</span>) => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; setTimeout(() => {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; f2(result + <span class="string">", world!"</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }, 1000);<br />
+&nbsp; &nbsp; });<br />
+}).then(<span class="more">result2</span> => {<br />
+&nbsp; &nbsp; console.log(result2);<br />
+});</code>
+	<p>При возникновении ошибки внутри цепочки промисов ее перехватит ближайший <tt>catch</tt>. Если ошибка некритичная, то <tt>catch</tt> передаст управление следующему <tt>then</tt>, в противном случае <tt>catch</tt> может сгенерировать ошибку, и управление перейдет на следующий <tt>catch</tt>.</p>
+	<p>С помощью нескольких <tt>then</tt> можно не только чейнить промисы, но и навешивать несколько обработчиков на один промис.</p>
+	<h3>Параллельное выполнение</h3>
+	<p>У конструктора <tt>Promise</tt> есть статические методы:</p>
+	<ul>
+		<li><b>all(list)</b> &mdash; получает коллекцию промисов и запускает их параллельно. Полученный промис перейдет в <tt>fulfilled</tt>, когда выполнятся все промисы из списка, и вернет их данные</li>
+		<li><b>race(list)</b> &mdash; получает коллекцию промисов и запускает их параллельно. Первый выполнившийся внутренни промис переведет внешний промис в <tt>fulfilled</tt> и вернет его данные</li>
+		<li><b>resolve(value)</b> &mdash; создает промис с состоянием <b>fulfilled</b> и значением <tt>value</tt></li>
+		<li><b>reject(error)</b> &mdash;  создает промис с состоянием <b>rejected</b> и значением <tt>error</tt></li>
+	</ul>
+
+	<h2>Генераторы</h2>
+	<p><b>Генераторы</b> &mdash; новый вид функций, способных приостанавливать своё выполнение, возвращать промежуточный результат и далее возобновлять его позже, в произвольный момент времени. Для создания такой функции используют <tt>*</tt>:</p>
+	<code class="listing"><span class="key">function*</span> myFunc() {}</code>
+	<p>При вызове такой функции-генератора она не выполнится, но вернет специальный объект-генератор. У такого объекта есть метод <tt>next</tt> для "продвижения" внутри функции-генератора, который выполняет код внутри нее до ближайшего ключевого слова <tt>yield</tt> и возвращает текущее значение:</p>
+	<code class="listing"><span class="key">function*</span> myFunc() {<br />
+&nbsp; &nbsp; <span class="key">let</span> i = 0;<br />
+&nbsp; &nbsp; console.log(<span class="string">`Checkpoint ${i}`</span>);<br />
+&nbsp; &nbsp; <span class="var">yield</span> i;<br />
+&nbsp; &nbsp; i++;<br />
+&nbsp; &nbsp; console.log(<span class="string">`Checkpoint ${i}`</span>);<br />
+&nbsp; &nbsp; <span class="var">yield</span> i;<br />
+&nbsp; &nbsp; i++;<br />
+&nbsp; &nbsp; console.log(<span class="string">`Checkpoint ${i}`</span>);<br />
+&nbsp; &nbsp; <span class="var">yield</span> i;<br />
+&nbsp; &nbsp; i++;<br />
+&nbsp; &nbsp; console.log(<span class="string">`Checkpoint ${i}`</span>);<br />
+&nbsp; &nbsp; <span class="var">return</span> i;<br />
+}<br /><br />
+<span class="key">let</span> generator = <span class="name">myFunc</span>();<br />
+generator.next(); <span class="comment">// {value: 0, done: false}</span><br />
+generator.next(); <span class="comment">// {value: 1, done: false}</span><br />
+generator.next(); <span class="comment">// {value: 2, done: false}</span><br />
+generator.next(); <span class="comment">// {value: 3, done: true}</span><br /></code>
+	<p>Звездочку можно ставить как сразу после ключевого слова <tt>function* ()</tt>, так и сразу перед скобками <tt>function *()</tt>.</p>
+	<p>Наличие метода <tt>next</tt> указывает на то, что генератор является итератором. Но при проходе через <tt>for..of</tt> значение из <tt>return</tt> не будет возвращено. Чтобы его получить необходимо заменить <tt>return</tt> на <tt>yield</tt></p>
+	<h3>Вложенные генераторы</h3>
+	<p>Генераторы могут содержать в себе другие генераторы. Такая техника называется <b>композицией генераторов</b>.</p>
+	<p>Например, имеется функция-генератор для создания ряда чисел. С помощью оператора "троеточие" такой ряд модно преобразовать к массиву:</p>
+	<code class="listing"><span class="key">function*</span> <span class="name">genRow</span>(<span class="more">start, end</span>) {<br />
+&nbsp; &nbsp; <span class="var">for</span> (<span class="key">let</span> i = start; i <= end; i++) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">yield</span> i;<br />
+&nbsp; &nbsp; }<br />
+}<br /><br />
+<span class="key">let</span> arr = [...genRow(1,5)];<br />
+console.log(arr); // 1, 2, 3, 4, 5</code>
+	<p>Если необходимо свормировать несколько таких рядов, то можно обернуть запуск генератора в другой генератор:</p>
+	<code class="listing"><span class="key">function*</span> <span class="name">genRow</span>(<span class="more">start, end</span>) {<br />
+&nbsp; &nbsp; <span class="var">for</span> (<span class="key">let</span> i = start; i <= end; i++) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">yield</span> i;<br />
+&nbsp; &nbsp; }<br />
+}<br /><br /><span class="key">function*</span> <span class="name">moreRows</span>() {<br />
+&nbsp; &nbsp;<span class="var">yield*</span> genRow(10, 15);<br />
+&nbsp; &nbsp;<span class="var">yield*</span> genRow(20, 25);<br />
+&nbsp; &nbsp;<span class="var">yield*</span> genRow(30, 35);<br />
+}<br /><br />
+<span class="key">let</span> arr = [];<br />
+<span class="var">for</span>(<span class="key">let</span> row <span class="var">of</span> moreRows()) {<br />
+&nbsp; &nbsp;arr.push(row);<br />
+}<br />
+console.log(arr); <span class="comment">// 10..15,20..25,30..35</span></code>
+	<p>Конструкция <tt>yield*</tt> выполняет генератор и все его <tt>yield</tt> и возвращает промежуточное значение в <tt>for..of</tt>.</p>
+
+	<h2>Модули</h2>
+	<p><b>Модули</b> &mdash; удобный способ организации частей большой программы.</p>
+	<p>Функционал модулей был востребован давно, для его реализации использовались различные специальные библиотеки: require.js, common.js и т.д.</p>
+	<p>Модулем называется файл с кодом, который можно импортировать в другую часть программы. Для организации работы с модулями используются понятия экспорта и импорта.</p>
+	<p>Ключевое слово <tt>export</tt> ставят либо перед переменными, которые нужно экспортировать, либо отдельно (чаще всего - в конце файла) с перечислением переменных для экспорта в фигурных скобках:</p>
+	<code class="listing"><span class="var">export</span> <span class="key">let</span> someValue = 911;</code>
+	<p></p>
+	<code class="listing"><span class="key">let</span> someValue = 911;<br />
+<span class="var">export</span> {someValue};</code>
+	<p>Данный пример экспортирует во внешний файл одну переменную. Для экспорта нескольких переменных использую запятую.</p>
+	<code class="listing"><span class="key">let</span> someValue = 911;<br />
+<span class="key">let</span> anotherValue = 38;<br />
+<span class="var">export</span> {someValue, anotherValue};</code>
+	<p>С помощью ключевого слова <tt>as</tt> можно указать имена, под которым переменная будет доступна в импортирующем коде:</p>
+	<code class="listing"><span class="key">let</span> someValue = 911;<br />
+<span class="key">let</span> anotherValue = 38;<br />
+<span class="var">export</span> {someValue  <span class="var">as</span> var1, anotherValue <span class="var">as</span> var2};</code>
+	<p>Нельзя экспортировать безымянные функции и классы.</p>
+	<p>Чтобы подключить модуль используют ключевое слово <tt>import</tt>:</p>
+	<code class="listing"><span class="var">import</span> {someValue, anotherValue} <span class="var">from</span> <span class="string">"./values"</span>;</code>
+	<p>В фигурных скобках перечисляются переменные для импорта, а после <tt>from</tt> указывают путь к файлу импорта без расширения. Для приведенного примера в подключающем файле будут доступны переменные <tt>someValue</tt> и <tt>anotherValue</tt> со своими значениями из файла-модуля.</p>
+	<p>При импорте так же можно переименовать импортируемые переменные:</p>
+	<code class="listing"><span class="var">import</span> {someValue <span class="var">as</span> var1, anotherValue <span class="var">as</span> var2} <span class="var">from</span> <span class="string">"./values"</span>;</code>
+	<p>Получить все переменные в виде объекта можно, воспользовавшись <tt>*</tt>:</p>
+	<code class="listing"><span class="var">import</span> * <span class="var">as</span> values <span class="var">from</span> <span class="string">"./values"</span>;</code>
+	<p>Если из модуля необходимо импортировать единственное значение, то передать его з файла модуля можно с помощью <tt>export default</tt>:</p>
+	<code class="listing"><span class="var">export default</span> <span class="key">let</span> someValue = 911;</code>
+	<p>В импортирующем файле в этом случае можно не указывать фигурные скобки:</p>
+	<code class="listing"><span class="var">import</span> someValue <span class="var">from</span> <span class="string">"./values"</span>;</code>
+</body>
+</html>
