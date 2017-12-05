@@ -5,27 +5,141 @@
 	<title>HTML5 @ Курс Frontend-разработки</title>
 	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
 	<style>
+	h4 {
+		display: inline-block;
+		border-bottom: 1px solid #000;
+		padding: 0 10px;
+		color: #000;
+		margin: 30px 0 0;
+	}
+	:invalid {
+		border: 2px solid #F00;
+	}
+	input {
+		font-size: 16px;
+	}
+	.example {
+		padding: 20px;
+		border: 1px solid #000;
+	}
 	</style>
 </head>
 <body>
 	<h1>HTML5</h1>
-	<h2>Новые теги</h2>
-	<h3>Теги форм</h3>
+	<h2>Новые теги и атрибуты</h2>
+	<h3>Семантические теги</h3>
+	<p>Для улучшения семантики html-страниц в HTML5 был введен ряд семантических тегов:</p>
+	<ul>
+		<li><b>article</b> &mdash; единичный отдельный блок контента</li>
+		<li><b>aside</b> &mdash; блок-контейнер с ддополнительной информацией, чаще всего - сайдбар страницы</li>
+		<li><b>figure</b> &mdash; обертка для изображения</li>
+		<li><b>figcaption</b> &mdash; подпись для изображения, используется внутри <tt>figure</tt></li>
+		<li><b>footer</b> &mdash; блок-"подвал" сайта или единичного блока контента</li>
+		<li><b>header</b> &mdash; блок-"шапка" сайта или единичного блока контента</li>
+		<li><b>main</b> &mdash;	блок основого содержимого страницы</li>
+		<li><b>nav</b> &mdash; блок навигации по сайту</li>
+		<li><b>section</b> &mdash; блок связанного контента</li>
+		<li><b>time</b> &mdash;	тег даты и/или времени. Может использоваться с атрибутом <tt>datetime</tt></li>
+		<li><b>address</b> &mdash; тег адреса, в HTML4 означал адрес владельца сайта, в HTML5 может использоваться для указания адреса как владельца сайта, так и автора конкретной статьи</li>
+		<li><b>data</b> &mdash; тег данных, представляет значения в машинно-читаемом формате: <tt>&lt;data value="38">тридцать восемь попугаев&lt;/data></tt></li>
+		<li><b>dialog</b> &mdash; тег диалога, используется для создания модальных диалоговых окон</li>
+	</ul>
+
+	<h3>Теги отображения</h3>
+	<h4>mark</h4>
+	<p>Используется для <mark>выделения текста</mark> на странице, по аналогии выделения маркером на бумаге.</p>
+	<h4>details</h4>
+	<p>Создает блок дополнительной информации, отображающейся по клику:</p>
+	<details><code class="listing">&lt;details>Hidden content&lt;/details></code></details>
+	<p>При указании атрибута <tt>open</tt> блок развернут по умолчанию:</p>
+	<details open><code class="listing">&lt;details open>Hidden content&lt;/details></code></details>
+	<p>При использовании с тегом <tt>summary</tt> позволяет поменять кликабельный текст "Details":</p>
+	<details><summary>Используем summary</summary><code class="listing">&lt;details><br />&lt;summary>Используем summary&lt;/summary><br />Hidden content<br />&lt;/details></code></details>
+	<h4>progress</h4>
+	<p>Отображает системный progressbar, используя атрибуты <tt>max</tt> и <tt>value</tt>:</p>
+	<code class="listing">&lt;progress value="90" max="100">&lt;/progress></code>
+	<progress value="90" max="100"></progress>
+	<section>
+		<h4>meter</h4>
+		<p><tt>meter</tt> служит для отображения количества чего-либо, находящегося в заданном диапазоне. В зависимости от значений дополнительных атрибутов <tt>low, high</tt> тег <tt>meter</tt> может окрашиваться в разные цвета:</p>
+		<table>
+			<tr>
+				<td>
+					<code class="listing">&lt;meter value="0.4">40%&lt;/meter></code>
+				</td>
+				<td><meter value="0.4">40%</meter></td>
+			</tr>
+			<tr>
+				<td>
+					<code class="listing">&lt;meter value="500" max="750">500&lt;/meter></code>
+				</td>
+				<td><meter value="500" max="750">500</meter></td>
+			</tr>
+			<tr>
+				<td>
+					<code class="listing">&lt;meter value="25" max="100"<br />low="50">60%&lt;/meter></code>
+				</td>
+				<td><meter value="25" max="100" low="50">25</meter></td>
+			</tr>
+			<tr>
+				<td>
+					<code class="listing">&lt;meter value="9" max="10"<br /> high="8">9&lt;/meter></code>
+				</td>
+				<td><meter value="9" max="10" high="8">9</meter></td>
+			</tr>
+		</table>
+	</section>
+	<section>
+		<h4>wbr</h4>
+		<p><tt>wbr</tt> позволяет явно указать место разрыва длинных слов при переносе:</p>
+		<div class="example"><b>Без wbr:</b>Это_очень_очень_длинное_слово_и_без_указания_переносов_браузер_не_будет_знать_как_его_переносить</div>
+		<div class="example"><b>C wbr:</b><wbr>Это_</wbr>очень<wbr>_</wbr>очень<wbr>_</wbr><wbr>длинное_</wbr><wbr>слово_</wbr><wbr>и_</wbr><wbr>без_</wbr><wbr>указания_</wbr><wbr>переносов_</wbr><wbr>браузер_</wbr><wbr>не_</wbr><wbr>будет_</wbr><wbr>знать_</wbr><wbr>как_</wbr><wbr>его_</wbr>переносить</div>
+		<p>Для этих целей можно использовать также спецсимвол <tt>&amp;shy;</tt>, который в месте переноса добавляет дефис. Такой перенос нызвается "мягким".</p>
+		<div class="example"><b>С &amp;shy;:</b>Это&shy;_очень&shy;_очень&shy;_длинное&shy;_слово&shy;_и&shy;_без&shy;_указания&shy;_переносов&shy;_браузер&shy;_не&shy;_будет&shy;_знать&shy;_как&shy;_его&shy;_переносить</div>
+	</section>
+	
+
+	<h3>Атрибуты для input</h3>
+	<p>Для <tt>input</tt> в HTML5 были добавлены новые атрибуты:</p>
+	<ul>
+		<li><b>min</b> &nbsp; минимальное значение для поля</li>
+		<li><b>max</b> &nbsp; максимальное значение для поля</li>
+		<li><b>step</b> &nbsp; шаг изменения для поля</li>
+		<li><b>required</b> &nbsp; пометить поле необходимым для заполнения</li>
+		<li><b>pattern</b> &nbsp; задать регулярное выражение для поля</li>
+		<li><b>placeholder</b> &nbsp; задать текст-подсказку для поля</li>
+		<li><b>autofocus</b> &nbsp; передать фокус полю при загрузке страницы</li>
+		<li><b>novalidate</b> &nbsp; не валидировать форму перед отправкой (только для форм)</li>
+	</ul>
+	<p>Использование <tt>min,max,step</tt> накладывает ограничения на ввод с помощью системных кнопок управления, но не на ввод с клавиатуры.</p>
+	<form action="index.html" method="get">
 	<table>
 		<tr>
 			<td>
-				<code class="listing">&lt;input type="color" value="#FF0000"  /></code>
+				<code class="listing">&lt;input type="text" value="Required"<br /> required /></code>
 			</td>
 			<td>
-				Color: <input type="color" value="#FF0000" />
+				Required*: <input type="text" value="Required" required name="required" />
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<code class="listing">&lt;input type="date" value="2017-12-05" max="2018-03-31" min="2017-06-16" /></code>
+				<code class="listing">&lt;input type="text"<br /> pattern="\d{3}(-\d{2}){2}"<br /> placeholder="Your phone number" /></code>
 			</td>
 			<td>
-				Date: <input type="date" value="2017-12-05" max="2018-03-31" min="2017-06-16" />
+				Pattern (ddd-dd-dd): <input type="text" pattern="\d{3}(-\d{2}){2}" name="pattern" placeholder="Your phone number" />
+			</td>
+		</tr>
+	</table>
+	<input type="submit" />	
+	</form>
+
+	<h3>Теги форм</h3>
+	<form>
+	<table>
+		<tr>
+			<td colspan="2">
+				<p><tt>input[type=number]</tt> позволяет создать поле для ввода целого числа.</p>
 			</td>
 		</tr>
 		<tr>
@@ -38,13 +152,338 @@
 		</tr>
 		<tr>
 			<td>
+				<code class="listing">&lt;input type="number" value="7"<br /> min="5" max="10" /></code>
+			</td>
+			<td>
+				Number: <input type="number" value="7" min="5" max="10" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="number" step="2" /></code>
+			</td>
+			<td>
+				Number+step: <input type="number" step="2" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<p>Для тега диапазона необходимо указывать значения <tt>min</tt> и <tt>max</tt>. Если они не указаны, то по умолчанию используются 0 и 100 соответственно.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="range" /></code>
+			</td>
+			<td>
+				Range: <input type="range" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="range" min="30"<br /> max="70" step="10" /></code>
+			</td>
+			<td>
+				Range: <input type="range" min="30" max="70" step="10" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="tel" /></code>
+			</td>
+			<td>
+				Phone: <input type="tel" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="url" /></code>
+			</td>
+			<td>
+				URL: <input type="url" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="search" /></code>
+			</td>
+			<td>
+				Search: <input type="search" />
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<code class="listing">&lt;input type="email" /></code>
 			</td>
 			<td>
 				Email: <input type="email" />
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="color" value="#FF0000"  /></code>
+			</td>
+			<td>
+				Color: <input type="color" value="#FF0000" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="color" value="#00FF00" max="#880000"  /></code>
+			</td>
+			<td>
+				Color+max: <input type="color" value="#00FF00" max="#880000" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="time" value="12:00"<br /> max="23:30" min="06:00" /></code>
+			</td>
+			<td>
+				Time: <input type="time" value="12:00" max="23:30" min="06:00" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="time" value="12:00"<br /> max="23:30:00.00" min="06:00:00.00" step="2" /></code>
+			</td>
+			<td>
+				Time+step: <input type="time" value="12:00" max="23:30:00.00" min="06:00:00.00" step="2" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="week" value="2017-W48"<br /> max="2018-W052" min="2017-W01" /></code>
+			</td>
+			<td>
+				Week: <input type="week" value="2017-W48"  max="2018-W052" min="2017-W01" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="month" value="2017-12"<br /> max="2018-03" min="2017-08" /></code>
+			</td>
+			<td>
+				Month: <input type="month" value="2017-12"  max="2018-03" min="2017-08" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="date" value="2017-12-05"<br /> max="2018-03-31" min="2017-06-16" /></code>
+			</td>
+			<td>
+				Date: <input type="date" value="2017-12-05" max="2018-03-31" min="2017-06-16" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input type="datetime-local" /></code>
+			</td>
+			<td>
+				Date and time: <input type="datetime-local" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<p>Элемент <tt>datalist</tt> работает в паре с текстовым полем и позволяет задать "подстановки" для набираемого текста.</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code class="listing">&lt;input list="lang"><br />&lt;datalist id="lang"><br /> &lt;option>java&lt;/option><br /> &lt;option>javascript&lt;/option><br /> &lt;option>html&lt;/option><br /> &lt;option>css&lt;/option><br />&lt;/datalist></code>
+			</td>
+			<td>
+				Datalist: <input list="lang"><datalist id="lang"><option>java</option><option>javascript</option><option>html</option><option>css</option></datalist>
+			</td>
+		</tr>
 	</table>
-	
+	<input type="submit" />	
+	</form>
+
+	<h3>Мультимедийные теги: picture</h3>
+	<p>Позволяет разработчикам гибко добавлять изображения на страницу. Основное предназначение - создание адаптивного дизайна.</p>
+	<code class="listing">&lt;picture><br />
+&nbsp; &nbsp; &lt;source media="(min-width: 1024px)" type="image/jpg" srcset="big_image.jpg, big_image_retina.jpg 2x"><br />
+&nbsp; &nbsp; &lt;source media="(min-width: 600px)" type="image/jpg" srcset="small_image.jpg"><br />
+&nbsp; &nbsp; &lt;img src="fallback_image.jpg" /><br />
+&lt;/picture></code>
+	<p>Содержит вложенные теги <tt>source</tt>, каждый из которых является источником изображения, прописанном в атрибуте <tt>srcset</tt>. В атрибуте <tt>media</tt> указыватся, при выполнении каких media-запросов будет отображен тот или иной источник. Для браузеров, не поддеживающих <tt>picture</tt>, или для показа изображения, не соответсвующего ни одному указанному media-запросу в конец <tt>picture</tt> добавляют тег <tt>img</tt>. Каждый из источников может также содержать информацию о mime-типе <tt>type</tt>. </p>
+	<p>Аттрибут <tt>srcset</tt> вместе с аттрибутом <tt>sizes</tt> можно использовать и для <tt>img</tt>:</p>
+	<code class="listing">&lt;img src="small.jpg"<br />
+&nbsp; &nbsp; srcset="img/image_big.png 640w,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; img/image_med.png 480w,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; img/image_small.png 320w"<br />
+&nbsp; &nbsp; sizes="(max-width: 460px) 250px,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; 100%"<br />
+&nbsp; &nbsp; alt="Image" /></code>
+	<p><tt>srcset</tt> указывает набор источников и их размеры (ширина в пикселях указывается как <tt>w</tt>). В <tt>sizes</tt> указывается размер результирующего изображения в зависимости от медиазапроса. Браузер подбирает источник, наиболее подходящий для вычисленного размера изображения. <a href="images.html" target="_blank">Примеры</a>.</p>
+	<h3>Мультимедийные теги: video</h3>
+	<p>Изначально кроссбраузерным способом добавления видео было добавление flash-видео. По мере развития HTML появился тег <tt>video</tt> для вставки видео на страницу (<a href="video.html" target="_blank">пример</a>):</p>
+	<code class="listing">&lt;video width="640" height="480" controls src="video/video.mp4">&lt;/video></code>
+	<p>Тег <tt>video</tt> может использоваться со следующими атрибутами:</p>
+	<ul>
+		<li><b>controls</b> &mdash; отображение элементов управления видео. По умолчанию не отображаются</li>
+		<li><b>preload</b> &mdash; указывает на предзагрузку видео, по умолчанию "auto", может быть "metadata" или "none"</li>
+		<li><b>autoplay</b> &mdash; автоматически запускает прогрывание видео</li>
+		<li><b>loop</b> &mdash; повторяет видео после его окончания</li>
+		<li><b>muted</b> &mdash; отключает звук</li>
+		<li><b>poster</b> &mdash; позволяет указать url изображения-заставки</li>
+	</ul>
+	<p>При воспроизведении видео браузер запускает три процесса:</p>
+	<u>
+		<li>интерпретацию контейнера видео</li>
+		<li>декодирование видеопотока</li>
+		<li>декодирование аудиопотока</li>
+	</u>
+	<p>Главная проблема &mdash; разные баузеры поддерживают разные типы видео и нет одного универсального типа, поддерживаемого всеми браузерами.</p>
+	<h4>Форматы видео</h4>
+	<p>Форматы или контейнеры видео - это разный способ представления одного и того же видеофайла. Как обычные файлы можно заархивировать в <em>zip, rar, 7z</em> и т.д., содержимое архива будет одинаковым во всех случаях, на алгоритмы архивации и структура файла-архива - разные.</p>
+	<h4>MPEG-4</h4>
+	<p>Обычно с расширением mp4 или m4v. MPEG-4 основан на старом контейнере Apple QuickTime (файлы с расширением mov).</p>
+	<h4>Ogg</h4>
+	<p>Обычно с расширением ogv. Ogg является открытым стандартом с открытым исходным кодом для пользователей, свободный от каких-либо патентов.</p>
+	<h4>WebM</h4>
+	<p>Расширение webm, более современный формат, предназначен для использования с видеокодеком VP8 и аудиокодеком Vorbis.</p>
+	<h4>Audio Video Interleave</h4>
+	<p>Расширение avi, формат разработан Microsoft, поддерживает малое количество кодеков.</p>
+	<h4>Flash video</h4>
+	<p>Обычно с расширением flv, формат видео Adobe Flash.</p>
+	<p>Для расшифровки видео используются разные кодеки, поддержка которых неодинакова для разных браузеров - см. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats#Browser_compatibility" target="_blank">поддержка браузерами</a>.</p>
+	<p>Потому для обеспечения максимальной доступности вашего видео необходимо использовать синтаксис с указанием нескольких источников:</p>
+	<code class="listing">&lt;video width="640" height="480" controls poster="video/poster.jpg"><br />
+&nbsp; &nbsp; &lt;source src="video/video.mp4" type="video/mp4" /><br />
+&nbsp; &nbsp; &lt;source src="video/video.webm" type="video/webm" /><br />
+&nbsp; &nbsp; &lt;source src="video/video.ogv" type="video/ogg" /><br />
+&nbsp; &nbsp; &lt;object width="640" height="480" type="application/x-shockwave-flash" data="video/video.flv"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;param name="movie" value="video/video.flv" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;param name="flashvars" value="controlbar=over&amp;image=video/poster.jpg&amp;file=video/video.mp4" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;img src="video/poster.jpg" width="640" height="360" alt="Video" title="No video playback capabilities, please download the video below" /><br />
+&nbsp; &nbsp; &lt;/object><br />
+&lt;/video></code>
+	<h4>Использование API работы с видео</h4>
+	<p>Элемент <tt>video</tt> имеет свойства и методы для управления им с помощью JavaScript:</p>
+	<ul>
+		<li><b>muted, poster, controls, loop, preload, autoplay</b> &mdash; управление одноименными атрибутами видео</li>
+		<li><b>volume</b> &mdash; геттер/сеттер громкости звука (0-1)</li>
+		<li><b>currentTime</b> &mdash; геттер/сеттер проигранного времени в секундах</li>
+		<li><b>playbackRate</b> &mdash; геттер/сеттер скорости проигрывания</li>
+		<li><b>buffered</b> &mdash; возвращает объект TimeRange, который характеризует буфферизацию видео браузером</li>
+		<li><b>paused</b> &mdash; геттер состояния видео "на паузе"</li>
+		<li><b>ended</b> &mdash; геттер состояния видео "закончилось"</li>
+		<li><b>duration</b> &mdash; геттер длительности видео</li>
+		<li><b>canPlayType(type)</b> &mdash; проверяет возможность проигрывания того или иного типа видео. В качестве аргумента - mime-type видео, в качестве результата - <tt>maybe</tt>(возможно поддерживается), <tt>probably</tt>(поддерживается) или пустая строка</li>
+		<li><b>pause()</b> &mdash; ставит на паузу проигрывание видео</li>
+		<li><b>play()</b> &mdash; начинает/возобновляет проигрывание видео</li>
+	</ul>
+	<p>Помимо унаследованных от Element событий тег <tt>video</tt> имеет специфические собственные события:</p>
+	<ul>
+		<li><b>loadedmetadata</b> &mdash; когда загружены метаданные видео</li>
+		<li><b>loadeddata</b> &mdash; когда загружен первый кадр видео</li>
+		<li><b>load</b> &mdash; когда видео загружено</li>
+		<li><b>play</b> &mdash; когда ничинается/возобновляется проигрывание видео</li>
+		<li><b>pause</b> &mdash; когда останавливается проигрывание видео</li>
+		<li><b>ended</b> &mdash; когда заканчивается проигрывание видео</li>
+		<li><b>volumechange</b> &mdash; когда меняется громкость видео</li>
+		<li><b>seeking</b> &mdash; при старте перемотки</li>
+		<li><b>seeked</b> &mdash; при окончании перемотки</li>
+		<li><b>timeupdate</b> &mdash; при изменении текущего времени видео</li>
+	</ul>
+	<p>Объект видео также может иметь субтитры, подключаемые через тег <tt>track</tt>:</p>
+	<code class="listing">&lt;video width="640" height="480" controls poster="video/poster.jpg"><br />
+&nbsp; &nbsp; &lt;source src="video/video.mp4" type="video/mp4" /><br />
+&nbsp; &nbsp; &lt;source src="video/video.webm" type="video/webm" /><br />
+&nbsp; &nbsp; &lt;source src="video/video.ogv" type="video/ogg" /><br />
+&nbsp; &nbsp; &lt;track src="video/subs.vtt" kind="subtitles" srclang="en" label="English" /><br />
+&nbsp; &nbsp; &lt;track src="video/subs_ru.vtt" kind="subtitles" srclang="ru" label="Russian" /><br />
+&lt;/video></code>
+	<p>Субтитры формируются в виде файлов в специальном формате, например, <tt>vtt</tt> а <tt>video</tt> ссылается на них при подключении.</p>
+
+	<h3>Мультимедийные теги: audio</h3>
+	<p>Для добавления аудиодорожки на страницу используется тег <tt>audio</tt> (<a href="audio.html" target="_blank">пример</a>):</p>
+	<code class="listing">&lt;audio src="audio/audio.mp3" controls>&lt;/audio></code>
+	<p>Браузеры, как и в случае с видео, поддерживают разные контейнеры и кодеки аудио, потому кроссбраузерный способ добавления <tt>audio</tt> включает в себя использование списка источников. Основные форматы аудио для вэб: mp3, wav, aac и ogg.</p>
+	<code class="listing">&lt;audio src="audio/audio.mp3" controls><br />
+&nbsp; &nbsp; &lt;source src="audio/audio.ogg" type="audio/ogg"><br />
+&nbsp; &nbsp; &lt;source src="audio/audio.mp3" type="audio/mpeg"><br />
+&nbsp; &nbsp; &lt;source src="audio/audio.aac" type="audio/mp4"><br />
+&nbsp; &nbsp; &lt;source src="audio/audio.wav" type="audio/wav"><br />
+&lt;/audio><br /></code>
+	<p>В отличие от <tt>video</tt> тегу <tt>audio</tt> нет смысла задавать аттрибуты <tt>width,height</tt>, но отображаемые размеры можно изменить с помощью css.</p>
+	<h4>Использование API работы с аудио</h4>
+	<p>Элемент <tt>audio</tt> имеет свойства и методы для управления им с помощью JavaScript:</p>
+	<ul>
+		<li><b>muted, controls, loop, preload, autoplay</b> &mdash; управление одноименными атрибутами аудио</li>
+		<li><b>volume</b> &mdash; геттер/сеттер громкости звука</li>
+		<li><b>currentTime</b> &mdash; геттер/сеттер проигранного времени в секундах</li>
+		<li><b>playbackRate</b> &mdash; геттер/сеттер скорости проигрывания</li>
+		<li><b>buffered</b> &mdash; возвращает объект TimeRange, который характеризует буфферизацию аудио браузером</li>
+		<li><b>paused</b> &mdash; геттер состояния аудио "на паузе"</li>
+		<li><b>ended</b> &mdash; геттер состояния аудио "закончилось"</li>
+		<li><b>duration</b> &mdash; геттер длительности аудио</li>
+		<li><b>canPlayType(type)</b> &mdash; проверяет возможность проигрывания того или иного типа аудио. В качестве аргумента - mime-type аудио, в качестве результата - <tt>maybe</tt>(возможно поддерживается), <tt>probably</tt>(поддерживается) или пустая строка</li>
+		<li><b>pause()</b> &mdash; ставит на паузу проигрывание аудио</li>
+		<li><b>play()</b> &mdash; начинает/возобновляет проигрывание аудио</li>
+	</ul>
+	<p>Помимо унаследованных от Element событий тег <tt>audio</tt> имеет специфические собственные события:</p>
+	<ul>
+		<li><b>loadedmetadata</b> &mdash; когда загружены метаданные аудио</li>
+		<li><b>loadeddata</b> &mdash; когда загружен первый кадр аудио</li>
+		<li><b>load</b> &mdash; когда аудио загружено</li>
+		<li><b>play</b> &mdash; когда ничинается/возобновляется проигрывание аудио</li>
+		<li><b>pause</b> &mdash; когда останавливается проигрывание аудио</li>
+		<li><b>ended</b> &mdash; когда заканчивается проигрывание аудио</li>
+		<li><b>volumechange</b> &mdash; когда меняется громкость аудио</li>
+		<li><b>seeking</b> &mdash; при старте перемотки</li>
+		<li><b>seeked</b> &mdash; при окончании перемотки</li>
+		<li><b>timeupdate</b> &mdash; при изменении текущего времени аудио</li>
+	</ul>
+	<h3>Мультимедийные теги: canvas</h3>
+	<p><tt>canvas</tt> представляет собой холст для рисования на нем с помощью JavaScript. Подобно десктопным графическим редакторам позволяет рисовать примитивные геометрические фигуры, встраивать изображения и выводить текст.</p>
+
+	<h2>Новые браузерные API</h2>
+	<h3>Работа с историей браузера</h3>
+	<p>Обычно изменение адресной строки браузера может быь связано с переходом на другой URL (по ссылке или с изменением <tt>location</tt> через JavaScript). History API позволяет менять историю браузера без перезагрузки страницы.</p>
+	<p>Новую запись можно добавить с помощью вызова:</p>
+	<code class="listing">history.pushState(state,<br />
+&nbsp; &nbsp; title,<br />
+&nbsp; &nbsp; url);</code>
+	<p>При этом передаются параметры:</p>
+	<ul>
+		<li><b>state</b> &mdash; параметры нового состояния. Это любой объект, характеризующий новое состояние новой записи в истории</li>
+		<li><b>title</b> &mdash; строка-заголовок новой записи. В настоящее время не поддерживается</li>
+		<li><b>url</b> &mdash; строка-новый url для отображения в строке состояния. В целях безопасности браузер запрещает указывать абсолютные url</li>
+	</ul>
+	<p>Для совместимости с классической навигацией необходимо "слушать" событие <tt>popstate</tt> объекта <tt>window</tt>, чтобы корректно обработать нажатие браузерной кнопки "Назад":</p>
+	<code class="listing">window.addEventListener(<span class="string">"popstate"</span>, function(e) {<br />
+&nbsp; &nbsp; console.log(e);<br />
+});</code>
+
+	<h3>Работа с геолокацией</h3>
+	<p>В HTML5 есть возможность определить географические координаты пользователя с помощью Geolocation API.</p>
+	<p>Опция доступна только для сайтов, работающих на HTTPS. В целях безопасности у пользователя будет запрошено разрешение на получение его гео-данных.</p>
+	<code class="listing"><span class="var">if</span> (<span class="string">"geolocation"</span> <span class="var">in</span> navigator) {<br />
+&nbsp; &nbsp; navigator.geolocation.getCurrentPosition( <span class="key">function</span>( <span class="more">position, errorCallback, options</span> ) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(position);<br />
+&nbsp; &nbsp; });<br />
+}</code>
+	<p>Объект геолокации содержит данные:</p>
+	<ul>
+		<li><b>timestamp</b> &mdash; текущее время в виде timestamp</li>
+		<li><b>coords.latitude</b> &mdash; широта в градусах *</li>
+		<li><b>coords.longitude</b> &mdash; долгота в градусах *</li>
+		<li><b>coords.accuracy</b> &mdash; точность в метрах *</li>
+		<li><b>coords.altitude</b> &mdash; высота над уровнем моря в метрах</li>
+		<li><b>coords.altitudeAccuracy</b> &mdash; точность определения высоты над уровнем моря в метрах</li>
+		<li><b>coords.speed</b> &mdash; скорость движения в метрах в секунду</li>
+		<li><b>coords.heading</b> &mdash; направление движения (в градусах по часовой стрелке от направления "север")</li>
+	</ul>
+	<p>Помимо метода <tt>getCurrentPosition</tt> может быть доступен метод <tt>watchPosition</tt>, который получает текущие данные и продолжает отслеживать изменение позиции, если пользователь перемещается, возвращая при этом ID точки наблюдения. Удалить точку из списка наблюдения можно с помощью метода <tt>clearWatch</tt>.</p>
+	<p>При возникновении ошибки функция обработки ошибки <tt>errorCallback</tt> получает данные о коде ошибки (<tt>error.code</tt>) и описании ошибки (<tt>error.message</tt>).</p>
+	<p>В третьем необязательном параметре <tt>options</tt> можно указать дополнительные настройки гео-положения:</p>
+	<code class="listing"><span class="key">var</span> options = {<br />
+&nbsp; &nbsp; enableHighAccuracy: true, <span class="comment">// получать более точные данные</span> <br />
+&nbsp; &nbsp; maximumAge : 30000, <span class="comment">// время жизни закешированных координат</span><br />
+&nbsp; &nbsp; timeout: 27000 <span class="comment">// время задержки перед принудительным вызовом errorCallback</span><br />
+};</code>
 </body>
 </html>

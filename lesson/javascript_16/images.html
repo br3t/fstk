@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Picture example</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<style>
+			picture img {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Picture example</h2>
+		<picture>
+		    <source media="(min-width: 700px)" type="image/png" srcset="img/image_big.png">
+		    <source media="(min-width: 500px)" type="image/png" srcset="img/image_med.png">
+		    <img src="img/image_small.png" />
+		</picture>
+
+		<h2>Img example</h2>
+		<img src="small.jpg"
+		    srcset="img/image_big.png 640w,
+		            img/image_med.png 480w,
+		            img/image_small.png 320w"
+		    sizes="(max-width: 460px) 250px,
+		        100%"
+		    alt="Image" />
+	</body>
+</html>
