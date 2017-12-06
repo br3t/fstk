@@ -98,6 +98,15 @@
 		<div class="example"><b>С &amp;shy;:</b>Это&shy;_очень&shy;_очень&shy;_длинное&shy;_слово&shy;_и&shy;_без&shy;_указания&shy;_переносов&shy;_браузер&shy;_не&shy;_будет&shy;_знать&shy;_как&shy;_его&shy;_переносить</div>
 	</section>
 	
+	<h3>Универсальные атрибуты</h3>
+	<p>Универсальные атгрибуты &mdash; это атрибуты, которые могут быть добавлены любому элементу. К ним относятся <tt>id, class, style</tt>. В HTML5 было добавлено еще несколько типов универсальных атрибутов:</p>
+	<ul>
+		<li><b>hidden</b> &mdash; позволяет скрыть любой элемент. В браузере для такого элемента будет установлено css-правило <tt>display:none</tt></li>
+		<li><b>data-атрибуты</b> &mdash; любые атрибуты, начинающиеся с <tt>data-</tt> являются пользовательскими и служат для добавления дополнительной информации в элемент</li>
+		<li><b>contenteditable</b> &mdash; выставляется в <tt>true|false</tt>,	отвечает за возможность редактировать содержимое элемента из браузера. Сохраняет форматирование, наследуемый.</li>
+		<li><b>spellcheck</b> &mdash; выставляется в <tt>true|false</tt>, указывает необходимость проверки правописания для текстового поля или редактируемого элемента</li>
+		<li translate="no"><b>translate</b> &mdash; выставляется в <tt>yes|no</tt>, указывает на запрет перевода содержимого элемента</li>
+	</ul>
 
 	<h3>Атрибуты для input</h3>
 	<p>Для <tt>input</tt> в HTML5 были добавлены новые атрибуты:</p>
@@ -440,50 +449,23 @@
 	<h3>Мультимедийные теги: canvas</h3>
 	<p><tt>canvas</tt> представляет собой холст для рисования на нем с помощью JavaScript. Подобно десктопным графическим редакторам позволяет рисовать примитивные геометрические фигуры, встраивать изображения и выводить текст.</p>
 
-	<h2>Новые браузерные API</h2>
-	<h3>Работа с историей браузера</h3>
-	<p>Обычно изменение адресной строки браузера может быь связано с переходом на другой URL (по ссылке или с изменением <tt>location</tt> через JavaScript). History API позволяет менять историю браузера без перезагрузки страницы.</p>
-	<p>Новую запись можно добавить с помощью вызова:</p>
-	<code class="listing">history.pushState(state,<br />
-&nbsp; &nbsp; title,<br />
-&nbsp; &nbsp; url);</code>
-	<p>При этом передаются параметры:</p>
-	<ul>
-		<li><b>state</b> &mdash; параметры нового состояния. Это любой объект, характеризующий новое состояние новой записи в истории</li>
-		<li><b>title</b> &mdash; строка-заголовок новой записи. В настоящее время не поддерживается</li>
-		<li><b>url</b> &mdash; строка-новый url для отображения в строке состояния. В целях безопасности браузер запрещает указывать абсолютные url</li>
-	</ul>
-	<p>Для совместимости с классической навигацией необходимо "слушать" событие <tt>popstate</tt> объекта <tt>window</tt>, чтобы корректно обработать нажатие браузерной кнопки "Назад":</p>
-	<code class="listing">window.addEventListener(<span class="string">"popstate"</span>, function(e) {<br />
-&nbsp; &nbsp; console.log(e);<br />
-});</code>
+	<h3>Прочие теги: menu</h3>
+	<p>Тег <tt>menu</tt>, используемый вместе с <tt>menuitem</tt>, созволяет создавать свои собственные меню. Такое меню в дальнейшем можно привязать в качестве контекстного, если использовать для элемента атрибут <tt>contextmenu</tt>:</p>
+	<code class="listing">&lt;div contextmenu="just-menu">Text container&lt;/div><br />
+&lt;menu id="just-menu" type="context"><br />
+&nbsp; &nbsp; &lt;menuitem label="Alert()" onclick="alert('Alert!');">&lt;/menuitem><br />
+&nbsp; &nbsp; &lt;menuitem label="Refresh" icon="img/refresh.png" onclick="location.reload();">&lt;/menuitem><br />
+&lt;/menu></code>
+	<div class="example">
+		<div contextmenu="just-menu">Text container</div>
+		<menu id="just-menu" type="context">
+		    <menuitem label="Alert()" onclick="alert('Alert!');"></menuitem>
+		    <menuitem label="Refresh" icon="img/refresh.png" onclick="location.reload();"></menuitem>
+		</menu>
+	</div>
+	<p>В атрибуте <tt>label</tt> каждого элемента меню указывается название данного пункта, а с помощью необязательного атрибута <tt>icon</tt> можно указать путь к изображению, которое будет отображаться рядом с пунктом меню. Пункт с пустым <tt>label</tt> отображаться не будет.</p>
 
-	<h3>Работа с геолокацией</h3>
-	<p>В HTML5 есть возможность определить географические координаты пользователя с помощью Geolocation API.</p>
-	<p>Опция доступна только для сайтов, работающих на HTTPS. В целях безопасности у пользователя будет запрошено разрешение на получение его гео-данных.</p>
-	<code class="listing"><span class="var">if</span> (<span class="string">"geolocation"</span> <span class="var">in</span> navigator) {<br />
-&nbsp; &nbsp; navigator.geolocation.getCurrentPosition( <span class="key">function</span>( <span class="more">position, errorCallback, options</span> ) {<br />
-&nbsp; &nbsp; &nbsp; &nbsp; console.log(position);<br />
-&nbsp; &nbsp; });<br />
-}</code>
-	<p>Объект геолокации содержит данные:</p>
-	<ul>
-		<li><b>timestamp</b> &mdash; текущее время в виде timestamp</li>
-		<li><b>coords.latitude</b> &mdash; широта в градусах *</li>
-		<li><b>coords.longitude</b> &mdash; долгота в градусах *</li>
-		<li><b>coords.accuracy</b> &mdash; точность в метрах *</li>
-		<li><b>coords.altitude</b> &mdash; высота над уровнем моря в метрах</li>
-		<li><b>coords.altitudeAccuracy</b> &mdash; точность определения высоты над уровнем моря в метрах</li>
-		<li><b>coords.speed</b> &mdash; скорость движения в метрах в секунду</li>
-		<li><b>coords.heading</b> &mdash; направление движения (в градусах по часовой стрелке от направления "север")</li>
-	</ul>
-	<p>Помимо метода <tt>getCurrentPosition</tt> может быть доступен метод <tt>watchPosition</tt>, который получает текущие данные и продолжает отслеживать изменение позиции, если пользователь перемещается, возвращая при этом ID точки наблюдения. Удалить точку из списка наблюдения можно с помощью метода <tt>clearWatch</tt>.</p>
-	<p>При возникновении ошибки функция обработки ошибки <tt>errorCallback</tt> получает данные о коде ошибки (<tt>error.code</tt>) и описании ошибки (<tt>error.message</tt>).</p>
-	<p>В третьем необязательном параметре <tt>options</tt> можно указать дополнительные настройки гео-положения:</p>
-	<code class="listing"><span class="key">var</span> options = {<br />
-&nbsp; &nbsp; enableHighAccuracy: true, <span class="comment">// получать более точные данные</span> <br />
-&nbsp; &nbsp; maximumAge : 30000, <span class="comment">// время жизни закешированных координат</span><br />
-&nbsp; &nbsp; timeout: 27000 <span class="comment">// время задержки перед принудительным вызовом errorCallback</span><br />
-};</code>
+	<h3>Прочие теги: template</h3>
+	<p>Изначально понятие шаблона было характерно для server-side программирования. По мере того, как HTML-страницы из простых статических сайтов стали превращаться в мощные вэб-приложения, возникла необходимость создания шаблонов на клиентской стороне. Для этого в HTML5 был добавлен специальный тег <tt>template</tt>. Внутрь тега помещают требующий повторения код и специального вида конструкции для вставки данных (<a href="template.html" target="_blank">пример</a>). Таким образом, содержимое тега <tt>template</tt> не отображается на странице, но с помощью JavaScript оно может многократно копироваться и вставляться на страницу с нужными данными.</p>
 </body>
 </html>
