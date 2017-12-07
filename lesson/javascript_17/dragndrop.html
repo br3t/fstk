@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="utf-8" />
+	<title>Drag'n'drop demo</title>
+	<style>
+		.dragEl {
+			width: 200px;
+			height: 200px;
+			position: absolute;
+			overflow: hidden;
+			background: #F00;
+			line-height: 200px;
+			text-align: center;
+			font-size: 50px;
+			cursor: move;
+		}
+		.dropEl {
+			height: 300px;
+			overflow: hidden;
+			background: #0F0;
+			position: relative;
+			text-align: center;
+			line-height: 300px;
+			font-size: 50px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Drag'n'drop demo</h1>
+	<div class="dropEl">Drop here</div>
+	<div class="dragEl" draggable="true">Drag me</div>
+	<script>
+		var dragEl = document.querySelector('.dragEl');
+		var dropEl = document.querySelector('.dropEl');
+
+
+		dragEl.ondragstart = function (e) {
+			console.log('dragEl dragstart');
+		};
+		dragEl.ondrag = function (e) {
+			console.log('dragEl drag');
+		};
+		dragEl.ondragend = function (e) {
+			console.log('dragEl dragend');
+		};
+		dragEl.ondragenter = function (e) {
+			console.log('dragEl drag enter');
+		};
+		dragEl.ondragover = function (e) {
+			console.log('dragEl dragover');
+		};
+		dragEl.ondragleave = function (e) {
+			console.log('dragEl dragleave');
+		};
+
+		dropEl.ondragover = function (e) {
+			e.preventDefault();
+			console.warn('dropEl dragover');
+		};
+		dropEl.ondragenter = function (e) {
+			console.warn('dropEl dragenter');
+		};
+		dropEl.ondragleave = function (e) {
+			console.warn('dropEl dragleave');
+		};
+		dropEl.ondrop = function (e) {
+			console.warn('dropEl drop');
+		};
+	</script>
+</body>
+</html>
