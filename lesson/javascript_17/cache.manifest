@@ -1,0 +1,7 @@
+CACHE MANIFEST
+FALLBACK:
+offline.html
+NETWORK:
+update.php
+CACHE:
+/fstk/css/style.css
