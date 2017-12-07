@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Template example</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</head>
+	<body>
+		<!-- Исходная таблица, пустая //-->
+		<table id="staff">
+		  <thead>
+		    <tr>
+		      <th>Name</th>
+		      <th>Position</th>
+		    </tr>
+		  </thead>
+		  <tbody></tbody>
+		</table>
+
+		<!-- Шаблон //-->
+		<template id="staffrow">
+		  <tr>
+		    <td>{name}</td>
+		    <td>{position}</td>
+		  </tr>
+		</template>
+
+		<!-- Данные для отображения, например, полученные ajax'ом //-->
+		<script>
+			var staff = [{
+				name: "Basil",
+				position: "CEO"
+			},{
+				name: "Ivan",
+				position: "PM"
+			},{
+				name: "Sidor",
+				position: "Programmer"
+			}];
+		</script>
+
+		<script>
+
+			render(staff, 'staffrow', '#staff tbody');
+
+			function render(data, tplId, placeSelector) {
+				// Проверяем, поддерживаются ли шаблоны
+				if ('content' in document.createElement('template')) {
+					var tpl = document.querySelector('#' + tplId);
+					var tplHtml = tpl.innerHTML;
+					var place = document.querySelector(placeSelector);
+
+					data.forEach(function(dataRow) {
+						var renderedHtml = tplHtml;
+						for(var prop in dataRow) {
+							var reg = new RegExp('{' + prop + '}');
+							renderedHtml = renderedHtml.replace(reg, dataRow[prop]);
+						}
+						place.innerHTML += renderedHtml;
+					});
+				}
+			}
+		</script>
+	</body>
+</html>

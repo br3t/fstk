@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" manifest="cache.manifest">
+<head>
+	<meta charset="utf-8" />
+	<title>HTML5. Часть 2 @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+	h4 {
+		display: inline-block;
+		border-bottom: 1px solid #000;
+		padding: 0 10px;
+		color: #000;
+		margin: 30px 0 0;
+	}
+	</style>
+</head>
+<body>
+	<h1>HTML5. Часть 2</h1>
+	<h2>Новые браузерные API</h2>
+	<h3>Работа с историей браузера</h3>
+	<p>Обычно изменение адресной строки браузера может быь связано с переходом на другой URL (по ссылке или с изменением <tt>location</tt> через JavaScript). History API позволяет менять историю браузера без перезагрузки страницы.</p>
+	<p>Новую запись можно добавить с помощью вызова:</p>
+	<code class="listing">history.pushState(state,<br />
+&nbsp; &nbsp; title,<br />
+&nbsp; &nbsp; url);</code>
+	<p>При этом передаются параметры:</p>
+	<ul>
+		<li><b>state</b> &mdash; параметры нового состояния. Это любой объект, характеризующий новое состояние новой записи в истории</li>
+		<li><b>title</b> &mdash; строка-заголовок новой записи. В настоящее время не поддерживается</li>
+		<li><b>url</b> &mdash; строка-новый url для отображения в строке состояния. В целях безопасности браузер запрещает указывать абсолютные url</li>
+	</ul>
+	<p>Для совместимости с классической навигацией необходимо "слушать" событие <tt>popstate</tt> объекта <tt>window</tt>, чтобы корректно обработать нажатие браузерной кнопки "Назад":</p>
+	<code class="listing">window.addEventListener(<span class="string">"popstate"</span>, function(e) {<br />
+&nbsp; &nbsp; console.log(e);<br />
+});</code>
+
+	<h3>Работа с геолокацией</h3>
+	<p>В HTML5 есть возможность определить географические координаты пользователя с помощью Geolocation API.</p>
+	<p>Опция доступна только для сайтов, работающих на HTTPS. В целях безопасности у пользователя будет запрошено разрешение на получение его гео-данных.</p>
+	<code class="listing"><span class="var">if</span> (<span class="string">"geolocation"</span> <span class="var">in</span> navigator) {<br />
+&nbsp; &nbsp; navigator.geolocation.getCurrentPosition( <span class="key">function</span>( <span class="more">position, errorCallback, options</span> ) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(position);<br />
+&nbsp; &nbsp; });<br />
+}</code>
+	<p>Объект геолокации содержит данные:</p>
+	<ul>
+		<li><b>timestamp</b> &mdash; текущее время в виде timestamp</li>
+		<li><b>coords.latitude</b> &mdash; широта в градусах *</li>
+		<li><b>coords.longitude</b> &mdash; долгота в градусах *</li>
+		<li><b>coords.accuracy</b> &mdash; точность в метрах *</li>
+		<li><b>coords.altitude</b> &mdash; высота над уровнем моря в метрах</li>
+		<li><b>coords.altitudeAccuracy</b> &mdash; точность определения высоты над уровнем моря в метрах</li>
+		<li><b>coords.speed</b> &mdash; скорость движения в метрах в секунду</li>
+		<li><b>coords.heading</b> &mdash; направление движения (в градусах по часовой стрелке от направления "север")</li>
+	</ul>
+	<p>Помимо метода <tt>getCurrentPosition</tt> может быть доступен метод <tt>watchPosition</tt>, который получает текущие данные и продолжает отслеживать изменение позиции, если пользователь перемещается, возвращая при этом ID точки наблюдения. Удалить точку из списка наблюдения можно с помощью метода <tt>clearWatch</tt>.</p>
+	<p>При возникновении ошибки функция обработки ошибки <tt>errorCallback</tt> получает данные о коде ошибки (<tt>error.code</tt>) и описании ошибки (<tt>error.message</tt>).</p>
+	<p>В третьем необязательном параметре <tt>options</tt> можно указать дополнительные настройки гео-положения:</p>
+	<code class="listing"><span class="key">var</span> options = {<br />
+&nbsp; &nbsp; enableHighAccuracy: true, <span class="comment">// получать более точные данные</span> <br />
+&nbsp; &nbsp; maximumAge : 30000, <span class="comment">// время жизни закешированных координат</span><br />
+&nbsp; &nbsp; timeout: 27000 <span class="comment">// время задержки перед принудительным вызовом errorCallback</span><br />
+};</code>
+	<p><a href="geo.html" target="_blank">Пример</a> получения гео-данных и отрисовки их на карте.</p>
+
+	<h3>Локальное хранилище</h3>
+	<p>Для хранения данных о пользователе в браузере, например, токены авторизации и т.д., используются cookie-файлы. Однако хранение информации в cookie не всегда удобно, т.к. они обладают недостатками:</p>
+	<ul>
+		<li>cookie включаются в любой HTTP-запрос, тем самым замедляя обмен данными с сервером, и передаются в незашифрованном виде</li>
+		<li>cookie могут хранить до 4kB информации</li>
+	</ul>
+	<p>Попытки исправить ситуации предпринимались Adobe Macromedia, контенеры Flash с согласия пользователя могли получить до 100kB памяти для хранения своей информации.</p>
+	<p>В HTML5 были добавлены объекты <tt>localStorage</tt> и <tt>sessionStorage</tt> для сохранения до 5Mb данных. Хранилище использует формат данных <em>ключ-значение</em>, при этом и ключ, и значение должны быть строками. При необходимости хранения объектов их "прогоняют" через <tt>JSON.stringify</tt>.</p>
+	<code class="listing"><span class="key">var</span> myStr = <span class="string">"string"</span>;<br />
+<span class="key">var</span> myObj = { prop: <span class="string">"value"</span> };<br /><br />
+<span class="comment">// сохранение данных</span><br />
+localStorage.setItem(<span class="string">"myStr"</span>, myStr);<br />
+localStorage[<span class="string">"myObj"</span>] = JSON.stringify(myObj);<br /><br />
+<span class="comment">// получение данных</span><br />
+localStorage.getItem(<span class="string">"myStr"</span>);<br />
+localStorage[<span class="string">"myObj"</span>];<br /><br />
+<span class="comment">// удаление данных</span><br />
+localStorage.removeItem(<span class="string">"myStr"</span>);<br />
+localStorage.clear();<br /></code>
+	<p>Синтаксис работы с <tt>sessionStorage</tt> такой же, как у <tt>localStorage</tt>, только данные в нем хранятся до конца сессии, т.е. до закрытия окна браузера.</p>
+	<p>Содержимое хранилища можно посмотреть в DevTools браузера.</p>
+	<p>Действия с хранилищем генерируют событие <tt>storage</tt> объекта <tt>window</tt> и могут быть перехвачены другим окном браузера. Объект события содержит следующую информацию:</p>
+	<ul>
+		<li><b>key</b> &mdash; имя ключа при его добавлении, изменении, удалении</li>
+		<li><b>oldValue</b> &mdash; предыдущее значение при обновлении записи или <tt>null</tt> при добавлении</li>
+		<li><b>newValue</b> &mdash; новое значение при добавлении или обновлении или <tt>null</tt> при удалении</li>
+		<li><b>url</b> &mdash; страница, которая изменила состояние хранилища</li>
+	</ul>
+
+	<h3>Базы данных в браузере</h3>
+	<p>Хранение в браузере чего-то более сложного чем пары ключ-значение сильно усложняют использование локального хранилища. В коллекциях, хранящихся в виде строк, тяжело производить поиск отдельных элементов. В HTML5 была добавлена поддержка браузерных баз данных, представленных двумя разными API: <b>Web SQL Database</b> и <b>IndexedDB</b>. Рассмотрим пример работы с Web SQL Database.</p>
+	<p>Основные методы работы с Web SQL Database:</p>
+	<ul>
+		<li><b>openDatabase</b> &mdash; открытие базы данных. Принимает четыре аргумента: название базы, версию API, описание базы, запрашиваемый размер (в байтах). Пятый аргумент может быть указан, как функция-callback, запускаемая при успешном создании базы данных</li>
+		<li><b>transaction</b> &mdash; создание транзакций, аргумент - функция-callback транзакции</li>
+		<li><b>executeSql</b> &mdash; выполнение запросов, аргумент - SQL-запрос</li>
+	</ul>
+	<code class="listing">openDatabase(<span class="string">"myDataBase"</span>, <span class="string">"1.0"</span>, <span class="string">"Database Description"</span>, 5*1024*1024, <span class="key">function</span> (<span class="more">db</span>) {<br />
+&nbsp; &nbsp; db.transaction(<span class="key">function</span> (<span class="more">tx</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; tx.executeSql(<span class="string">"CREATE TABLE users (id, name, age)"</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; tx.executeSql(<span class="string">"INSERT INTO users (id, name, age) VALUES (1, 'Ivan', 28), (2, 'Petr', 30)"</span>);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; tx.executeSql(<span class="string">"SELECT * FROM users"</span>, [], <span class="key">function</span>(<span class="more">tx, results</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; console.log(results);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; });<br />
+&nbsp; &nbsp; });<br />
+});</code>
+
+	<h3>Web Workers</h3>
+	<p>Ввиду однопоточности выполнения JavaScript при запуске "тяжелых" функций страница может "замораживаться". В HTML5 появилась возможность выделять выполнение скриптов в отдельный поток с помощью <tt>Web Workers</tt>. При этом скрипт выполняется в своей собственной области видимости, а "общаться" с ним можно с помощью сообщений:</p>
+	<code class="listing"><span class="comment">// index.html</span><br />
+<span class="key">var</span> worker = <span class="var">new</span> Worker(<span class="string">"worker.js"</span>);<br />
+worker.addEventListener(<span class="string">"message"</span>, <span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; console.log(e.data);<br />
+});<br />
+worker.postMessage({data: <span class="string">"some data"</span>});<br /><br />
+<span class="comment">// worker.js</span><br />
+self.addEventListener(<span class="string">"message"</span>, <span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; self.postMessage(e.data);<br />
+});</code>
+	<p>Создание экземпляра <tt>new Worker</tt> запускает скрипт, указанный в качестве параметра, в параллельном потоке. Но если нам необходимо передать скрипту какие-то параметры, то на стороне воркера необходимо так же установить прослушивание событий <tt>message</tt> от основного скрипта. Данные, переданные в сообщении, доступны в свойстве <tt>data</tt> объекта события. Для остановки работы воркера используется <tt>worker.terminate()</tt>.</p>
+	<p><a href="worker.html" target="_blank">Пример</a>	работы Web Worker.</p>
+
+	<h3>Работа в offline</h3>
+	<p>В HTML5 появилась возможность создавать приложения, работающие оффлайн. С работой оффлайн связаны:</p>
+	<ul>
+		<li>свойство <tt>onLine</tt> объекта <tt>navigator</tt> возвращает булево значение текущего состояния сети</li>
+		<li>события <tt>online/offline</tt> объекта <tt>window</tt> происходят, когда пользователь становиться онлайн/оффлайн</li>
+	</ul>
+	<p>Помимо получения статуса пользователя можно также дать указание браузеру, что текущую страницу нужно кэшировать для обеспечения к ней доступа оффлайн:</p>
+	<code class="listing">&lt;html manifest="/cache.manifest"></code>
+	<p>Атрибут <tt>manifest</tt> указывает путь к файлу манифеста, который описывает, что и как нужно кешировать. Необходимо, чтобы для данного файла сервер отправлял заголовок <tt>Content-type: text/cache-manifest</tt></p>
+</body>
+</html>
