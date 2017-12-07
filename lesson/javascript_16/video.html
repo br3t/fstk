@@ -12,8 +12,16 @@
 			controls
 		>
 		</video>
-		<script>
-			var v = document.querySelector('video');
-		</script>
+		<h2>Video with subtitles</h2>
+		<video
+			src="video/video.mp4"
+			width="640" height="360"
+			poster="video/poster.jpg"
+			controls
+			muted
+		>
+			<track default src="video/subs.vtt" kind="subtitles" srclang="en" label="English" />
+    		<track src="video/subs_ru.vtt" kind="subtitles" srclang="ru" label="Russian" />
+		</video>
 	</body>
 </html>
