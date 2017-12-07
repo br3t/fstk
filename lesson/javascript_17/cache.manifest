@@ -1,6 +1,6 @@
 CACHE MANIFEST
 FALLBACK:
-offline.html
+/ offline.html
 NETWORK:
 update.php
 CACHE:
