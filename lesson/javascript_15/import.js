@@ -1,2 +1,2 @@
-import {someValue} from "./values";
+import {someValue} from "./values.js";
 console.log(someValue);
