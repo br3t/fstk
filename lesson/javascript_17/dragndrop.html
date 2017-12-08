@@ -12,8 +12,14 @@
 			background: #F00;
 			line-height: 200px;
 			text-align: center;
-			font-size: 50px;
+			font-size: 40px;
 			cursor: move;
+		}
+		.wrapper :nth-child(2) {
+			left: 210px;
+		}
+		.wrapper :nth-child(3) {
+			left: 415px;
 		}
 		.dropEl {
 			height: 300px;
@@ -24,25 +30,41 @@
 			line-height: 300px;
 			font-size: 50px;
 		}
+		.dropEl .dragEl {
+			position: relative;
+			float: left;
+		}
 	</style>
 </head>
 <body>
 	<h1>Drag'n'drop demo</h1>
 	<div class="dropEl">Drop here</div>
-	<div class="dragEl" draggable="true">Drag me</div>
+	<div class="wrapper">
+		<div class="dragEl" draggable="true">Drag me 1</div>
+		<div class="dragEl" draggable="true">Drag me 2</div>
+		<div class="dragEl" draggable="true">Drag me 3</div>
+	</div>
 	<script>
-		var dragEl = document.querySelector('.dragEl');
+		var dragEl = document.querySelectorAll('.dragEl');
 		var dropEl = document.querySelector('.dropEl');
 
+		var drg = null;
 
-		dragEl.ondragstart = function (e) {
-			console.log('dragEl dragstart');
-		};
+		dragEl.forEach(function(el) {
+			el.ondragstart = function (e) {
+				console.log('el dragstart');
+				el.style.opacity = 0.5;
+				drg = el;
+			};
+			el.ondragend = function (e) {
+				console.log('el dragend');
+				el.style.opacity = 1;
+				drg = null;
+			};
+		});
+		/*
 		dragEl.ondrag = function (e) {
 			console.log('dragEl drag');
-		};
-		dragEl.ondragend = function (e) {
-			console.log('dragEl dragend');
 		};
 		dragEl.ondragenter = function (e) {
 			console.log('dragEl drag enter');
@@ -54,18 +76,24 @@
 			console.log('dragEl dragleave');
 		};
 
+		*/
+		dropEl.ondragenter = function (e) {
+			console.warn('dropEl dragenter');
+			dropEl.style.backgroundColor = "#0FF";
+		};
+		dropEl.ondragleave = function (e) {
+			console.warn('dropEl dragleave');
+			dropEl.style.backgroundColor = "#0F0";
+		};
 		dropEl.ondragover = function (e) {
 			e.preventDefault();
 			console.warn('dropEl dragover');
 		};
-		dropEl.ondragenter = function (e) {
-			console.warn('dropEl dragenter');
-		};
-		dropEl.ondragleave = function (e) {
-			console.warn('dropEl dragleave');
-		};
 		dropEl.ondrop = function (e) {
 			console.warn('dropEl drop');
+			console.log(e);
+			dropEl.appendChild(drg);
+			dropEl.style.backgroundColor = "#0F0";
 		};
 	</script>
 </body>

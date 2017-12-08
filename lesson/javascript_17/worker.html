@@ -6,11 +6,28 @@
 </head>
 <body>
 	<h1>Worker demo</h1>
-	<div>Time: <span></span></div>
-	<script>
+	<input type="number" class="countdown" value="100" />
+	<input type="button" class="start" value="Start worker" />
+	<input type="button" class="stop" value="Stop worker" />
 
+	<script>
+		var worker;
+
+		// отправляем данные воркеру
+		document.querySelector('.start').addEventListener('click', function() {
+			worker = new Worker('worker.js');
+
+			worker.addEventListener('message', function(e) {
+				document.querySelector('.countdown').value = e.data;
+			});
+
+			var counter = parseInt(document.querySelector('.countdown').value);
+			worker.postMessage(counter);
+		});
+		// останавливаем воркер
+		document.querySelector('.stop').addEventListener('click', function() {
+			worker.terminate();
+		});
 	</script>
-	<input type="button" class="vip" value="VIP button" />
-	<input type="button" class="calc" value="Calc button" />
 </body>
 </html>
