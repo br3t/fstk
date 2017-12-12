@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>HTML5. Часть 3 @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<style>
+		h4 {
+			border-bottom: 1px solid #000;
+			padding: 0 10px;
+			color: #000;
+			margin: 30px 0 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>HTML5. Часть 3</h1>
+	<h2>SVG</h2>
+	<p><b>SVG (scalable vector graphic)</b> &mdash; формат векторной графики. В отличии от растровой графики, в которой файлы хранят информацию о каждом пикселе, в векторной графике хранятся уравнения, которые задают то, что должно быть отображено.</p>
+	<h3>Особенности SVG:</h3>
+	<ul>
+		<li>т.к. графика векторная, то изображение легко масштабируется без потери качества</li>
+		<li>SVG работает с двумерной графикой</li>
+		<li>SVG основан на XML, а потому его легко можно редактировать в любом текстовом редакторе</li>
+		<li>в SVG каждый объект описывается отдельно и к любому из них можно получить доступ</li>
+	</ul>
+	<h3>Способы добавления SVG на страницу</h3>
+	<p>1. Как <tt>src</tt> для тега изображения:</p>
+	<code class="listing">&lt;img src="img.svg" /></code>
+	<img src="img.svg" />
+	<p>2. Как <tt>background-image</tt> в CSS:</p>
+	<code class="listing">&lt;div style="background-image: url(img.svg)">&lt;/div></code>
+	<div style="background-image: url(img.svg); height: 200px;overflow: hidden;"></div>
+	<p>3. Через <tt>@import</tt> для SVG-шрифтов:</p>
+	<code class="listing">@font-face {<br />
+&nbsp; &nbsp; font-family: Font Name;<br />
+&nbsp; &nbsp; src: url(<span class="string">'font.svg#svgFontName'</span>) format('svg');<br />
+}</code>
+	<p>4. С помощью тега  <tt>object</tt>:</p>
+	<code class="listing">&lt;object type="image/svg+xml" data="picture.svg">&lt;/object></code>
+	<object type="image/svg+xml" data="picture.svg"></object>
+	<p>Все перечисленные способы работали и раньше. Стандарт HTML5 позволяет вставлять SVG-графику в собственный контейнер - тег <tt>svg</tt>:</p>
+	<code class="listing">&lt;svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg"><br />
+&nbsp; &nbsp; &lt;circle cx="150" cy="150" r="120" stroke="lime" stroke-width="30" fill="yellow" /><br />
+&nbsp; &nbsp; &lt;circle cx="50%" cy="50%" r="20%" stroke="#0000FF" stroke-width="10%" fill="#FF0000" /><br />
+&lt;/svg></code>
+	<svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="150" cy="150" r="120" stroke="lime" stroke-width="30" fill="yellow" />
+		<circle cx="50%" cy="50%" r="20%" stroke="#0000FF" stroke-width="10%" fill="#FF0000" />
+	</svg>
+	<h3>Рисование примитивов SVG</h3>
+	<h4>Контейнер SVG</h4>
+	<p>Для вставки SVG-графики на страницу используют тег <tt>svg</tt>. Конетейнер SVG может иметь следующие параметры:</p>
+	<ul>
+		<li><b>version</b> &mdash; указывает, какой спецификации принадлежит контейнер SVG. Принимает значения "1.0" или "1.1"</li>
+		<li><b>width,height</b> &mdash; размеры контейнера с указанием единиц измерения, по умолчанию - px</li>
+		<li><b>viewBox</b> &mdash; определяет зону отрисовки графики, четыре числа через пробел, означающие координаты двух точек</li>
+	</ul>
+	<p><tt>viewBox</tt> может использоваться как для обрезки изображения:</p>
+	<svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+		<circle cx="150" cy="150" r="120" stroke="lime" stroke-width="30" fill="yellow" />
+		<circle cx="50%" cy="50%" r="20%" stroke="#0000FF" stroke-width="10%" fill="#FF0000" />
+	</svg>
+	<p>так и для масштабирования:</p>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3">
+		<rect width="4" height="1.5" fill="cyan" />
+		<rect y="1.5" width="4" height="1.5" fill="yellow" />
+	</svg>
+	<p>Тег <tt>svg</tt> не имеет визуального представления, он является лишь контейнером для других элементов.</p>
+	<p>Элементы внутри контейнера визуально располагаются друг над другом, т.е. самый последний элемент визуально перекрывает остальные (имеет "болший z-index").</p>
+
+	<h4>Линии</h4>
+	<p>Для рисования линий используют элемент <tt>line</tt>:</p>
+	<code class="listing">&lt;line x1="50" y1="50" x2="90%" y2="90%" stroke="rgb(0,255,0)" stroke-width="3" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<line x1="50" y1="50" x2="90%" y2="90%" stroke="rgb(0,255,0)" stroke-width="3" />
+	</svg>
+	<p>Используемые атрибуты:</p>
+	<ul>
+		<li><b>x1,y1</b> &mdash; координаты начала линии</li>
+		<li><b>x2,y2</b> &mdash; координаты конца линии</li>
+		<li><b>stroke</b> &mdash; цвет линии (ключевое слово, rgb, #hex)</li>
+		<li><b>stroke-width</b> &mdash; толщина линии</li>
+	</ul>
+	<p>Большинство параметров можно задавать не в виде атрибутов, а в виде CSS. Следующая запись для линии будет равносильна предыдущей:</p>
+	<code class="listing">&lt;line x1="50" y1="50" x2="90%" y2="90%" style="stroke:rgb(0,255,0);stroke-width:3" /></code>
+	<h4>Полилинии</h4>
+	<p>Полилинии &mdash; это последовательно нарисованные линии, у которых конец предыдущей линии является началом следующей. Для полилиний используется элемент <tt>polyline</tt>:</p>
+	<code class="listing">&lt;polyline points="0,100 50,100 60,50 60,150 65,100 80,100 90,20 90,180 95,100 120,100" style="fill:transparent;stroke:red;stroke-width:4" /></code>
+	<svg height="200" width="120">
+	  <polyline points="0,100 50,100 60,50 60,150 65,100 80,100 90,20 90,180 95,100 120,100" style="fill:transparent;stroke:red;stroke-width:4" />
+	</svg>
+	<p>Полилинии, как и большинство фигур векторной графики, имеют обводку и заливку. Заливка в данном случае применяется для области от первой точки полилинии до последней.</p>
+
+	<h4>Круг</h4>
+	<p>Элемент <tt>circle</tt> описывает круг, при этом необходимо задать координаты центра круга, его радиус, а так же цвета обводки и заливки:</p>
+	<code class="listing">&lt;circle cx="150" cy="150" r="75" stroke="blue" stroke-width="8" fill="cyan" /></code>
+	<svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<circle cx="150" cy="150" r="75" stroke="blue" stroke-width="8" fill="cyan" />
+	</svg>
+	<p>По умолчанию координаты центра круга - 0,0.</p>
+
+	<h4>Эллипс</h4>
+	<p>Для рисования эллипса используется элемент <tt>ellipse</tt>. В отличие от круга эллипс имеет два радиуса, горизонтальный и вертикальный:</p>
+	<code class="listing">&lt;ellipse cx="150" cy="150" rx="125" ry="75" stroke="blue" stroke-width="8" fill="cyan" /></code>
+	<svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<ellipse cx="150" cy="150" rx="125" ry="75" stroke="blue" stroke-width="8" fill="cyan" />
+	</svg>
+
+	<h4>Прямоугольник</h4>
+	<p>Элемент <tt>rect</tt> используется для создания прямоугольников. Точкой отсчета прямоугольника является левый верхний угол, т.к. именно эти координаты нужно указать в атрибутах. Также задают длину и высоту:</p>
+	<code class="listing">&lt;rect x="25" y="50" width="150" height="100" stroke="blue" stroke-width="8" fill="cyan" /></code>
+	<svg width="300px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<rect x="25" y="50" width="150" height="100" stroke="blue" stroke-width="8" fill="cyan" />
+	</svg>
+
+	<h4>Многоугольник</h4>
+	<p>Для построения многоугольников, не являющихся прямоугольниками, в SVG есть элемент <tt>polygon</tt> ("poly"-много, "gon"-угол). В атрибуте <tt>points</tt> указываются координаты всех точек многоугольника, при этом контур закрывается автоматически:</p>
+	<code class="listing">&lt;polygon points="100,25 150,200 50,200" stroke="brown" stroke-width="8" fill="lime" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<polygon points="100,25 150,200 50,200" stroke="brown" stroke-width="8" fill="lime" />
+	</svg>
+	<code class="listing">&lt;polygon points="100,25 300,25 250,150 50,150" stroke="slateblue" stroke-width="8" fill="coral" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<polygon points="100,25 300,25 250,150 50,150" stroke="slateblue" stroke-width="8" fill="coral" />
+	</svg>
+	<code class="listing">&lt;polygon points="100,25 200,100 150,200 50,200 0,100" stroke="cadetblue" stroke-width="8" fill="burlywood" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<polygon points="100,25 200,100 150,200 50,200 0,100" stroke="cadetblue" stroke-width="8" fill="burlywood" />
+	</svg>
+
+	<h4>Элемент path</h4>
+	<p>Для построения фигур произвольной сложности используется элемент <tt>path</tt>. Его атрибут <tt>d</tt> содержит инструкции движения и рисования для виртуального пера в специальном формате. Каждая инструкция закодирована буквой и принимает одну или несколько координат. Список инструкций:</p>
+	<ul>
+		<li><b>M</b> &mdash; переместить перо</li>
+		<li><b>L</b> &mdash; произвольная линия</li>
+		<li><b>H</b> &mdash; горизонтальная линия</li>
+		<li><b>V</b> &mdash; вертикальная линия</li>
+		<li><b>C</b> &mdash; кривая Безье</li>
+		<li><b>S</b> &mdash; гладкая кривая Безье</li>
+		<li><b>Q</b> &mdash; квадратичная кривая Безье</li>
+		<li><b>T</b> &mdash; гладкая квадратичная кривая Безье</li>
+		<li><b>A</b> &mdash; элиптическая дуга</li>
+		<li><b>Z</b> &mdash; закрыть путь</li>
+	</ul>
+	<p>Например, треугольник можно описать не тремя точками, а четырьмя инструкциями:</p>
+	<code class="listing">&lt;path d="M100 25 L150 200 H50 Z" stroke="brown" stroke-width="8" fill="lime" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<path d="M100 25 L150 200 H50 Z" stroke="brown" stroke-width="8" fill="lime" />
+	</svg>
+	<p>Использование букв в нижнем регистре для линий позволяет указать относительные, а не абсолютные координаты:</p>
+	<code class="listing">&lt;path d="M100 25 l50 175 h-100 Z" stroke="brown" stroke-width="8" fill="lime" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<path d="M100 25 l50 175 h-100 Z" stroke="brown" stroke-width="8" fill="lime" />
+	</svg>
+	<p>Более сложные фигуры используют другие элементы <em>path</em>:</p>
+	<code class="listing">&lt;path d="M100 25 C100 25, 250 100, 100 200 Z" stroke="cadetblue" stroke-width="8" fill="burlywood" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<path d="M100 25 C100 25, 250 100, 100 200 Z" stroke="cadetblue" stroke-width="8" fill="burlywood" />
+	</svg>
+	<p>Кривая Безье имеет координаты трех точек: двух опорных и точки окончания кривой.</p>
+	<p>Для скругленных линий можно использовать элиптические дуги. При этом набор координат для этих дуг более сложный - <b>горизонтальный радиус, вертикальный радиус, поворот по оси X, флаг "большой дуги", флаг скрытия,координата X конца дуги, координата Y конца дуги</b>:</p>
+	<code class="listing">&lt;path d="M100 25 A 200 100 0 0 1 100 200 Z" stroke="cadetblue" stroke-width="8" fill="burlywood" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<path d="M100 25 A 200 100 0 0 1 100 200 Z" stroke="cadetblue" stroke-width="8" fill="burlywood" />
+	</svg>
+
+	<h4>Добавление текста</h4>
+	<p>Элемент <tt>text</tt> может не принимать никаких параметров:</p>
+	<code class="listing">&lt;text>queue, fill, svg&lt;/text></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<text>queue, fill, svg</text>
+	</svg>
+	<p>Опорной точкой элемента <tt>text</tt> является левый нижний угол, потому чтобы что-то увидеть, нужно задать координаты отображения:</p>
+	<code class="listing">&lt;text x="50" y="50" fill="blue" style="font-size: 24px;" font-family="monospace">Hello, SVG!&lt;/text></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<text x="50" y="50" fill="blue" style="font-size: 24px;" font-family="monospace">Hello, SVG!</text>
+	</svg>
+	<p>Атрибут <tt>text-anchor</tt> позволяет указать "выравнивание" строки относительно ее горизонтальной координаты:</p>
+	<code class="listing">&lt;text x="50" y="50" fill="red" text-anchor="middle" style="font-size: 30px;">Hello, SVG!&lt;/text></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<text x="50" y="50" fill="red" text-anchor="middle" style="font-size: 30px;">Hello, SVG!</text>
+	</svg>
+	<p>Атрибут <tt>textLength</tt> позволяет указать ширину строки и буквы внутри строки будут соответствующим образом выравниваться:</p>
+	<code class="listing">&lt;text x="50" y="50" fill="forestgreen" textLength="120" font-size="30">Hello, SVG!&lt;/text></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<text x="50" y="50" fill="forestgreen" textLength="120" font-size="30">Hello, SVG!</text>
+	</svg>
+	<p>Длинный текст может быть разбит на группы с помощью <tt>tspan</tt>. Для каждой группы можно задать свое форматирование:</p>
+	<code class="listing">&lt;text x="50" y="50" fill="#008" font-size="30"><br />
+&nbsp; &nbsp; &lt;tspan fill="#33F">Hello,&lt;/tspan><br />
+&nbsp; &nbsp; &lt;tspan x="50" y="100">SVG!&lt;/tspan><br />
+&lt;/text></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<text x="50" y="50" fill="#008" font-size="30">
+			<tspan fill="#33F">Hello,</tspan>
+			<tspan x="50" y="100">SVG!</tspan>
+		</text>
+	</svg>
+
+	<h3>Градиенты</h3>
+	<p>SVG позволяет создавать градиенты, которые могут использоваться в качестве заливки как обычные цвета. Как и в CSS, в SVG есть два типа градиента: линейный и радиальный. Описание градиента создается с помощью <tt>linearGradient</tt>, объявляемом в специальном блоке <tt>defs</tt>, а потом может использоваться любым элементом, ссылающимся на id градиента. К определенному таким способом градиенту может получить любой svg-контейнер на странице. Это похоже на определение стилей в CSS.</p>
+	<code class="listing">&lt;defs><br />
+&nbsp; &nbsp; &lt;linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="0%" style="stop-color:red;stop-opacity:1" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="100%" style="stop-color:yellow;stop-opacity:1" /><br />
+&nbsp; &nbsp; &lt;/linearGradient><br />
+&lt;/defs>	<br />
+&lt;rect x="10%" y="10%" width="80%" height="80%" stroke="none" stroke-width="8" fill="url(#grad)" /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<defs>
+			<linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+		      <stop offset="0%" style="stop-color:red;stop-opacity:1" />
+		      <stop offset="100%" style="stop-color:yellow;stop-opacity:1" />
+		    </linearGradient>
+		</defs>	
+		<rect x="10%" y="10%" width="80%" height="80%" stroke="none" stroke-width="8" fill="url(#grad)" />
+	</svg>
+	<p>Направление градиента регулируется координатами, указанными в градиенте, точек фиксации цвета может быть несколько:</p>
+	<code class="listing">&lt;defs><br />
+&nbsp; &nbsp; &lt;linearGradient id="grad-2" x1="0%" y1="0%" x2="0" y2="100%"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="0%" style="stop-color:green;stop-opacity:1" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="50%" style="stop-color:yellow;stop-opacity:1" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="100%" style="stop-color:red;stop-opacity:1" /><br />
+&nbsp; &nbsp; &lt;/linearGradient><br />
+&lt;/defs><br />	
+&lt;rect x="10%" y="10%" width="80%" height="80%" stroke="none" stroke-width="8" fill="url(#grad-2)" /><br /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<defs>
+			<linearGradient id="grad-2" x1="0%" y1="0%" x2="0" y2="100%">
+		      <stop offset="0%" style="stop-color:green;stop-opacity:1" />
+		      <stop offset="50%" style="stop-color:yellow;stop-opacity:1" />
+		      <stop offset="100%" style="stop-color:red;stop-opacity:1" />
+		    </linearGradient>
+		</defs>	
+		<rect x="10%" y="10%" width="80%" height="80%" stroke="none" stroke-width="8" fill="url(#grad-2)" />
+	</svg>
+	<p>Радиальный градиент описывается элементом <tt>radialGradient</tt>, в атрибутах указывается центр градиента и его радиусы:</p>
+	<code class="listing">&lt;defs><br />
+&nbsp; &nbsp; &lt;radialGradient id="grad-3" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="0%" style="stop-color:green;stop-opacity:1" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="100%" style="stop-color:red;stop-opacity:1" /><br />
+&nbsp; &nbsp; &lt;/radialGradient><br />
+&lt;/defs><br />	
+&lt;rect x="0" y="0" width="100%" height="100%" stroke="none" stroke-width="8" fill="url(#grad-3)" /><br /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<defs>
+			<radialGradient id="grad-3" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+		      <stop offset="0%" style="stop-color:green;stop-opacity:1" />
+		      <stop offset="100%" style="stop-color:red;stop-opacity:1" />
+		    </radialGradient>
+		</defs>	
+		<rect x="0" y="0" width="100%" height="100%" stroke="none" stroke-width="8" fill="url(#grad-3)" />
+	</svg>
+	<code class="listing">&lt;defs><br />
+&nbsp; &nbsp; &lt;radialGradient id="grad-4" cx="0" cy="0" r="100%" fx="30%" fy="50%"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="0%" style="stop-color:crimson;stop-opacity:1" /><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;stop offset="100%" style="stop-color:cyan;stop-opacity:1" /><br />
+&nbsp; &nbsp; &lt;/radialGradient><br />
+&lt;/defs><br />	
+&lt;rect x="0" y="0" width="100%" height="100%" stroke="none" stroke-width="8" fill="url(#grad-3)" /><br /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<defs>
+			<radialGradient id="grad-4" cx="0" cy="0" r="100%" fx="30%" fy="50%">
+		      <stop offset="0%" style="stop-color:crimson;stop-opacity:1" />
+		      <stop offset="100%" style="stop-color:cyan;stop-opacity:1" />
+		    </radialGradient>
+		</defs>	
+		<rect x="0" y="0" width="100%" height="100%" stroke="none" stroke-width="8" fill="url(#grad-4)" />
+	</svg>
+
+
+	<h3>Свойства стилей</h3>
+	<h4>Стили обводки</h4>
+	<p>Для стилизации обводки можно использовать следующие атрибуты:</p>
+	<ul>
+		<li><b>stroke</b> &mdash; цвет обводки</li>
+		<li><b>stroke-width</b> &mdash; ширина обводки</li>
+		<li><b>stroke-linecap</b> &mdash; стиль концов линии обводки</li>
+		<li><b>stroke-linejoin</b> &mdash; стиль обводки при пересечении двух линий</li>
+		<li><b>stroke-dasharray</b> &mdash; стиль пунктирной линии обводки</li>
+	</ul>
+	<p>Атрибут <tt>stroke-linecap</tt> принимает одно из трех значений: <tt>square</tt> (по умолчанию) - квадратный край, включает координаты первой и последней точек, <tt>round</tt> - скругленный край, включает координаты первой и последней точек,  <tt>butt</tt> - скругленный край, исключает координаты первой и последней точек.</p>
+	<code class="listing">&lt;line x1="50" y1="125" x2="90%" y2="125" stroke="rgb(255,0,0)" stroke-width="20" stroke-linecap="square"  /><br />
+		&lt;line x1="50" y1="150" x2="90%" y2="150" stroke="rgb(0,255,0)" stroke-width="20" stroke-linecap="round"  /><br />
+		&lt;line x1="50" y1="175" x2="90%" y2="175" stroke="rgb(0,0,255)" stroke-width="20" stroke-linecap="butt"  /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<line x1="50" y1="125" x2="90%" y2="125" stroke="rgb(255,0,0)" stroke-width="20" stroke-linecap="square"  />
+		<line x1="50" y1="150" x2="90%" y2="150" stroke="rgb(0,255,0)" stroke-width="20" stroke-linecap="round"  />
+		<line x1="50" y1="175" x2="90%" y2="175" stroke="rgb(0,0,255)" stroke-width="20" stroke-linecap="butt"  />
+	</svg>
+	<p>Атрибут <tt>stroke-dasharray</tt> принимает одно из трех значений: <tt>miter</tt> (по умолчанию) - пересечение под углом, <tt>round</tt> - пересечение под скругленным углом, <tt>bevel</tt> - пересечение по срезанным углом:</p>
+	<code class="listing">&lt;polyline points="125 60 150 20 175 60" stroke="red" stroke-width="20" fill="none" stroke-linejoin="miter" /><br />
+&lt;polyline points="125 140 150 100 175 140" stroke="green" stroke-width="20" fill="none" stroke-linejoin="round" /><br />
+&lt;polyline points="125 220 150 180 175 220" stroke="blue" stroke-width="20" fill="none" stroke-linejoin="bevel" /></code>
+	<svg width="400px" height="300px" xmlns="http://www.w3.org/2000/svg" version="1.1">
+	  <polyline points="125 100 150 60 175 100" stroke="red" stroke-width="20"
+	      fill="none" stroke-linejoin="miter"/>
+	  <polyline points="125 180 150 140 175 180" stroke="green" stroke-width="20"
+	      fill="none" stroke-linejoin="round"/>
+	  <polyline points="125 260 150 220 175 260" stroke="blue" stroke-width="20"
+	      fill="none" stroke-linejoin="bevel"/>
+	</svg>
+	<p>Атрибут <tt>stroke-dasharray</tt> принимает последовательность чередующихся длин штрихов и пропусков:</p>
+	<code class="listing">&lt;line x1="50" y1="125" x2="90%" y2="125" stroke="rgb(255,0,0)" stroke-width="5" stroke-dasharray="20 5"  /><br />
+		&lt;line x1="10%" y1="150" x2="90%" y2="150" stroke="rgb(0,255,0)" stroke-width="5" stroke-dasharray="10 20"  /><br />
+		&lt;line x1="10%" y1="175" x2="90%" y2="175" stroke="rgb(0,0,255)" stroke-width="5" stroke-dasharray="20 10 5 10"  /></code>
+	<svg width="400px" height="300px" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+		<line x1="10%" y1="125" x2="90%" y2="125" stroke="rgb(255,0,0)" stroke-width="5" stroke-dasharray="20 5"  />
+		<line x1="10%" y1="150" x2="90%" y2="150" stroke="rgb(0,255,0)" stroke-width="5" stroke-dasharray="10 20"  />
+		<line x1="10%" y1="175" x2="90%" y2="175" stroke="rgb(0,0,255)" stroke-width="5" stroke-dasharray="20 10 5 10"  />
+	</svg>
+	<!--<h4>Стили заливки</h4>
+	<p></p> //-->
+
+
+	<h3>Другие возможности</h3>
+	<h4>Использование ссылок</h4>
+	<p>Любой видимый элемент, обернув его ссылкой, можно сделать кликабельным:</p>
+	<code class="listing">&lt;svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink"><br />
+&nbsp; &nbsp; &lt;a xlink:href="https://br3t.github.io/fstk/" target="_blank"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;text x="50" y="50" fill="#008" font-size="30"><br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mainpage<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;/text><br />
+&nbsp; &nbsp; &lt;/a><br />
+&lt;/svg></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink">
+		<a xlink:href="https://br3t.github.io/fstk/" target="_blank">
+			<text x="50" y="50" fill="#008" font-size="30">
+				Mainpage
+			</text>
+		</a>
+	</svg>
+	<h4>Вставка изображений</h4>
+	<code class="listing">&lt;image xlink:href="img.svg" x="10%" y="10%" width="80%" height="80%" /></code>
+	<svg width="400px" height="150px" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink">
+		<image xlink:href="img.svg" x="10%" y="10%" width="80%" height="80%" />
+	</svg>
+
+	<h2>Canvas</h2>
+	<p>Canvas определяет холст для скриптовой генерации графики на странице.</p>
+	<h3>Особенности canvas</h3>
+	<ul>
+		<li>canvas работает с растровой графикой</li>
+		<li>API canvas описывает работу с двумерной графикой</li>
+		<li>canvas нельзя подключить отдельным файлом</li>
+		<li>графика в canvas создается с помощью скриптовых языков, в частности - JavaScript</li>
+		<li>canvas не разделяет элементы по отдельности</li>
+		<li>содержимое canvas можно получить в формате base64 и сохранить как изображение</li>
+	</ul>
+	<h3>Начало работы</h3>
+	<p>Перед началом рисования необходимо создать элемент холста и получить контекст. Также при создании холста следует указать его размеры, иначе будут использоваться размеры по умолчанию 300х150px.</p>
+	<code class="listing">&lt;canvas id="c" width="400" height="300" style="border:1px solid #f00">&lt;/canvas><br />
+&lt;script><br />
+<span class="key">var</span> canvas = document.getElementById(<span class="string">'c'</span>);<br />
+<span class="key">var</span> ctx = canvas.getContext(<span class="string">'2D'</span>);<br />
+&lt;/script></code>
+	<canvas id="canvas" width="400" height="300" style="border:1px solid #f00"></canvas>
+
+	<h3>Рисование примитивов</h3>
+	<h4>Линия</h4>
+	<p>Рисование линии состоит из последовательного запуска методов полученного объекта контекста:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(350, 250);<br />
+ctx.stroke();</code>
+	<canvas id="c1" width="400" height="300"></canvas>
+	<script>
+		var ctx = c1.getContext('2d');
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(350, 250);
+		ctx.stroke();
+	</script>
+	<p>Обычная линия является частным случаем полилинии. Т.е. чтобы нарисовать полилинию достаточно вызвать <tt>lineTo</tt> необходимое число раз:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(50, 100);<br />
+ctx.lineTo(100, 100);<br />
+ctx.lineTo(100, 150);<br />
+ctx.stroke();</code>
+	<canvas id="c2" width="400" height="300"></canvas>
+	<script>
+		ctx = c2.getContext('2d');
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(50, 100);
+		ctx.lineTo(100, 100);
+		ctx.lineTo(100, 150);
+		ctx.stroke();
+	</script>
+	<p>Перемещая перо с помощью <tt>moveTo</tt> можно рисовать прерывистую полилинию:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(50, 70);<br />
+ctx.moveTo(50, 80);<br />
+ctx.lineTo(50, 100);<br />
+ctx.moveTo(50, 110);<br />
+ctx.lineTo(50, 130);<br />
+ctx.stroke();</code>
+	<canvas id="c3" width="400" height="300"></canvas>
+	<script>
+		ctx = c3.getContext('2d');
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(50, 70);
+		ctx.moveTo(50, 80);
+		ctx.lineTo(50, 100);
+		ctx.moveTo(50, 110);
+		ctx.lineTo(50, 130);
+		ctx.stroke();
+	</script>
+	<p>Если необходимо изменить цвет пера или его толщину, то не обходимо указать нужные параметры до рисования линии. Например, для линии нужно указать <tt>strokeStyle</tt> в любом месте до вызова метода <tt>stroke</tt>, чтобы поменять ее цвет:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(350, 250);<br />
+ctx.strokeStyle = <span class="string">'#ff0000'</span>;<br />
+ctx.stroke();</code>
+	<canvas id="c4" width="400" height="300"></canvas>
+	<script>
+		ctx = c4.getContext('2d');
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(350, 250);
+		ctx.strokeStyle = '#ff0000';
+		ctx.stroke();
+	</script>
+	<p>Изменение толщины линии происходит при присвоении свойству <tt>lineWidth</tt> нового значения в пикселях:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(350, 250);<br />
+ctx.lineWidth = 16;<br />
+ctx.stroke();</code>
+	<canvas id="c5" width="400" height="300"></canvas>
+	<script>
+		ctx = c5.getContext('2d');
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(350, 250);
+		ctx.lineWidth = 16;
+		ctx.stroke();
+	</script>
+	<p>Свойство <tt>lineCap</tt> аналогично одноименному свойству в SVG и определяет стиль концов линии: <b>butt</b> для концов без скругления исключая конечные точки, <b>round</b> для концов со скруглением включая конечные точки и <b>square</b> для концов без скругления включая конечные точки:</p>
+	<code class="listing">ctx.lineWidth = 16;<br />
+<span class="comment">// line 1</span><br />
+ctx.lineCap = "butt";<br />
+ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(350, 50);<br />
+ctx.stroke();<br />
+<span class="comment">// line 2</span><br />
+ctx.lineCap = "round";<br />
+ctx.beginPath();<br />
+ctx.moveTo(50, 100);<br />
+ctx.lineTo(350, 100);<br />
+ctx.stroke();<br />
+<span class="comment">// line 3</span><br />
+ctx.lineCap = "square";<br />
+ctx.beginPath();<br />
+ctx.moveTo(50, 150);<br />
+ctx.lineTo(350, 150);<br />
+ctx.stroke();</code>
+	<canvas id="c6" width="400" height="300"></canvas>
+	<script>
+		ctx = c6.getContext('2d');
+		ctx.lineWidth = 16;
+		ctx.lineCap = "butt";
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(350, 50);
+		ctx.stroke();
+		ctx.lineCap = "round";
+		ctx.beginPath();
+		ctx.moveTo(50, 100);
+		ctx.lineTo(350, 100);
+		ctx.stroke();
+		ctx.lineCap = "square";
+		ctx.beginPath();
+		ctx.moveTo(50, 150);
+		ctx.lineTo(350, 150);
+		ctx.stroke();
+	</script>
+	<p>Пунктирная линия создается с помощью метода <tt>setLineDash</tt>, который в качестве параметра принимает массив чередующихся длин штрихов и пропусков. Свойство <tt>lineDashOffset</tt> указывает на отступ штриха от стартовой позиции:</p>
+	<code class="listing">ctx.lineWidth = 5;<br />
+ctx.setLineDash([2,8,32,8]);<br />
+ctx.lineDashOffset = 20;<br />
+ctx.beginPath();<br />
+ctx.moveTo(50, 50);<br />
+ctx.lineTo(350, 250);<br />
+ctx.stroke();</code>
+	<canvas id="c7" width="400" height="300"></canvas>
+	<script>
+		ctx = c7.getContext('2d');
+		ctx.lineWidth = 5;
+		ctx.setLineDash([2,8,32,8]);
+		ctx.lineDashOffset = 20;
+		ctx.beginPath();
+		ctx.moveTo(50, 50);
+		ctx.lineTo(350, 250);
+		ctx.stroke();
+	</script>
+	<p>Использование метода <tt>closePath</tt> позволяет замкнуть полилинию, получив из нее полигональную фигуру.</p>
+
+	<h4>Рисование прямоугольника</h4>
+	<p>Для создания прямоугольника используется метод <tt>rect</tt>, который принимает координаты начальной и конечной точек (левого верхнего и правого нижнего угла прямоугольника):</p>
+	<code class="listing">ctx.rect(10, 10, 350, 250);<br />
+ctx.fill();</code>
+	<canvas id="c10" width="400" height="300"></canvas>
+	<script>
+		ctx = c10.getContext('2d');
+		ctx.rect(10, 10, 350, 250);
+		ctx.fill();
+	</script>
+	<p>С помощью отдельных методов <tt>strokeRect</tt> и <tt>fillRect</tt> можно либо обвести, либо залить прямоугольную область:</p>
+	<code class="listing">ctx.strokeRect(10, 10, 350, 250);<br />
+ctx.fillRect(30, 30, 400, 300);</code>
+	<canvas id="c8" width="400" height="300"></canvas>
+	<script>
+		ctx = c8.getContext('2d');
+		ctx.strokeRect(10, 10, 350, 250);
+		ctx.fillRect(30, 30, 400, 300);
+	</script>
+	<p>Цвет заливки можно изменить с помощью свойства <tt>fillStyle</tt>:</p>
+	<code class="listing">ctx.fillStyle = <span class="string">"#0F0"</span>;<br />
+ctx.fillRect(30, 30, 370, 270);</code>
+	<canvas id="c9" width="400" height="300"></canvas>
+	<script>
+		ctx = c9.getContext('2d');
+		ctx.fillStyle = "#0F0";
+		ctx.fillRect(30, 30, 370, 270);
+	</script>
+	<p>Стиль обводки меняется так же, как и в случае с линиями.</p>
+
+	<h4>Рисование окружности</h4>
+	<p>Рисование окружности на самом деле является рисованием замкнутой дуги. Для рисования дуги используется метод <tt>arc</tt>, который принимает параметрами координаты центра дуги, ее радиус, начальный и конечный углы (в радианах). В случае с окружностью для углов обычно задают значения 0 и 2Pi. Т.к. дуга рисуется обводкой, то необходимо явно вызывать методы <tt>beginPath</tt> и <tt>stroke</tt>:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.arc(150, 150, 100, 0, 2*Math.PI);<br />
+ctx.stroke();</code>
+	<canvas id="c11" width="400" height="300"></canvas>
+	<script>
+		ctx = c11.getContext('2d');
+		ctx.beginPath();
+		ctx.arc(150, 150, 100, 0, 2*Math.PI);
+		ctx.stroke();
+	</script>
+	<p>Окружность также можно задать с помощью экспериментального метода <tt>ellipse</tt> с параметрами: координаты центра эллипса, горизонтальный и вертикальный радиусы, угол поворота эллипса (в радианах), начальный и конечный углы (в радианах), флаг отрисовки против часовой стрелки. Таким образом окружность можно получить, указав в качестве обоих радиусов эллипса одинаковые значения:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.ellipse(150, 150, 100, 100, 0, 0, 2*Math.PI);<br />
+ctx.stroke();</code>
+	<canvas id="c12" width="400" height="300"></canvas>
+	<script>
+		ctx = c12.getContext('2d');
+		ctx.beginPath();
+		ctx.ellipse(150, 150, 100, 100, 0, 0, 2*Math.PI);
+		ctx.stroke();
+	</script>
+	<p>Для рисования эллипса воспользоваться методом <tt>arc</tt> не удастся, так что используют <tt>ellipse</tt>:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.ellipse(150, 150, 150, 50, 0, 0, 2*Math.PI);<br />
+ctx.stroke();</code>
+	<canvas id="c13" width="400" height="300"></canvas>
+	<script>
+		ctx = c13.getContext('2d');
+		ctx.beginPath();
+		ctx.ellipse(150, 150, 150, 50, 0, 0, 2*Math.PI);
+		ctx.stroke();
+	</script>
+
+	<h4>Рисование дуг</h4>
+	<p>Дугу можно нарисовать с помощью метода <tt>arc</tt>, пример использования которого был уже рассмотрен. В случае, когда нужна именно дуга, указывают соответсвующие значения углов:</p>
+	<code class="listing">ctx.beginPath();<br />
+ctx.arc(150, 150, 100, 0, Math.PI);<br />
+ctx.stroke();<br />
+ctx.beginPath();<br />
+ctx.arc(150, 150, 80, 0, 1.5*Math.PI);<br />
+ctx.stroke();<br />
+ctx.beginPath();<br />
+ctx.arc(150, 150, 60, 0, 1.75*Math.PI);<br />
+ctx.stroke();</code>
+	<canvas id="c14" width="400" height="300"></canvas>
+	<script>
+		ctx = c14.getContext('2d');
+		ctx.beginPath();
+		ctx.arc(150, 150, 100, 0, Math.PI);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(150, 150, 80, 0, 1.5*Math.PI);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(150, 150, 60, 0, 1.75*Math.PI);
+		ctx.stroke();
+	</script>
+
+	<h4>Добавление текста</h4>
+	<p>Для рисования текста существует два метода: <tt>fillText</tt> для заливки и <tt>strokeText</tt> для обводки. Методы в качестве параметров принимают строку для отрисовки, координаты начала отрисовки (нижний левый угол строки) и необязательный параметр ширины текста. В свойстве <tt>font</tt> можно указать размер и шрифт текста:</p>
+	<code class="listing">ctx.font = '50px monospace';<br />
+ctx.strokeText('Hello, Canvas!', 50, 50);<br />
+ctx.fillStyle = "#00F";<br />
+ctx.fillText('Hello, Canvas!', 60, 60);<br />
+ctx.fillStyle = "#0F0";<br />
+ctx.fillText('Hello, Canvas!', 60, 100, 300);<br /></code>
+	<canvas id="c15" width="500" height="300"></canvas>
+	<script>
+		ctx = c15.getContext('2d');
+		ctx.font = '50px monospace';
+		ctx.strokeText('Hello, Canvas!', 50, 50);
+		ctx.fillStyle = "#00F";
+		ctx.fillText('Hello, Canvas!', 60, 60);
+		ctx.fillStyle = "#0F0";
+		ctx.fillText('Hello, Canvas!', 60, 100, 300);
+	</script>
+	
+	<h3>Использование градиентов</h3>
+	<p>Градиенты создаются с помощью методов <tt>createLinearGradient</tt> и <tt>createRadialGradient</tt> и сохраняются в переменную, чтобы в дальнейшем их можно было использовать в качестве параметра для свойства <tt>fillStyle</tt>.</p>
+	<p>Метод <tt>createLinearGradient</tt> принимает в качестве аргументов координаты точек начала и конца, а с помощью метода <tt>addColorStop</tt> в объект градиента добавляются стоп-цвета:</p>
+	<code class="listing"><span class="key">var</span> grad = ctx.createLinearGradient(0, 0, 0, 300);<br />
+grad.addColorStop(0, <span class="string">'#F00'</span>);<br />
+grad.addColorStop(1, <span class="string">'yellow'</span>);<br />
+ctx.fillStyle = grad;<br />
+ctx.fillRect(50,50, 350, 250);</code>
+	<canvas id="c16" width="400" height="300"></canvas>
+	<script>
+		ctx = c16.getContext('2d');
+		var grad = ctx.createLinearGradient(0, 0, 0, 300);
+		grad.addColorStop(0, '#F00');
+		grad.addColorStop(1, 'yellow');
+		ctx.fillStyle = grad;
+		ctx.fillRect(50, 50, 350, 250);
+	</script>
+	<p>Для радиального градиента метод <tt>createRadialGradient</tt> принимает в качестве параметров координаты и радиус двух окружностей:</p>
+	<canvas id="c17" width="400" height="300"></canvas>
+	<script>
+		ctx = c17.getContext('2d');
+		var grad = ctx.createRadialGradient(150, 150, 50, 100, 100, 150);
+		grad.addColorStop(0, '#F00');
+		grad.addColorStop(1, 'yellow');
+		ctx.fillStyle = grad;
+		ctx.fillRect(50, 50, 350, 250);
+	</script>
+	<p>Градиенты могут использоваться не только для заливок, но и для обводок.</p>
+	<h3>Вставка изображений</h3>
+	<p>Метод <tt>drawImage</tt> вставляет изображение в холст, принимая в качестве параметров координаты вставки и путь к изображению. Изображение должно быть предварительно загружено, потому обычно добавление изображения вешают на событие <tt>onload</tt> изображения:</p>
+	<code class="listing"><span class="key">var</span> img = <span class="var">new</span> Image(); <br />
+img.src = <span class="string">"img.svg"</span>; <br />
+img.onload = <span class="key">function</span>(){<br />
+&nbsp; &nbsp; ctx.drawImage(img, 50, 50);<br />
+};</code>
+	<canvas id="c18" width="400" height="300"></canvas>
+	<script>
+		ctx = c18.getContext('2d');
+		var img = new Image(); 
+		img.src = "img.svg"; 
+		img.onload = function(){
+			ctx.drawImage(img, 50, 50);
+		};
+	</script>
+	<p>При указании дополнительной пары параметров можно смасштабировать изображение:</p>
+	<code class="listing"><span class="key">var</span> img = <span class="var">new</span> Image(); <br />
+img.src = <span class="string">"img.svg"</span>; <br />
+img.onload = <span class="key">function</span>(){<br />
+&nbsp; &nbsp; ctx.drawImage(img, 50, 50, 200, 200);<br />
+};</code>
+	<canvas id="c19" width="400" height="300"></canvas>
+	<script>
+		var ctx2 = c19.getContext('2d');
+		var img2 = new Image(); 
+		img2.src = "img.svg"; 
+		img2.onload = function(){
+			ctx2.drawImage(img2, 50, 50, 200, 200);
+		};
+	</script>
+	<p>Указав еще четыре параметра - отступ и размеры - можно вырезать часть изображения из исходного. При этом порядок следования аргументов меняется:</p>
+	<code class="listing"><span class="key">var</span> img = <span class="var">new</span> Image(); <br />
+img.src = <span class="string">"img.svg"</span>; <br />
+img.onload = <span class="key">function</span>(){<br />
+&nbsp; &nbsp; ctx.drawImage(img, 0, 0, 50, 50, 100, 100, 200, 200);<br />
+};</code>
+	<canvas id="c20" width="400" height="300"></canvas>
+	<script>
+		var ctx3 = c20.getContext('2d');
+		var img3 = new Image(); 
+		img3.src = "img.svg"; 
+		img3.onload = function(){
+			ctx3.drawImage(img3, 0, 0, 50, 50, 100, 100, 200, 200);
+		};
+	</script>
+
+	<h3>Создание тени</h3>
+	<p>Набор свойст <tt>shadow</tt> описывает стили тени у элементов:</p>
+	<code class="listing">ctx.shadowOffsetX = 4;<br />  
+ctx.shadowOffsetY = 4;<br />  
+ctx.shadowBlur = 4;<br />  
+ctx.shadowColor = "rgba(0, 0, 0, 1)";<br />
+ctx.fillStyle = "red";<br />
+ctx.fillRect(50,50,200,150);<br /></code>
+	<canvas id="c21" width="400" height="300"></canvas>
+	<script>
+		var ctx4 = c21.getContext('2d');
+		ctx4.shadowOffsetX = 4;  
+		ctx4.shadowOffsetY = 4;  
+		ctx4.shadowBlur = 4;  
+		ctx4.shadowColor = "rgba(0, 0, 0, 1)";
+		ctx4.fillStyle = "red";
+		ctx4.fillRect(50,50,200,150);
+	</script>
+
+	<h3>Манипуляции с холстом</h3>
+	<p>Для преобразования холста и манипуляций с ним используются следующие методы:</p>
+	<ul>
+		<li><b>translate(x,y)</b> &mdash; перемещает холст и начало коорднат на новое место</li>
+		<li><b>rotate(rad)</b> &mdash; поворачивает холст вокруг начала координат на указанное число радиан</li>
+		<li><b>scale(x, y)</b> &mdash; масштабирует холст по осям</li>
+		<li><b>globalAlpha(num)</b> &mdash; задает уровень прозрачности 0-1</li>
+		<li><b>clip</b> &mdash; указыает, что все последующие элементы будут обрезаться согласно уже нарисованным</li>
+		<li><b>clearRect(x,y,width,height)</b> &mdash; очищает указанную область</li>
+	</ul>
+	<p>Получить изображение из холста можно с помощью метода <tt>toDataURL</tt>, первым параметром которому передается content-type желаемого изображения (например, <tt>	image/jpeg, image/webp</tt> или <tt>image/png</tt>), а вторым - степень сжатия от 0 до 1 (только для jpeg и webm). <a href="canvas_image.html" target="_blank">Пример</a></p>
+</body>
+</html>

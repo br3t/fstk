@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head></head>
+	<body>
+		<canvas id="c" width="300px" height="300px"></canvas>
+		<img id="i" src="" alt="">
+
+		<script>
+			var canvas = document.getElementById('c');
+			var ctx = canvas.getContext('2d');
+
+			ctx.beginPath();
+			ctx.arc(150, 150, 100, 1, Math.PI);
+			ctx.stroke();
+
+			var src = canvas.toDataURL();
+			var img = document.getElementById('i');
+			img.src = src;
+
+		</script>
+
+	</body>
+</html>
