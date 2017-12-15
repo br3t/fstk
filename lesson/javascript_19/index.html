@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Введение в jQuery @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<script src="jquery.min.js"></script>
+	<!--<script src="jquery.min.map"></script>//-->
+	<style>
+		h4 {
+			border-bottom: 1px solid #000;
+			padding: 0 10px;
+			color: #000;
+			margin: 30px 0 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Введение в jQuery</h1>
+	<p><b>jQuery</b> &mdash; кроссбраузерная javascript-библиотека, упрощающая взаимодействие с HTML. Девиз библиотеки - <em>"write less, do more"</em>.</p>
+	<p>В настоящее время существует 3 основные ветки версий jQuery: ветка 1.х включает поддержку старых браузеров, в т.ч. IE6-8; ветка 2.х ориентирована на более современные браузеры, код ее версий меньше по размеру, чем у соответсвующих версий ветки 1.x; ветка 3.х - это переписанная вторая версия jQuery, которая учитывает современные изменения в Javascript и HTML5 API. Параллельно с версией 3.0.alpha была выпущена версия 3.0.alpha-compat, которая была наследников ветки 1.х, но в дальнейшем разработчики отказались от релизов compat-версий.</p>
+	<h2>Начало работы</h2>
+	<p>Библиотека подключается как внешний файл локально, либо с помощью CDN (<a href="https://cdnjs.com/libraries/jquery/" target="_blank">пример</a>).</p>
+	<code class="listing">&lt;script src="SOME_PATH/jquery.js">&lt;/script></code>
+	<p>Для разработки и отладки обычно полную версию библиотеки, а для продакшна используют минимизированную версию (min). Начиная с версии 1.9 появилась возможность отлаживать минифицированный файл <u>jquery.min.js</u> благодаря map-файлам. Начиная с третьей версии появилась возможность использовать урезанную версию (slim) без поддержки Ajax и визуальных эффектов.</p>
+	<p>Функционал можно расширять, подключая различные плагины jQuery (<a href="http://plugins.jquery.com/" target="_blank">официальный сайт плагинов</a>, в настоящее время не поддерживается).</p>
+	<p>Т.к. в процессе своего развития в jQuery не только добавлялись новые методы, но и удалялись старые, то для возможности использования старых методов в новых версиях подключают плагин <a href="https://github.com/jquery/jquery-migrate#migrate-older-jquery-code-to-jquery-30" target="_blank">jQuery Migrate</a>.</p>
+	<h2>jQuery в работе</h2>
+	<h3>Поиск элементов</h3>
+	<p>Для поиска элементов DOM разработчиком был создан специальная библиотека <a href="https://sizzlejs.com/" target="_blank">Sizzle</a>, выделенный в отдельный проект. Он позволяет находить элементы используя как селекторы CSS, так и свои встроенные специальные методы.</p>
+	<p>Объект jQuery доступен на странице в виде переменной <tt>$</tt>. Если какая-либо другая библиотека использует этот символ в своих целях, то к объекту jQuery обращаются по его имени <tt>jQuery</tt>, либо используют встроенный метод <tt>noConfict()</tt> для указания нового алиаса для jQuery.</p>
+	<p>Перед получением элементов DOM необходимо убедиться, что DOM-дерево уже построено. Чтобы поиск работал из любого места страницы код оборачивают в функцию обратного вызова события готовности DOM-дерева, которая для jQuery выглядит так:</p>
+	<code class="listing">$(document).ready(<span class="key">function</span>() {<br />
+&nbsp; &nbsp; <span class="comment">// your code</span><br />
+});</code>
+	<p>Альтернативный способ (а с версии 3.0 - рекомендуемый) навесить обработчик:</p>
+	<code class="listing">$(<span class="key">function</span>() {<br />
+&nbsp; &nbsp; <span class="comment">// your code</span><br />
+});</code>
+	<p>Сам поиск элемента осуществляется передачей параметра селектора в функцию <tt>jQuery</tt>:</p>
+	<code class="listing">$(<span class="string">'div'</span>) <span class="comment">// найдет все div на странице</span></code>
+	<p>В качестве селектора может быть указан любой CSS-селектор либо специальные встроенные типы селекторов:</p>
+	<code class="listing">$(<span class="string">'div'</span>) <span class="comment">// все div на странице</span><br />
+	$(<span class="string">'.block'</span>) <span class="comment">// все элементы с классом 'block'</span><br />
+	$(<span class="string">'#block'</span>) <span class="comment">// первый элемент с id 'block'</span><br />
+	$(<span class="string">'div,span'</span>) <span class="comment">// все div и span на странице</span><br />
+	$(<span class="string">':header'</span>) <span class="comment">// все элементы, являющиеся заголовками (h1, h2, ...)</span><br />
+	$(<span class="string">'[href]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href'</span><br />
+	$(<span class="string">'[class][href]'</span>) <span class="comment">// все элементы, имеющие атрибуты 'class' и 'href'</span><br />
+	$(<span class="string">'[href="/"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href' равный '/'</span><br />
+	$(<span class="string">'[href!="/"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href' не равный '/'</span><br />
+	$(<span class="string">'[href^="http"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href' начинающийся с 'http'</span><br />
+	$(<span class="string">'[href$="com"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href' заканчивающийся на 'com'</span><br />
+	$(<span class="string">'[href*="site"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'href' содержащий строку 'site'</span><br />
+	$(<span class="string">'[class|="my"]'</span>) <span class="comment">// все элементы, имеющие атрибут 'class' имеющий префикс 'my'</span><br />
+	$(<span class="string">':focus'</span>) <span class="comment">// все элементы, находящиеся в фокусе</span><br />
+	$(<span class="string">':empty'</span>) <span class="comment">// все элементы c пустым содержимым</span><br />
+	$(<span class="string">':contains(text)'</span>) <span class="comment">// все элементы, седержащие текст</span><br />
+	$(<span class="string">':text'</span>) <span class="comment">// все элементы 'input' типа 'text'</span><br />
+	</code>
+	<p>При использовании метасимволов в качестве значений атрибутов при использовании в селекторе их необходимо экранировать обратным слэшем.</p>
+	<p>Такой поиск возвращает коллекцию элементов собственном jQuery-представлении. Элементы коллекции можно получить следующим образом:</p>
+	<code class="listing">$(<span class="string">'div'</span>)[0] <span class="comment">// первый div на странице в "представлении javascript"</span><br />
+$(<span class="string">'div'</span>).eq(0) <span class="comment">// первый div на странице в "представлении jQuery"</span></code>
+	<p>Метод <tt>eq</tt> принимает в качестве параметра индекс искомого элемента и возвращает сам элемент. Если индекс - отрицательное число, то поиск ведется с конца коллекции. Коллекция имеет другие методы для выборок внитри нее:</p>
+	<ul>
+		<li><b>size()</b> &mdash; длина коллекции</li>
+		<li><b>first()</b> &mdash; первый элемент коллекции, алиас для <tt>eq(0)</tt></li>
+		<li><b>last()</b> &mdash; последний элемент коллекции, алиас для <tt>eq(-1)</tt></li>
+		<li><b>is(selector)</b> &mdash; фильтрует коллекцию на соответствие <tt>selector</tt></li>
+		<li><b>not(selector)</b> &mdash; фильтрует коллекцию на не соответствие <tt>selector</tt></li>
+		<li><b>has(selector)</b> &mdash; фильтрует коллекцию по признаку наличия элементов, соответствующих <tt>selector</tt></li>
+		<li><b>filter(fltr)</b> &mdash; фильтрует коллекцию по признаку <tt>fltr</tt>, который может быть как селектором, так и функцией</li>
+		<li><b>parent()</b> &mdash; получает родительский элемент</li>
+		<li><b>parents([selector])</b> &mdash; находит всех предков, которые могут быть отфильтрованы по селектору</li>
+		<li><b>closest(selector)</b> &mdash; находит ближайшего предка, удовлетворяющего <tt>selector</tt></li>
+		<li><b>next([selector])</b> &mdash; находит следующий элемент, который может быть отфильтрован по <tt>selector</tt></li>
+		<li><b>prev([selector])</b> &mdash; находит предыдущий элемент, который может быть отфильтрован по <tt>selector</tt></li>
+		<li><b>siblings([selector])</b> &mdash; находит все соседние элементы, которые могут быть отфильтрованы по <tt>selector</tt></li>
+		<li><b>siblings([selector])</b> &mdash; находит все соседние элементы, которые могут быть отфильтрованы по <tt>selector</tt></li>
+	</ul>
+	<p>Функция <tt>jQuery</tt> обладает еще одним свойством: при использовании внутри аргумента треугольных скобок будет создан указанный элемент.</p>
+	<h3>Перебор элементов и кэширование</h3>
+	<p>Некоторые методы работы с элементами, например <tt>text</tt>, имеют смысл только при работы с одним экземпляром коллекции. Для перебора всех найденных элементов используют метод <tt>each</tt>, принимающий в качестве параметра функцию отбратного вызова. Внутри функции каждый найденный элемент доступен с помощью <tt>this</tt>. Для поиска внутренних элементов относительно текущего используют:</p>
+	<ul>
+		<li>метод <tt>find()</tt>, например, <tt>obj.find(selector)</tt></li>
+		<li>необязательный второй аргумент функции jQuery, например, <tt>$(selector, obj)</tt></li>
+	</ul>
+	<p>Использование второго аргумента, по сути, позволяет задать контекст, в рамках которого будет осуществляться поиск.</p>
+	<p>Метод <tt>find</tt>, как и большинство методов jQuery, "чейнятся", т.е. помимо "полезной работы" метод возвращает коллекцию или элемент, и можно сразу вызывать следующий метод:</p>
+	<code class="listing">$(<span class="string">'div'</span>).not(<span class="string">':contains("Hello")'</span>).find(<span class="string">'span'</span>).text();</code>
+	<p>Операции с DOM-деревом относятся к медленным операциям в JavaScript, потому при выборке больших коллекций и дальнеших манипуляций с ними используют прием <b>кэширования</b> коллекций. Коллекцию сохраняют в переменную и все дальнейшие действия производят над этой переменной.</p>
+	<h3>Преобразование элементов</h3>
+	<p>Для манипуляций с найденными элементами используют следубщие методы:</p>
+	<ul>
+		<li><b>html([newHtml])</b> &mdash; получить <tt>innerHTML</tt> элемента или установить его в <em>newHtml</em></li>
+		<li><b>text([newText])</b> &mdash; получить <tt>textContent</tt> элемента или установить его в <em>newText</em></li>
+		<li><b>data(key [, value])</b> &mdash; установить/получить дополнительные данные для элемента</li>
+		<li><b>append(el)</b> &mdash; добавить <b>el</b> внутрь текущего элемента в конец</li>
+		<li><b>appendTo(el)</b> &mdash; добавить текущий элемент в конец <b>el</b></li>
+		<li><b>prepend(el)</b> &mdash;  добавить <b>el</b> внутрь текущего элемента в начало</li>
+		<li><b>prependTo(el)</b> &mdash; добавить текущий элемент в начало <b>el</b></li>
+		<li><b>clone()</b> &mdash; клонировать текущий элемент</li>
+		<li><b>wrap(el)</b> &mdash; обернуть текущий элемент в <tt>el</tt></li>
+		<li><b>remove()</b> &mdash; удалить элементы из DOM-дерева</li>
+		<li><b>empty()</b> &mdash; удалить дочерние элементы из DOM-дерева</li>
+		<li><b>replaceWith( newContent )</b> &mdash; замещает найденные элементы на <tt>newContent</tt></li>
+	</ul>
+	<p>Работа с атрибутом <b>class</b> элемента осуществляется следующими методами:</p>
+	<ul>
+		<li><b>addClass(newClass)</b> &mdash; добавить класс <tt>newClass</tt></li>
+		<li><b>removeClass(oldClass)</b> &mdash; удалить класс <tt>oldClass</tt></li>
+		<li><b>toggleClass(class [, newState])</b> &mdash; переключить класс. Если указан <tt>newState</tt>, то клас будет изменен в зависимости от него</li>
+		<li><b>hasClass()</b> &mdash; проверить наличие класса</li>
+	</ul>
+	<p>Работа с остальными атрибутами производится с помощью:</p>
+	<ul>
+		<li><b>attr()</b> &mdash; получение/установка атрибутов</li>
+		<li><b>removeAttr(attribute)</b> &mdash; удаление атрибута</li>
+		<li><b>prop()</b> &mdash; получение/установка свойств</li>
+		<li><b>removeProp(property)</b> &mdash; удаление свойства</li>
+		<li><b>val()</b> &mdash; получение/установка свойства <tt>value</tt></li>
+	</ul>
+	<p>Работа со стилевыми настройками осуществляется использованием методов:</p>
+	<ul>
+		<li><b>css()</b> &mdash; получение/установка css-свойств </li>
+		<li><b>height()</b> &mdash; получение/установка высоты элемента в пикселях</li>
+		<li><b>innerHeight()</b> &mdash; получение/установка высоты + padding элемента в пикселях</li>
+		<li><b>outerHeight([includeMargin])</b> &mdash;  получение/установка высоты + padding + border + margin (опционально) элемента в пикселях</li>
+		<li><b>width()</b> &mdash; получение/установка высоты элемента в пикселях</li>
+		<li><b>innerWidth()</b> &mdash; получение/установка высоты + padding элемента в пикселях</li>
+		<li><b>outerWidth([includeMargin])</b> &mdash;  получение/установка высоты + padding + border + margin (опционально) элемента в пикселях</li>
+		<li><b>offset()</b> &mdash; возвращает объект с координатами относительно начала документа</li>
+		<li><b>scrollTop()</b> &mdash; количество проскролленных пикселей по вертикали</li>
+		<li><b>scrollLeft()</b> &mdash; количество проскролленых пикселей по горизонтали</li>
+	</ul>
+
+	<h3>Обработка событий</h3>
+	<p>Для добавления обработчиков событий функции вызывается метод <tt>bind</tt> c аргументами типа события и функции обратного вызова:</p>
+	<code class="listing">$(<span class="string">'button'</span>).bind(<span class="string">'click'</span>, <span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// code</span><br />
+});</code>
+	<p>В качестве первого аргумента может быть указано несколько типов событий, тогда обработчик навесится на все.</p>
+	<p>Возможна и более короткая запись добавления обработчика события одного типа:</p>
+	<code class="listing">$(<span class="string">'button'</span>).click(<span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// code</span><br />
+});</code>
+	<p>Если выполнить такой метод без аргумента, то будет сэмулировано указанное событие. Для эмуляции также используется метод <tt>trigger</tt>, которому в качестве второго и т.д. параметров можно передать каки-либо данные, которые в дальнейшем могут быть перехвачены обработчиком события:</p>
+	<code class="listing">$(<span class="string">'button'</span>).bind(<span class="string">'click'</span>, <span class="key">function</span>(<span class="more">e, data1, data2</span>) {<br />
+&nbsp; &nbsp; alert(data1 + data2);<br />
+});<br />
+$(<span class="string">'button'</span>).trigger(<span class="string">'click'</span>, [<span class="string">"Hello", "world"</span>]);</code>
+	<p>Как и в случае обычного <tt>onclick</tt> добавление с помощью <tt>bind</tt> навесит обработчики только на существующие в DOM-дереве элементы. Для динамического добавления обработчиков используют метод <tt>on</tt>:</p>
+	<code class="listing">$(<span class="string">'button'</span>).on(<span class="string">'click'</span>, <span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// code</span><br />
+});</code>
+	<p>Для оптимизации работы обработчиков можно воспользоваться <em>делегированием</em> событий, которое работает аналогично делегированию в JavaScript:</p>
+	<code class="listing">$(<span class="string">'body'</span>).on(<span class="string">'click'</span>, <span class="string">'button'</span>, <span class="key">function</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; <span class="comment">// code</span><br />
+});</code>
+	<p>Удаление обработчиков осуществляется методами <tt>unbind</tt> и <tt>off</tt>. Без параметров эти методы удаляют все навешанные обработчики, с одним аргументов - все обработчики для указанного типа событий, а с двумя - удаляют указанный обработчик.</p>
+	<p>С версии jQuery 3.0 методы <tt>bind</tt> и <tt>unbind</tt> считаются deprecated.</p>
+	<p>Если необходимо, чтобы обработчик сработал только один раз, то оборачивают его в метод <tt>one</tt>. Если в качестве типа события указано несколько типов, то <tt>one</tt> вызовит обработчик по разу на каждый тип.</p>
+	<p>Перечень возможных событий:</p>
+	<ul>
+		<li><b>click</b> &mdash; клик мышью по элементу</li>
+		<li><b>dblclick</b> &mdash; двойной "клика" мышью по элементу</li>
+		<li><b>hover</b> &mdash; двойное событие: появления/исчезновения курсора над элементом</li>
+		<li><b>mousedown</b> &mdash; нажатие кнопки мыши</li>
+		<li><b>mouseup</b> &mdash; отпускание кнопки мыши</li>
+		<li><b>mouseenter</b> &mdash; появление курсора в области элемента</li>
+		<li><b>mouseleave</b> &mdash; выход курсора из области элемента</li>
+		<li><b>mousemove</b> &mdash; движение курсора в области элемента</li>
+		<li><b>mouseout</b> &mdash; выход курсора из области элемента</li>
+		<li><b>mouseover</b> &mdash; появление курсора в области элемента</li>
+		<li><b>keydown</b> &mdash; переход клавиши клавиатуры в нажатое состояние</li>
+		<li><b>keyup</b> &mdash; возвращение клавиши клавиатуры в ненажатое состояние</li>
+		<li><b>keypress</b> &mdash; ввод символа с клавиатуры</li>
+		<li><b>focus</b> &mdash; получения фокуса</li>
+		<li><b>blur</b> &mdash; потеря фокуса</li>
+		<li><b>focusin</b> &mdash; получение фокуса самим элементом или одним из его дочерних</li>
+		<li><b>focusout</b> &mdash; потеря фокуса самим элементом или одним из его дочерних</li>
+		<li><b>select</b> &mdash; выделение текста</li>
+		<li><b>submit</b> &mdash; отправка формы, либо, запускает это событие.</li>
+		<li><b>change</b> &mdash; изменение элемента формы</li>
+		<li><b>ready</b> &mdash; готовность дерева DOM.</li>
+		<li><b>load</b> &mdash; завершение загрузки элемента.</li>
+		<li><b>unload</b> &mdash; ухода со страницы (при переходе по ссылке, закрытии браузера и т.д.)</li>
+		<li><b>error</b> &mdash; ошибка при загрузке элементов (например отсутствие необходимой картинки на сервере)</li>
+		<li><b>resize</b> &mdash; изменение размеров окна браузера</li>
+		<li><b>scroll</b> &mdash; "прокрутка" элементов документа</li>
+	</ul>
+</body>
+</html>

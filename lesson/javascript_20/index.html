@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Введение в jQuery. Часть 2 @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<script src="jquery.min.js"></script>
+	<!--<script src="jquery.min.map"></script>//-->
+	<style>
+		h4 {
+			border-bottom: 1px solid #000;
+			padding: 0 10px;
+			color: #000;
+			margin: 30px 0 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Введение в jQuery. Часть 2</h1>
+	<h2>Визуальные эффекты</h2>
+	<p>Для управления визуальными свойствами элементов в jQuery существуют следующие методы:</p>
+	<ul>
+		<li><b>hide([duration])</b> &mdash; скрывает элемент. При указании <tt>duration</tt> анимирует высоту, ширину и прозрачность элемента</li>
+		<li><b>show([duration])</b> &mdash; отображает элемент. При указании <tt>duration</tt> анимирует высоту, ширину и прозрачность элемента</li>
+		<li><b>toggle([display])</b> &mdash; переключает видимость элемента в зависимости от его текущей видимости. При указании <tt>display</tt> использует укзазанную видимость. При указании <tt>duration</tt> переключает видимость анимированно как <tt>show</tt> или <tt>hide</tt></li>
+		<li><b>fadeTo(duration, opacity)</b> &mdash; изменить непрозрачность элемента до <tt>opacity</tt> за <tt>duration</tt> миллисекунд</li>
+		<li><b>fadeIn, fadeOut</b> &mdash; "умные" алиасы для <tt>fadeTo(duration, 1)</tt> и <tt>fadeTo(duration, 0)</tt> соответственно</li>
+		<li><b>fadeToggle(duration)</b> &mdash; последовательное применение <tt>fadeIn</tt> или <tt>fadeOut</tt></li>
+		<li><b>slideUp(duration)</b> &mdash; плавно уменьшить до 0 высоту элемента за <tt>duration</tt> миллисекунд</li>
+		<li><b>slideDown(duration)</b> &mdash; плавно вернуть исходную высоту элемента за <tt>duration</tt> миллисекунд</li>
+		<li><b>slideToggle(duration)</b> &mdash; последовательное применение <tt>slideUp</tt> или <tt>slideDown</tt></li>
+	</ul>
+	<p>С помощью метода <tt>animate</tt> можно создать свою собственную финкцию анимации:</p>
+	<code class="listing">$(<span class="string">'div'</span>).animate({height: 0}, 1000, <span class="string">'linear'</span>);</code>
+	<p>В качестве первого аргумента указывается CSS-свойства для анимации, во втором аргументе - длительность анимации, в третьем - функция анимации (по аналогии с функциями анимации в CSS, 'swing'(по умолчанию) или 'linear'). В качестве значения свойства параметра можно указывать относительное изменение, например:</p>
+	<code class="listing">$(<span class="string">'div'</span>).animate({<br />
+&nbsp; &nbsp; &nbsp; &nbsp; height: <span class="string">'-=10px'</span><br />
+&nbsp; &nbsp; }, 1000, <span class="string">'linear'</span>);</code>
+	<p>Прервать анимацию можно с помощью метода <tt>stop</tt>.</p>
+	<p>Для каждого типа анимации можно указать последним параметром функцию обратного вызова, которая запустится по окончанию текущей анимации.</p>
+</body>
+</html>
