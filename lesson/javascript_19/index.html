@@ -78,6 +78,7 @@ $(<span class="string">'div'</span>).eq(0) <span class="comment">// первый
 		<li><b>prev([selector])</b> &mdash; находит предыдущий элемент, который может быть отфильтрован по <tt>selector</tt></li>
 		<li><b>siblings([selector])</b> &mdash; находит все соседние элементы, которые могут быть отфильтрованы по <tt>selector</tt></li>
 		<li><b>siblings([selector])</b> &mdash; находит все соседние элементы, которые могут быть отфильтрованы по <tt>selector</tt></li>
+		<li><b>index(el)</b> &mdash; получает числовой индекс элемента <tt>el</tt> в коллекции</li>
 	</ul>
 	<p>Функция <tt>jQuery</tt> обладает еще одним свойством: при использовании внутри аргумента треугольных скобок будет создан указанный элемент.</p>
 	<h3>Перебор элементов и кэширование</h3>
@@ -96,6 +97,7 @@ $(<span class="string">'div'</span>).eq(0) <span class="comment">// первый
 		<li><b>html([newHtml])</b> &mdash; получить <tt>innerHTML</tt> элемента или установить его в <em>newHtml</em></li>
 		<li><b>text([newText])</b> &mdash; получить <tt>textContent</tt> элемента или установить его в <em>newText</em></li>
 		<li><b>data(key [, value])</b> &mdash; установить/получить дополнительные данные для элемента</li>
+		<li><b>removeData([key])</b> &mdash; удалить дополнительные данные для элемента</li>
 		<li><b>append(el)</b> &mdash; добавить <b>el</b> внутрь текущего элемента в конец</li>
 		<li><b>appendTo(el)</b> &mdash; добавить текущий элемент в конец <b>el</b></li>
 		<li><b>prepend(el)</b> &mdash;  добавить <b>el</b> внутрь текущего элемента в начало</li>
@@ -212,5 +214,6 @@ $(<span class="string">'button'</span>).trigger(<span class="string">'click'</sp
 &nbsp; &nbsp; }, 1000, <span class="string">'linear'</span>);</code>
 	<p>Прервать анимацию можно с помощью метода <tt>stop</tt>.</p>
 	<p>Для каждого типа анимации можно указать последним параметром функцию обратного вызова, которая запустится по окончанию текущей анимации.</p>
+	
 </body>
 </html>
