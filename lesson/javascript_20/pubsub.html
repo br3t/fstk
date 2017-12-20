@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test PubSub</title>
+		<script src="jquery.min.js"></script>
+
+	</head>
+	<body>
+		<script>
+
+var topics = {};
+ 
+jQuery.Topic = function( id ) {
+	var callbacks, method,
+		topic = id && topics[ id ];
+ 
+	if ( !topic ) {
+		callbacks = jQuery.Callbacks();
+		topic = {
+			publish: callbacks.fire,
+			subscribe: callbacks.add,
+			unsubscribe: callbacks.remove
+		};
+		if ( id ) {
+			topics[ id ] = topic;
+		}
+	}
+	return topic;
+};
+// Subscribers
+$.Topic( "mailArrived" ).subscribe( console.log );
+$.Topic( "mailArrived" ).subscribe( console.warn );
+$.Topic( "mailSent" ).subscribe( console.error );
+ 
+// Publisher
+$.Topic( "mailArrived" ).publish( "hello world!" );
+$.Topic( "mailSent" ).publish( "woo! mail!" );
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test Callbacks</title>
+		<script src="jquery.min.js"></script>
+
+	</head>
+	<body>
+		<script>
+			function clog( value ) {
+				console.log( "clog: " + value );
+				return false;
+			}
+
+			function cwarn( value ) {
+				console.warn( "cwarn: " + value );
+			}
+			var flags = [
+				"",
+				"once",
+				"memory",
+				"unique",
+				"stopOnFalse"
+			];
+
+			var callbacks = $.Callbacks( flags[0] );
+			callbacks.add( clog ); 
+			callbacks.fire( "post 1" );
+			callbacks.add( clog );
+			callbacks.add( cwarn );
+			callbacks.fire( "post 2" );
+			callbacks.remove( cwarn );
+			callbacks.fire( "post 3" );
+			console.log(callbacks.disabled());
+		</script>	
+	</body>
+</html>

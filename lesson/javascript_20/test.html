@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test jQuery</title>
+		<style>
+			div {
+				padding: 20px;
+			}
+			div:nth-child(2n) {
+				background: #DDD;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="div">
+			<script src="jquery.min.js"></script>
+			<script>
+				$(document).ready(function() {
+
+					$('body').click(function() {
+						$('#div').animate({
+					        height: '400px'
+					    }, 1000, 'linear', function() {
+					    	$('#div2').animate({
+						        height: '400px'
+						    }, 1000, 'linear');
+					    });
+						
+					});
+
+				});
+
+
+			</script>
+			<span>
+				text 1<br />
+				<a href="http://example.com" target="_blank">link 1.1</a><br />
+			</span>
+			<span class="span">
+				text 1.1
+			</span>
+		</div>
+		<div class="div" id="div">
+			<span>
+				text 2.1<br />
+				<a href="https://example.com">link 1.1</a><br />
+			</span>
+			<span class="span">
+				text 2.2
+			</span>
+		</div>
+		<div id="div2">
+			<span class="span">
+				text 3.1<br />
+				<a href="/" target="_blank">link 1.1</a><br />
+			</span>
+			<span>
+				text 3.2
+			</span>
+		</div>
+		<div>
+			<span>
+				text 4.1<br />
+				<a href="/index.html" target="_self">link 1.1</a><br />
+			</span>
+			<span>
+				text 4.2
+			</span>
+		</div>
+	</body>
+</html>

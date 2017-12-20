@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Введение в jQuery. Часть 2 @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<script src="jquery.min.js"></script>
+	<!--<script src="jquery.min.map"></script>//-->
+	<style>
+		h4 {
+			border-bottom: 1px solid #000;
+			padding: 0 10px;
+			color: #000;
+			margin: 30px 0 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Введение в jQuery. Часть 2</h1>
+	<h2>Собственные события</h2>
+	<p>Иногда при возникновении какого-либо события нужно сделать не одно действие, а несколько. Причем некоторые действия могут быть жестко привязаны к наступлению конкретного события, а некоторые - нет. В этом случае существует необходимость создавать свои собственные типы событий и запускать их обработчики в нужный момент, т.е. "триггерить" события. В jQuery есть механизм создания собственных событий:</p>
+	<code class="listing">$(window).bind(<span class="string">'customEvent'</span>, <span class="key">function</span>(<span class="more">e, data1, data2</span>) {<br />
+&nbsp; &nbsp; alert(data1 + data2);<br />
+});<br />
+$(window).trigger(<span class="string">'customEvent'</span>, [<span class="string">"Hello", "world"</span>]);</code>
+	<p>При создании собственных событий существует риск использовать название события, которое уже используется или будет использоваться в будущем. Для предупреждения подобной ситуации используют <em>namespaces</em> (пространства имен событий):</p>
+	<code class="listing">$(window).bind(<span class="string">'book:pageDown'</span>, <span class="key">function</span>() {<br />
+&nbsp; &nbsp; <span class="comment">// code</span><br />
+});<br />
+$(window).trigger(<span class="string">'book:pageDown'</span>);</code>
+
+	<h2>Визуальные эффекты</h2>
+	<p>Для управления визуальными свойствами элементов в jQuery существуют следующие методы:</p>
+	<ul>
+		<li><b>hide([duration])</b> &mdash; скрывает элемент. При указании <tt>duration</tt> анимирует высоту, ширину и прозрачность элемента</li>
+		<li><b>show([duration])</b> &mdash; отображает элемент. При указании <tt>duration</tt> анимирует высоту, ширину и прозрачность элемента</li>
+		<li><b>toggle([display])</b> &mdash; переключает видимость элемента в зависимости от его текущей видимости. При указании <tt>display</tt> использует укзазанную видимость. При указании <tt>duration</tt> переключает видимость анимированно как <tt>show</tt> или <tt>hide</tt></li>
+		<li><b>fadeTo(duration, opacity)</b> &mdash; изменить непрозрачность элемента до <tt>opacity</tt> за <tt>duration</tt> миллисекунд</li>
+		<li><b>fadeIn, fadeOut</b> &mdash; "умные" алиасы для <tt>fadeTo(duration, 1)</tt> и <tt>fadeTo(duration, 0)</tt> соответственно</li>
+		<li><b>fadeToggle(duration)</b> &mdash; последовательное применение <tt>fadeIn</tt> или <tt>fadeOut</tt></li>
+		<li><b>slideUp(duration)</b> &mdash; плавно уменьшить до 0 высоту элемента за <tt>duration</tt> миллисекунд</li>
+		<li><b>slideDown(duration)</b> &mdash; плавно вернуть исходную высоту элемента за <tt>duration</tt> миллисекунд</li>
+		<li><b>slideToggle(duration)</b> &mdash; последовательное применение <tt>slideUp</tt> или <tt>slideDown</tt></li>
+	</ul>
+	<p>В качестве <tt>duration</tt> можно указать строчное обозначение временного интервала: “slow” (600мс), “normal” (400мс) или “fast” (200мс).</p>
+	<p>С помощью метода <tt>animate</tt> можно создать свою собственную финкцию анимации:</p>
+	<code class="listing">$(<span class="string">'div'</span>).animate({height: 0}, 1000, <span class="string">'linear'</span>);</code>
+	<p>В качестве первого аргумента указывается CSS-свойства для анимации, во втором аргументе - длительность анимации, в третьем - функция анимации (по аналогии с функциями анимации в CSS, 'swing'(по умолчанию) или 'linear'). В качестве значения свойства параметра можно указывать относительное изменение, например:</p>
+	<code class="listing">$(<span class="string">'div'</span>).animate({<br />
+&nbsp; &nbsp; &nbsp; &nbsp; height: <span class="string">'-=10px'</span><br />
+&nbsp; &nbsp; }, 1000, <span class="string">'linear'</span>);</code>
+	<p>Прервать анимацию можно с помощью метода <tt>stop</tt>.</p>
+	<p>Метод <tt>delay</tt> принимает в качестве аргумента время в милисекундах, на которое надо отложить запуск анимации. Метод может использоваться как перед анимацией, так и между анимациями.</p>
+	<p>Для каждого типа анимации можно указать последним параметром функцию обратного вызова, которая запустится по окончанию текущей анимации. В качестве альтернативного синтаксиса можно указать все настройки анимации в объекте - втором параметре:</p>
+	<code class="listing">$(<span class="string">'div'</span>).animate({<br />
+&nbsp; &nbsp; &nbsp; &nbsp; height: <span class="string">'100px'</span><br />
+&nbsp; &nbsp; }, {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; duration: 1000,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; easing: <span class="string">'linear'</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; complete: <span class="key">function</span>() {}<br />
+&nbsp; &nbsp; });</code>
+
+	<h2>Работа с Ajax</h2>
+	<p>Для упрощения работы с ajax-запросами jQuery использует метод <tt>ajax</tt>:</p>
+	<code class="listing">$.ajax({<br />
+&nbsp; &nbsp; type: <span class="string">"GET"</span>,<br />
+&nbsp; &nbsp; method: <span class="string">"GET"</span>, <span class="comment">// c 1.9.0</span><br />
+&nbsp; &nbsp; url: <span class="string">"http://ready-to.win/ajax.php"</span>,<br />
+&nbsp; &nbsp; async: true,<br />
+&nbsp; &nbsp; cache: true,<br />
+&nbsp; &nbsp; contentType: <span class="string">'application/x-www-form-urlencoded'</span>,<br />
+<br />
+&nbsp; &nbsp; username: <span class="string">"user"</span>,<br />
+&nbsp; &nbsp; password: <span class="string">"1111"</span>,<br />
+<br />
+&nbsp; &nbsp; data: {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; a: 1,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; b: 2<br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; headers: {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="string">"X-Requested-With"</span>: <span class="string">"not a XMLHttpRequest"</span><br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; crossDomain: false,<br />
+&nbsp; &nbsp; dataType: <span class="string">'html'</span>,<br />
+&nbsp; &nbsp; timeout: 1000,<br />
+&nbsp; &nbsp; jsonpCallback: <span class="string">'functionName'</span>,<br />
+&nbsp; &nbsp; <span class="name">jsonpCallback</span>: <span class="key">function</span> () {}, <span class="comment">// c 1.5</span><br />
+<br />
+&nbsp; &nbsp; <span class="name">complete</span>: <span class="key">function</span> (<span class="more">jqXHR, textStatus</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Request compleated'</span>);<br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; <span class="name">success</span>: <span class="key">function</span>(<span class="more">respond, textStatus, jqXHR</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'All done'</span>);<br />
+&nbsp; &nbsp; },<br />
+&nbsp; &nbsp; <span class="name">error</span>: <span class="key">function</span>(<span class="more">jqXHR, textStatus, e</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Error'</span>);<br />
+&nbsp; &nbsp; }<br />
+});</code>
+	<p>Большинство параметров по умолчанию можно использовать без измения. Простейший ajax-запрос:</p>
+	<code class="listing">$.ajax(<span class="string">'http://ready-to.win/ajax.php'</span>);</code>
+	<p><tt>ajax</tt> так же поддерживает синтаксис в стиле promise-ов:</p>
+	<code class="listing">$.ajax({ })<br />
+&nbsp; &nbsp; .done(<span class="key">function</span>(<span class="more"> respond, textStatus, jqXHR</span> ) { })<br />
+&nbsp; &nbsp; .fail(<span class="key">function</span>(<span class="more"> jqXHR, textStatus, e</span> ) { })<br />
+&nbsp; &nbsp; .always(<span class="key">function</span>(<span class="more"> data, textStatus, jqXHR</span> ) { }) <span class="comment">// on success</span><br />
+&nbsp; &nbsp; .always(<span class="key">function</span>(<span class="more"> jqXHR, textStatus, errorThrown</span> ) { }); <span class="comment">// on error</span></code>
+	<p>Есть также несколько вариантов короткого синтаксиса для наиболее типичных запросов. Например, для запросов методами GET и POST соответственно:</p>
+	<code class="listing">$.get(<br />
+&nbsp; &nbsp; <span class="string">"http://example.com"</span>,<br />
+&nbsp; &nbsp; {a: 1},<br />
+&nbsp; &nbsp; <span class="key">function</span>(<span class="more">respond</span>) {},<br />
+&nbsp; &nbsp; <span class="string">"text"</span>);<br />
+<br />
+$.post(<br />
+&nbsp; &nbsp; <span class="string">"http://example.com"</span>,<br />
+&nbsp; &nbsp; {a: 1},<br />
+&nbsp; &nbsp; <span class="key">function</span>(<span class="more">respond</span>) {},<br />
+&nbsp; &nbsp; <span class="string">"text"</span>);<br /></code>
+	<p>Короткие методы могут использоваться и для получения JSON или подгрузки скрипта на странице:</p>
+	<code class="listing">$.getJSON(<br />
+&nbsp; &nbsp; <span class="string">"http://example.com/data.json"</span>,<br />
+&nbsp; &nbsp; {a: 1},<br />
+&nbsp; &nbsp; <span class="key">function</span>(<span class="more">respond</span>) {});<br />
+<br />
+$.getScript(<br />
+&nbsp; &nbsp; <span class="string">"http://example.com/script.js"</span>,<br />
+&nbsp; &nbsp; <span class="key">function</span>(<span class="more">respond</span>) {});</code>
+	<p>Для подгрузки html-кода с одной страницы в другую можно использовать метод <tt>load</tt>:</p>
+	<code class="listing">$(<span class="string">"#thisDiv"</span>).load(<span class="string">"thatPage.html"</span>);</code>
+	<p>Скрипты сторонней страницы встраиваются в текущую. При необходимости подгрузки только фрагмента страницы можно указать его в атрибуте метода <tt>load</tt>:</p>
+	<code class="listing">$(<span class="string">"#thisDiv"</span>).load(<span class="string">"thatPage.html #thatDiv"</span>);</code>
+	<p>В этом случае скрипты из полученного фрагмента будут вырезаны.</p>
+
+	<h2>Использование Callbacks</h2>
+	<p>Начиная с версии 1.7 в jQuery был добавлен объект Callbacks, предназначенный для создания <em>callback'ов</em> (функций обратного вызова). Вызов метода <tt>Callbacks</tt> возвращает объект, с помощью которого можно добавлять, удалять, вызывать и проверять состояние callback'ов.</p>
+	<code class="listing"><span class="key">var</span> flags = <span class="string">""</span> +<br />
+&nbsp; &nbsp; <span class="string">"once "</span> +<span class="comment">// запустить коллбэки единоразово</span><br />
+&nbsp; &nbsp; <span class="string">"memory "</span> +<span class="comment">// немедленно выполнять коллбеки с указанным параметром</span><br />
+&nbsp; &nbsp; <span class="string">"unique "</span> +<span class="comment">// игнорировать повторное дбавление коллбэков</span><br />
+&nbsp; &nbsp; <span class="string">"stopOnFalse "</span> +<span class="comment">// остановить выполнение при возврате false коллбэком</span><br />
+&nbsp; &nbsp; <span class="string">""</span>;<br /><br />
+<span class="key">var</span> callbacks = $.Callbacks(flags);
+</code>
+	<p>У созданного объекта есть следующие методы:</p>
+	<ul>
+		<li><b>add(callbackF)</b> &mdash; добавляет функцию или функции обратного вызова</li>
+		<li><b>remove(callbackF)</b> &mdash; удаляет функцию или функции обратного вызова</li>
+		<li><b>empty()</b> &mdash; удаляет все функции обратного вызова</li>
+		<li><b>has(callbackF)</b> &mdash; проверяет, есть ли указанная функция в списке коллбеков</li>
+		<li><b>disable()</b> &mdash; "отключает" объект callbacks</li>
+		<li><b>disabled()</b> &mdash; проверяет состояние отключенности callbacks</li>
+		<li><b>fire(argsArray)</b> &mdash; запустить все функции обратного вызова</li>
+		<li><b>fireWith(ctx, argsArray)</b> &mdash; запустить все функции обратного вызова с передачей контекста</li>
+	</ul>
+	<p>Использование Callbacks:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">firer</span>(<span class="more">value</span>) {<br />
+&nbsp; &nbsp; console.log(<span class="string">'We`ve got '</span> + value + <span class="string">' here'</span>);<br />
+};<br /><span class="key">var</span> callbacks = $.Callbacks();<br />
+callbacks.add(firer);<br />
+callbacks.fire(42);
+	</code>
+	<p>Пример использования <tt>fireWith</tt>:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">firer</span>(<span class="more">method</span>) {<br />
+&nbsp; &nbsp; console.log(this[method]());<br />
+};<br /><span class="key">var</span> callbacks = $.Callbacks();<br />
+callbacks.add(firer);<br />
+callbacks.fireWith(Date, [<span class="string">'now'</span>]);
+	</code>
+	<p><a href="callbacks.html" target="_blank">Пример</a> использования различных флагов, <a href="pubsub.html" target="_blank">пример</a> реализации паттерна Pub/Sub на Callbacks.</p>
+
+	<h2>jQuery утилиты</h2>
+	<p>jQuery также содержит набор методов общего назначения:</p>
+	<ul>
+		<li><b>contains( container, contained )</b> &mdash; проверяет, содержится ли один DOM-элемент внутри другого</li>
+		<li><b>each( f )</b> &mdash; итератор по массивам и массиво-подобным объектам</li>
+		<li><b>extend( target [, object1 ] [, objectN ] )</b> &mdash; расширяет объект <tt>target</tt> свойствами из последующих объектов-аргументов</li>
+		<li><b>grep( array, function [, invert ] )</b> &mdash; возвращает отфильтрованный подмассив</li>
+		<li><b>inArray(value, array [,fromIndex])</b> &mdash; находит позицию элемента в коллекции по его значению</li>
+		<li><b>makeArray(obj)</b> &mdash; делает массив из псевдомассива</li>
+		<li><b>merge( first, second )</b> &mdash; возвращает результат объединения двух массивов</li>
+		<li><b>parseHTML( html [, context ] [, keepScripts ] )</b> &mdash; создает DOM-дерево для <tt>html</tt> в контексте <tt>context</tt></li>
+		<li><b>trim( string )</b> &mdash; удаляет пробельные символы с начала и с конца строки</li>
+		<li><b>unique( array )</b> &mdash; возвращает массив с уникальными значениями исходного массива</li>
+	</ul>
+</body>
+</html>
