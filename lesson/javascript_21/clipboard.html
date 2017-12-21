@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Clipboard Test</title>
+</head>
+<body>
+	<h1>With Clipboard API</h1>
+	<input type="text" id="text1" />
+	<input type="button" id="button1" value="Copy" />
+
+	<h1>Without Clipboard API</h1>
+	<h2>From input[text]</h2>
+	<input type="text" id="text2" />
+	<input type="button" id="button2" value="Copy" /><br />
+	<h2>From span</h2>
+	<span id="text3">http://example.com</span>
+	<input type="button" id="button3" value="Copy" />
+	<div>
+		<textarea name="" id="" cols="30" rows="10" placeholder="Paste here"></textarea>
+	</div>
+	<script>
+		// with Clipboard API
+		document.querySelector('#button1').addEventListener('click', function() {
+			document.execCommand('copy');
+		});
+		document.addEventListener('copy', function(e) {
+			if(e.target.id == 'text1') {
+				console.log(e);
+				var newText = document.querySelector('#text1').value;
+			    e.clipboardData.setData('text/plain', newText);
+			    e.preventDefault();
+			}
+		});
+
+		// without Clipboard API
+		document.querySelector('#button2').addEventListener('click', function() {
+			document.querySelector('#text2').select();
+			document.execCommand('copy');
+			window.getSelection().removeAllRanges();
+		});
+
+
+		document.querySelector('#button3').addEventListener('click', function() {
+			var textEl = document.querySelector('#text3');
+			var range = document.createRange();  
+			range.selectNode(textEl);  
+			window.getSelection().addRange(range);
+
+			document.execCommand('copy');
+			window.getSelection().removeAllRanges();
+		});
+	</script>
+</body>
+</html>

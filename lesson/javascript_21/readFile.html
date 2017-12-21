@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>create file</title>
+	<style>
+		
+	</style>
+	<script>
+		function fail(e) {
+			console.log(e.message);
+			return;
+		}
+
+		function success(fs) {
+			writeFile(fs, function(fs) {
+				fs.root.getFile('test.txt', {}, function(fileEntry) {
+	    
+				    fileEntry.file(function(file) {
+				        var reader = new FileReader();
+
+						reader.onloadend = function(e) {
+							var txtArea = document.createElement('textarea');
+							txtArea.value = this.result;
+							document.body.appendChild(txtArea);
+						};
+						reader.onerror = function(e) {
+							console.error(e);
+						};
+
+				       reader.readAsText(file);
+				    }, fail);
+
+				}, fail);
+			});
+			
+		}
+
+		function writeFile(fs, callback) {
+			fs.root.getFile('test.txt', {create: true}, function(fileEntry) {
+
+			    fileEntry.createWriter(function(fileWriter) {
+				    fileWriter.onwriteend = function(e) {
+				      console.log('Write completed.');
+				      callback(fs);
+				    };
+
+				    fileWriter.onerror = function(e) {
+				      console.log('Write failed: ' + e.toString());
+				    };
+
+				    var bb = new Blob(['Ipsum Lorem'], {type: 'text/plain'});
+				    fileWriter.write(bb);
+
+				}, fail);
+			}, fail);
+		}
+
+		window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024 /*1MB*/, success, fail);
+	</script>
+</head>
+<body>
+	<h1>create file</h1>
+</body>
+</html>

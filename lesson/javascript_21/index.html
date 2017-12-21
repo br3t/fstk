@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<title>Прочие API Javascript @ Курс Frontend-разработки</title>
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+</head>
+<body>
+	<h1>Прочие API Javascript</h1>
+	<h2>Работа с буфером обмена</h2>
+	<h3>Использование Clipboard API</h3>
+	<p>Современный Javascript предоставляет возможность получить доступ к пользовательским событиям типа "скопрован текст" или "вырезан текст" посредством Clipboard API (<a href="https://caniuse.com/#feat=clipboard" target="_blank">поддержка</a>). Если браузер поддерживает это API, то есть возможность прослушивать события <tt>cut, copy, paste</tt>:</p>
+	<code class="listing">document.addEventListener(<span class="string">'copy'</span>, <span class="key">function</span> (<span class="more">e</span>) {<br />
+&nbsp; &nbsp; console.log(<span class="string">'Info copied'</span>);<br />
+&nbsp; &nbsp; console.log(e);<br />
+});<br />
+<br />
+document.addEventListener(<span class="string">'paste'</span>, <span class="key">function</span> (<span class="more">e</span>) {<br />
+&nbsp; &nbsp; console.log(<span class="string">'Info pasted'</span>);<br />
+&nbsp; &nbsp; console.log(e);<br />
+});</code>
+	<p>Сгенерированные события типа <tt>ClipboardEvent</tt> имеют свойство - объект данных <tt>clipboardData</tt>, которое содержит себе информацию о копировании/вставке. С помощью метода <tt>getData</tt> можно получить данные из буфера обмена. Метод вернет данные только для события <tt>onpaste</tt>:</p>
+	<code class="listing">document.addEventListener(<span class="string">'paste'</span>, <span class="key">function</span> (<span class="more">e</span>) {<br />
+&nbsp; &nbsp; console.log(<span class="string">'Info pasted'</span>);<br />
+&nbsp; &nbsp; e.clipboardData.types.forEach(<span class="key">function</span>(<span class="more">value</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'Type: '</span> + value);<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(e.clipboardData.getData(value));<br />
+&nbsp; &nbsp; });<br />
+});</code>
+	<p>Метод <tt>setData</tt> используется для модификации содержимого буфера обмена. При этом в качестве первого параметра необходимо указать тип содержимого используемого буфера, перехватив событие копирования:</p>
+	<code class="listing">document.addEventListener(<span class="string">'copy'</span>, <span class="key">function</span> (<span class="more">e</span>) {<br />
+&nbsp; &nbsp; e.clipboardData.setData(<span class="string">'text/plain'</span>, <span class="string">'Clipboard overwritten'</span>);<br />
+&nbsp; &nbsp; e.preventDefault();<br />
+});</code>
+	<p>Стандарт определяет перечень <a href="https://w3c.github.io/clipboard-apis/#mandatory-data-types" target="_blank">поддерживаемых типов</a>, но не все они поддерживаются всеми браузерами.</p>
+	<p>При обработке этих событий есть возможность получать доступ к объекту буфера только при копировании/вставке пользователем. JavaScript предоставляет возможность триггерить эти события програмно:</p>
+	<code class="listing">e.target.dispatchEvent(<span class="var">new</span> ClipboardEvent(<span class="string">"copy"</span>));</code>
+	<p>но такой вызов работает только в Firefox.</p>
+	<p>Для этих целей используют метод <tt>execCommand</tt>(<a href="https://caniuse.com/#feat=document-execcommand" target="_blank">поддежка браузерами</a>) объекта <tt>document</tt>, которому передают в качестве параметра название браузерной команды (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand" target="_blank">полный список команд</a>):</p>
+	<ul>
+		<li><b>copy</b> &mdash; копирует текущее выделение в буфер обмена</li>
+		<li><b>cut</b> &mdash; вырезает текущее выделение в буфер обмена</li>
+		<li><b>paste</b> &mdash; вставляет скопированное содержимое, заменяя выделение</li>
+	</ul>
+	<p>Т.е. можно либо с помощью <tt>execCommand</tt> генерировать событие <tt>copy</tt> и модифицировать данные с помощью Clipboard API, либо прямо перед <tt>execCommand</tt> програмно создавать выделение. <a href="clipboard.html" target="_blank">Примеры</a>.</p>
+
+	<h2>Работа с файловой системой</h2>
+	<p>JavaScript предоставляет API для работы с файловой системой и файлами. Этих API несколько и т.к. они не являются частью стандарта, то имеют <a href="https://caniuse.com/#search=file" target="_blank">разную поддержку браузерами</a>.</p>
+
+	<h3>Получение информации о загружаемых файлах</h3>
+	<p><b>FileReader API</b> позволяет получить информацию о файлах, добавленных пользователем в форму. Как и большинство API для работы с файлами <tt>FileReader</tt> работает асинхронно:</p>
+	<code class="listing"><span class="key">var</span> reader = <span class="var">new</span> FileReader();<br />
+reader.onload = <span class="key">function</span>() { ... };<br />
+reader.readAsDataURL(file);</code>
+	<p><a href="filereader.html" target="_blank">Пример использования</a></p>
+
+	<h3>Работа с файлами</h3>
+	<p>Для работы с файлами браузеру необходимо получить доступ к файловой системе с помощью <b>FileSystem API</b>:</p>
+	<code class="listing">window.requestFileSystem(type, size, successCallback [, errorCallback]);</code>
+	<p>где:</p>
+	<ul>
+		<li><b>type</b> &mdash; тип требуемой файловой системы. Допустимые значения window.TEMPORARY и window.PERSISTENT.</li>
+		<li><b>size</b> &mdash; размер требуемого хранилища в байтах</li>
+		<li><b>successCallback</b> &mdash; функция обратного вызова для успешного получения доступа к файловой системе. Возвращает объект файловой системы</li>
+		<li><b>errorCallback</b> &mdash; необязательный аргумент-обработчик события ошибки при получении доступа к файловой системе.</li>
+	</ul>
+	<p>Для отображения ошибки <tt>errorCallback</tt> может принимать следующий вид:</p>
+	<code class="listing"><span class="key">function</span> <span class="name">errorCallback</span>(<span class="more">e</span>) {<br />
+&nbsp; &nbsp; <span class="key">var</span> msg = <span class="string">'Unknown Error'</span>;<br />
+&nbsp; &nbsp; <span class="key">var</span> types = [<span class="string">'QUOTA_EXCEEDED_ERR', 'NOT_FOUND_ERR', 'SECURITY_ERR', 'INVALID_MODIFICATION_ERR', 'INVALID_STATE_ERR'</span>];<br />
+<br />
+&nbsp; &nbsp; types.forEach(<span class="key">function</span>(<span class="more">value</span>) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="var">if</span>(e.code == FileError[value]) {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; msg = value;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; }<br />
+&nbsp; &nbsp; });<br />
+&nbsp; &nbsp; console.log(<span class="string">'Error: '</span> + msg);<br />
+}</code>
+	<p>FileSystem API в настоящее время поддерживается только Google Chrome и только с префиксом <tt>webkit</tt>. <a href="requestFileSystem.html" target="_blank">Пример</a> подключения к файловой системе.</p>
+	<p>После получения объекта файловой системы можно создавать, записывать, читать и удалять файлы.</p>
+	<h3>Создание файла</h3>
+	<p>За создание файла отвечает метод <tt>getFile</tt> свойства <tt>root</tt>. В зависимости от переданного объекта конфигурации будет либо создан новый файл, либо прочитан существующий:</p>
+	<code class="listing">fs.root.getFile(<span class="string">'test.txt'</span>, {create: true}, <span class="key">function</span>(<span class="more">fileEntry</span>) {<br />
+&nbsp; &nbsp; console.log(fileEntry);<br />
+}, errorCallback);</code>
+	<p><a href="createFile.html" target="_blank">Пример</a>.</p>
+	<h3>Запись в файл</h3>
+	<p>Для записи в файл используется метод <tt>createWriter</tt>, который асинхронно возвращает объект для записи: <a href="writeFile.html">пример</a></p>
+	<p>Для записи используются объекты <b>Blob</b>, которые являются фрагментами двоичных файлов.</p>
+	<h3>Чтение из файла</h3>
+	<p>Для чтения так же используется метод <tt>getFile</tt>, только без опции <tt>create</tt>. Содержимое файла в этом случае можно получить с помощью <tt>FileReader</tt>: <a href="readFile.html">пример</a></p>
+	<h3>Удаление файла</h3>
+	<p>Удаляются созданные файлы с помощью метода <tt>remove</tt>:</p>
+	<code class="listing">fs.root.getFile(<span class="string">'test.txt'</span>, {}, <span class="key">function</span>(<span class="more">fileEntry</span>) {<br />
+&nbsp; &nbsp; fileEntry.remove(<span class="key">function</span>() {<br />
+&nbsp; &nbsp; &nbsp; &nbsp; console.log(<span class="string">'File removed.'</span>);<br />
+&nbsp; &nbsp; }, errorCallback);<br />
+}, errorCallback);</code>
+
+	
+</body>
+</html>
