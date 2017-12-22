@@ -43,6 +43,7 @@
 
 		document.querySelector('#button3').addEventListener('click', function() {
 			var textEl = document.querySelector('#text3');
+			window.getSelection().removeAllRanges();
 			var range = document.createRange();  
 			range.selectNode(textEl);  
 			window.getSelection().addRange(range);

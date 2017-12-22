@@ -39,7 +39,7 @@
           // Render thumbnail.
           var span = document.createElement('span');
           span.innerHTML = ['<img class="thumb" src="', e.target.result,
-                            '" title="', theFile.name, '"/>'].join('');
+                            '" title="', theFile.name, '"/><br />Size: ' + theFile.size + '<br />Type: ' + theFile.type].join('');
           document.getElementById('list').insertBefore(span, null);
         };
       })(f);
